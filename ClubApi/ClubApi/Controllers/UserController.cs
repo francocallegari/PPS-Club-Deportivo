@@ -59,7 +59,7 @@ namespace ClubApi.Controllers
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
-
+        /*
         [HttpPost]
         public ActionResult<UserResponse> CreateUser([FromBody] UserRequest user)
         {
@@ -81,7 +81,7 @@ namespace ClubApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
-        }
+        } */
 
         [HttpPut("{id}")]
         public IActionResult UpdateUser([FromRoute] int id, [FromBody] UserRequest user)

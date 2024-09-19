@@ -12,6 +12,6 @@ namespace Application.Interfaces
         User GetUserByUserName(string userName);
         void UpdateUser(int id, UserRequest customer);
         void DeleteUser(int id);
-        UserResponse CreateUser(UserRequest user);
+        //UserResponse CreateUser(UserRequest user);
     }
 }
