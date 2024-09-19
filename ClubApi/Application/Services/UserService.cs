@@ -32,10 +32,10 @@ namespace Application.Services
             return _userRepository.GetUserByUserName(userName);
         }
 
-        public UserResponse CreateUser(UserRequest dto)
+        /*public UserResponse CreateUser(UserRequest dto)
         {
             return UserResponse.ToDto(_userRepository.AddAsync(UserRequest.ToEntity(dto)).Result);
-        }
+        }*/
 
         public void UpdateUser(int id, UserRequest dto)
         {

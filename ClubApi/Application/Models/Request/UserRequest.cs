@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using System.ComponentModel.DataAnnotations;
-using static Domain.Enums.Enums;
 
 namespace Application.Models.Request
 {
@@ -20,9 +19,9 @@ namespace Application.Models.Request
         public string UserName { get; set; }
 
         [Required]
-        public UserType UserType { get; set; }
+        public string UserType { get; set; }
 
-        public static User ToEntity(UserRequest dto)
+        /*public static User ToEntity(UserRequest dto)
         {
             return new User
             {
@@ -34,7 +33,7 @@ namespace Application.Models.Request
                 UserRegistrationDate = DateTime.Now,
                 UserDeletionDate = null
             };
-        }
+        }*/
 
         public static bool validateDto(UserRequest dto)
         {
