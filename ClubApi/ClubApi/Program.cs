@@ -1,4 +1,7 @@
 using Application.Interfaces;
+
+using Application.Services;
+
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
@@ -19,7 +22,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
-        Description = "Acá pegar el token generado al loguearse."
+        Description = "AcÃ¡ pegar el token generado al loguearse."
     });
 
     setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -64,10 +67,19 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:ClubDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
 
+
+#region services
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDirectorService, DirectorService>();
+#endregion
+
+
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.Configure<AutenticacionServiceOptions>(
     builder.Configuration.GetSection(AutenticacionServiceOptions.AutenticacionService));
 builder.Services.AddScoped<IAuthenticationService, AutenticacionService>();
+
 
 var app = builder.Build();
 
