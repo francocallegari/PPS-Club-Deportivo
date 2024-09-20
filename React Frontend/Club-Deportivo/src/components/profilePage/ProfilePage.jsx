@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
-import './ProfilePage.css';
+import "./ProfilePage.css";
 
 const ProfilePage = () => {
   const [show, setShow] = useState(false);
@@ -34,7 +34,10 @@ const ProfilePage = () => {
             </Form.Group>
             <Form.Group controlId="formAddress">
               <Form.Label>Dirección</Form.Label>
-              <Form.Control type="text" defaultValue="Zeballos 1059, Rosario, Santa Fe" />
+              <Form.Control
+                type="text"
+                defaultValue="Zeballos 1059, Rosario, Santa Fe"
+              />
             </Form.Group>
             <Form.Group controlId="formBirthdate">
               <Form.Label>Fecha de nacimiento</Form.Label>
@@ -68,22 +71,28 @@ const ProfilePage = () => {
         <h3>Mis datos personales</h3>
         <div className="datos-grid">
           <p>
-            <strong>Nº de socio:</strong> 53048
+            <label>Nº de socio:</label>
+            53048
           </p>
           <p>
-            <strong>Documento:</strong> 36859884
+            <label>Documento:</label>
+            36859884
           </p>
           <p>
-            <strong>Dirección de correo electrónico:</strong> alexa@example.com
+            <label>Dirección de correo electrónico:</label>
+            alexa@example.com
           </p>
           <p>
-            <strong>Teléfono de contacto:</strong> 341 3225849
+            <label>Teléfono de contacto:</label>
+            341 3225849
           </p>
           <p>
-            <strong>Dirección:</strong> Zeballos 1059, Rosario, Santa Fe
+            <label>Dirección:</label>
+            Zeballos 1059, Rosario, Santa Fe
           </p>
           <p>
-            <strong>Fecha de nacimiento:</strong> 14 de octubre de 1986
+            <label>Fecha de nacimiento:</label>
+            14 de octubre de 1986
           </p>
         </div>
       </div>
@@ -91,10 +100,12 @@ const ProfilePage = () => {
       <div className="suscripcion">
         <h3>Mi suscripción</h3>
         <p>
-          <strong>Estado:</strong> Socio Activo
+          <label>Estado</label>
+          Socio Activo
         </p>
         <p>
-          <strong>Datos de facturación:</strong> XXXX XXXX XXXX 3096
+          <label>Datos de facturación:</label>
+          XXXX XXXX XXXX 3096
         </p>
       </div>
 
