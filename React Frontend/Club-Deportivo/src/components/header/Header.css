@@ -1,0 +1,20 @@
+.navbar-container {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(72, 26, 26);
+    margin: 0;
+}
+
+.Nav-Seccion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1 auto;
+    color: antiquewhite;
+}
+
+.Nav-Seccion:hover {
+    background-color: rgb(65, 13, 13);
+    cursor: pointer;
+    color: rgb(230, 177, 111);
+}
