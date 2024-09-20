@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models.Request;
 using Application.Models.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClubApi.Controllers
@@ -59,7 +60,7 @@ namespace ClubApi.Controllers
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
-        /*
+
         [HttpPost]
         public ActionResult<UserResponse> CreateUser([FromBody] UserRequest user)
         {
@@ -81,7 +82,7 @@ namespace ClubApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
-        } */
+        }
 
         [HttpPut("{id}")]
         public IActionResult UpdateUser([FromRoute] int id, [FromBody] UserRequest user)
