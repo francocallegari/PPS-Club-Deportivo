@@ -1,3 +1,6 @@
+using Application.Interfaces;
+using Application.Services;
+using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +25,13 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:ClubDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
+
+#region services
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDirectorService, DirectorService>();
+#endregion
+
+
 
 var app = builder.Build();
 
