@@ -1,0 +1,20 @@
+.main-div {
+    display: flex;
+    justify-content: center;
+}
+
+.seccion-container {
+    text-align: center;
+    margin: 10px;
+    padding: 20px;
+    background-color: rgb(247, 219, 183);
+    border-radius: 20px;
+}
+
+.seccion-container:hover {
+    cursor: pointer;
+}
+
+p {
+    max-width: 300px;
+}
