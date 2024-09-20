@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
-    public abstract class User
+    public class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -29,6 +29,5 @@ namespace Domain.Entities
 
         [Column(TypeName = "datetime")]
         public DateTime? UserDeletionDate { get; set; }
-
     }
 }
