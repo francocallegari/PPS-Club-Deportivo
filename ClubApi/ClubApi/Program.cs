@@ -1,3 +1,4 @@
+
 using Application.Interfaces;
 
 using Application.Services;
@@ -68,6 +69,13 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:ClubDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
 
 
+//Repository
+builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
+builder.Services.AddScoped<IRepositoryEvent, RepositoryEvent>();
+builder.Services.AddScoped<IRepositorySport, RepositorySport>();
+builder.Services.AddScoped<IRepositoryNews, RepositoryNews>();
+
+
 #region services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDirectorService, DirectorService>();
@@ -79,7 +87,6 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.Configure<AutenticacionServiceOptions>(
     builder.Configuration.GetSection(AutenticacionServiceOptions.AutenticacionService));
 builder.Services.AddScoped<IAuthenticationService, AutenticacionService>();
-
 
 var app = builder.Build();
 
