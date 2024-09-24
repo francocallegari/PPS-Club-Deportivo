@@ -1,3 +1,4 @@
+using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,12 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:ClubDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
+
+//Repository
+builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
+builder.Services.AddScoped<IRepositoryEvent, RepositoryEvent>();
+builder.Services.AddScoped<IRepositorySport, RepositorySport>();
+builder.Services.AddScoped<IRepositoryNews, RepositoryNews>();
 
 var app = builder.Build();
 
