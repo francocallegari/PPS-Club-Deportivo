@@ -1,14 +1,58 @@
+
+using Application.Interfaces;
+
+using Application.Services;
+
 using Domain.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+using static Infrastructure.Services.AutenticacionService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    setupAction.AddSecurityDefinition("clubApiBearerAuth", new OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Acá pegar el token generado al loguearse."
+    });
+
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "clubApiBearerAuth" }
+                }, new List<string>() }
+    });
+});
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new()
+        {
+            ValidateIssuer =           true,
+            ValidateAudience =         true,  
+            ValidateIssuerSigningKey = true,
+            ValidIssuer =              builder.Configuration["AutenticacionService:Issuer"],
+            ValidAudience =            builder.Configuration["AutenticacionService:Audience"],
+            IssuerSigningKey =         new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["AutenticacionService:SecretForKey"]))
+        };
+    }
+);
 
 builder.Services.AddCors(options =>
 {
@@ -24,11 +68,25 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:ClubDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
 
+
 //Repository
 builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 builder.Services.AddScoped<IRepositoryEvent, RepositoryEvent>();
 builder.Services.AddScoped<IRepositorySport, RepositorySport>();
 builder.Services.AddScoped<IRepositoryNews, RepositoryNews>();
+
+
+#region services
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDirectorService, DirectorService>();
+#endregion
+
+
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.Configure<AutenticacionServiceOptions>(
+    builder.Configuration.GetSection(AutenticacionServiceOptions.AutenticacionService));
+builder.Services.AddScoped<IAuthenticationService, AutenticacionService>();
 
 var app = builder.Build();
 

@@ -21,7 +21,7 @@ namespace Application.Models.Request
         [Required]
         public string UserType { get; set; }
 
-        /*public static User ToEntity(UserRequest dto)
+        public static User ToEntity(UserRequest dto)
         {
             return new User
             {
@@ -33,7 +33,7 @@ namespace Application.Models.Request
                 UserRegistrationDate = DateTime.Now,
                 UserDeletionDate = null
             };
-        }*/
+        }
 
         public static bool validateDto(UserRequest dto)
         {
