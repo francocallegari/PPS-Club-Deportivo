@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using static Domain.Enums.Enums;
 
 namespace Application.Models.Response
 {
@@ -9,7 +8,7 @@ namespace Application.Models.Response
         public string Name { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
-        public UserType UserType { get; set; }
+        public string UserType { get; set; }
         public DateTime UserRegistrationDate { get; set; }
         public DateTime? UserDeletionDate { get; set; }
 

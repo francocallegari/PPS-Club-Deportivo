@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using System.ComponentModel.DataAnnotations;
-using static Domain.Enums.Enums;
 
 namespace Application.Models.Request
 {
@@ -20,7 +19,7 @@ namespace Application.Models.Request
         public string UserName { get; set; }
 
         [Required]
-        public UserType UserType { get; set; }
+        public string UserType { get; set; }
 
         public static User ToEntity(UserRequest dto)
         {
