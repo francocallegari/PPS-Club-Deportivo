@@ -3,6 +3,11 @@
     justify-content: center;
     background-color: rgb(72, 26, 26);
     margin: 0;
+    height: 80px;
+    position: sticky; /* Hace que el navbar quede fijo */
+    top: 0; /* Se asegura que esté en la parte superior de la página */
+    z-index: 1000;  /*Asegura que el navbar quede encima de otros elementos */
+    width: 100%;
 }
 
 .Nav-Seccion {
@@ -11,6 +16,7 @@
     align-items: center;
     flex: 1 1 auto;
     color: antiquewhite;
+    height: 100%;
 }
 
 .Nav-Seccion:hover {
