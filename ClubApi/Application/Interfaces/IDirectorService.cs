@@ -16,6 +16,7 @@ namespace Application.Interfaces
         void UpdateDirector(int id, UserRequest directorRequest);
         void DeleteDirector(int id);
         void CreateDirector(UserRequest directorRequest);
+        void ApproveEvents(int directorId, List<int> eventIds);
 
     }
 }

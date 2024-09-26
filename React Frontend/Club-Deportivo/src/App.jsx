@@ -6,6 +6,10 @@ import Sports from "./components/sports/Sports";
 import ProfilePage from "./components/profilePage/ProfilePage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login/Login";
+import NewsGrid from "./components/newsGrid/NewsGrid";
+import NewsDetail from "./components/newsDetail/NewsDetail";
+import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -37,6 +41,30 @@ function App() {
       element: (
         <MainLayout>
           <Login />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/news",
+      element: (
+        <MainLayout>
+          <NewsGrid />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/noticia/:id", 
+      element: (
+        <MainLayout>
+          <NewsDetail />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/activities",
+      element: (
+        <MainLayout>
+          <ActivitiesGrid />
         </MainLayout>
       ),
     },

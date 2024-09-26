@@ -1,0 +1,43 @@
+.sports-container {
+  background-color: antiquewhite;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.sports-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 25px;
+  color: rgb(72, 26, 26);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.accordion-header {
+  font-size: 3rem;
+  font-weight: 800;
+  font-weight: bold;
+}
+
+.accordion-item {
+  margin-bottom: 20px;
+}
+
+.accordion-button {
+  font-weight: bold;
+}
+
+.accordion-button:hover {
+  color: midnightblue;
+}
+
+.sport-image {
+  max-width: 200%;
+  width: 1300px;
+  height: 400px;
+  margin-top: 10px;
+  display: block;
+  margin: 10px auto;
+  object-fit: cover;
+}

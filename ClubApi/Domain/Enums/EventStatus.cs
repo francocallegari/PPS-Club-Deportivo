@@ -8,7 +8,8 @@ namespace Domain.Enums
 {
     public enum EventStatus
     {
-        Available,
-        Unavaliable
+        Pending,    // evento pendiente 
+        Approved,   // aprobado
+        Rejected    // rechazado
     }
 }

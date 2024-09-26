@@ -1,8 +1,6 @@
-
 using Application.Interfaces;
-
 using Application.Services;
-
+using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
@@ -10,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using static Infrastructure.Services.AutenticacionService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,18 +71,21 @@ builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 builder.Services.AddScoped<IRepositoryEvent, RepositoryEvent>();
 builder.Services.AddScoped<IRepositorySport, RepositorySport>();
 builder.Services.AddScoped<IRepositoryNews, RepositoryNews>();
+//builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
+//builder.Services.AddScoped<IRepositoryBase<Sport>, RepositoryBase<Sport>>();
+//builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+
 
 
 #region services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDirectorService, DirectorService>();
+builder.Services.AddScoped<ISportsService, SportsService>();
 #endregion
 
 
-
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.Configure<AutenticacionServiceOptions>(
-    builder.Configuration.GetSection(AutenticacionServiceOptions.AutenticacionService));
+builder.Services.Configure<AutenticacionService.AutenticacionServiceOptions>(
+    builder.Configuration.GetSection(AutenticacionService.AutenticacionServiceOptions.AutenticacionService));
 builder.Services.AddScoped<IAuthenticationService, AutenticacionService>();
 
 var app = builder.Build();
