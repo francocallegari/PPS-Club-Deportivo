@@ -1,16 +1,19 @@
 ﻿using Application.Interfaces;
 using Application.Models.Request;
 using Application.Models.Response;
+using Domain.Entities;
 
 namespace Application.Services
 {
     public class MemberService : IMemberService
     {
         private readonly IUserService _userService;
+        private readonly IEventService _eventService;
 
-        public MemberService(IUserService userService)
+        public MemberService(IUserService userService, IEventService eventService)
         {
             _userService = userService;
+            _eventService = eventService;
         }
 
         public ICollection<UserResponse> GetAllMembers()
@@ -50,6 +53,32 @@ namespace Application.Services
                 throw new InvalidOperationException("El tipo de usuario debe ser socio.");
 
             _userService.CreateUser(memberRequest);
+        }
+
+        //Un usuario puede anotarse a un evento
+        public void SigUpEvent(int memberId, int eventId)
+        {
+            var response = _userService.GetUserById(memberId);
+            if (response == null || response.UserType != "Member")
+                throw new InvalidOperationException("No se encontró al miembro.");
+
+            var member = new Member
+            {
+                Id = response.Id,
+                Name = response.Name,
+                Email = response.Email,
+                UserType = response.UserType
+            };
+
+            var eventEntity = _eventService.GetEventById(eventId);
+            if (eventEntity == null)
+                throw new InvalidOperationException("No se encontró evento.");
+
+            if (eventEntity.Members.Any(m => m.Id == member.Id))
+                throw new InvalidOperationException("El miembro ya está inscrito en este evento.");
+
+            eventEntity.Members.Add(member);
+            _eventService.UpdateEvent(eventEntity);
         }
     }
 }
