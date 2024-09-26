@@ -1,0 +1,18 @@
+.news-title {
+  text-align: center; /* Centra el texto horizontalmente */
+  font-size: 3.5rem; /* Aumenta el tamaño de la fuente */
+  margin-top: 50px;
+  margin-bottom: 20px; /* Agrega margen debajo del título */
+  font-weight: bold;
+  color: rgb(72, 26, 26);
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 20px;
+  justify-items: center;
+  max-width: 1200px;
+  margin: auto;
+}
