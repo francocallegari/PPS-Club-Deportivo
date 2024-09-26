@@ -1,8 +1,8 @@
 .news-title {
-  text-align: center; /* Centra el texto horizontalmente */
-  font-size: 3.5rem; /* Aumenta el tamaño de la fuente */
+  text-align: center; 
+  font-size: 3.5rem;
   margin-top: 50px;
-  margin-bottom: 20px; /* Agrega margen debajo del título */
+  margin-bottom: 20px;
   font-weight: bold;
   color: rgb(72, 26, 26);
 }
