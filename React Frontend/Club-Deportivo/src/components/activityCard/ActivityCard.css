@@ -1,0 +1,36 @@
+ .activity-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    height: 300px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    width: 95%; 
+  }
+  
+  .btn-sign-up {
+    text-decoration: none;
+    background-color: #3d90e9;
+    color: white;
+    padding: 10px;
+    width: 150px; 
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1rem; 
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    border: none;
+    margin: 0 auto;
+  }
+  
+  .btn-sign-up:hover {
+    background-color: #71aef0;
+  }
+  
+  .btn-sign-up:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  
