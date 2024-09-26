@@ -49,5 +49,10 @@ namespace Application.Services
                 throw new KeyNotFoundException("No se encontró el evento.");
             _eventRepository.Delete(ev);
         }
+
+        public ICollection<Event> GetEventsByIds(List<int> eventIds)
+        {
+            return _eventRepository.GetAll().Where(e => eventIds.Contains(e.Id)).ToList();
+        }
     }
 }

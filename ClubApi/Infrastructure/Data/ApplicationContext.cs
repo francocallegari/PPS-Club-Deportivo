@@ -172,15 +172,6 @@ namespace Infrastructure.Data
                     UserName = "coach_mike",
                     SportId = 3
                 },
-                new Coach
-                {
-                    Id = 4,
-                    Name = "Bob Harris",
-                    Email = "bob.harris@club.com",
-                    Password = "password123",
-                    UserName = "coach_bob",
-                    SportId = 4
-                }
             };
         }
 
