@@ -20,5 +20,9 @@ namespace Domain.Entities
         public DateTime Date { get; set; }
         public EventStatus Status { get; set; }
         public List<Member> Members { get; set; }
+        public string CreatedBy { get; set; }
+        public string? ApprovedBy { get; set; }
+
+        
     }
 }
