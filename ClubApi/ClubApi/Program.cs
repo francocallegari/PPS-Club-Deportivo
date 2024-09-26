@@ -1,5 +1,6 @@
 using Application.Interfaces;
 using Application.Services;
+using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
@@ -70,16 +71,19 @@ builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 builder.Services.AddScoped<IRepositoryEvent, RepositoryEvent>();
 builder.Services.AddScoped<IRepositorySport, RepositorySport>();
 builder.Services.AddScoped<IRepositoryNews, RepositoryNews>();
+//builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
+//builder.Services.AddScoped<IRepositoryBase<Sport>, RepositoryBase<Sport>>();
+//builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+
 
 
 #region services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDirectorService, DirectorService>();
+builder.Services.AddScoped<ISportsService, SportsService>();
 #endregion
 
 
-
-builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 builder.Services.Configure<AutenticacionService.AutenticacionServiceOptions>(
     builder.Configuration.GetSection(AutenticacionService.AutenticacionServiceOptions.AutenticacionService));
 builder.Services.AddScoped<IAuthenticationService, AutenticacionService>();
