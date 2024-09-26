@@ -13,14 +13,12 @@ namespace Application.Models
         public int Id { get; set; }
         public float Price { get; set; }
         public DateTime ExpirationDate { get; set; }
-        public FeeStatus Status { get; set; }
         public static MembershipFeeDto Create(MembershipFee fee)
         {
             var dto = new MembershipFeeDto();
             dto.Id = fee.Id;
             dto.Price = fee.Price;
             dto.ExpirationDate = fee.ExpirationDate;
-            dto.Status = fee.Status;
 
             return dto;
 

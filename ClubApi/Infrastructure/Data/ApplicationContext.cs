@@ -16,6 +16,7 @@ namespace Infrastructure.Data
         public DbSet<News> News { get; set; }
         public DbSet<Sport> Sports { get; set; }
         public DbSet<SportsField> SportsFields { get; set; }
+        public DbSet<MembershipFeePayment> MembershipFeePayments { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
 
@@ -31,6 +32,10 @@ namespace Infrastructure.Data
 
             modelBuilder.Entity<Director>().HasData(CreateDirectorDataSeed());
 
+            modelBuilder.Entity<Sport>().HasData(CreateSportDataSeed());
+
+            modelBuilder.Entity<SportsField>().HasData(CreateSportsFieldDataSeed());
+
             modelBuilder.Entity<Sport>()
                 .HasMany(x => x.Members)
                 .WithMany(x => x.SportsAttended)
@@ -39,6 +44,103 @@ namespace Infrastructure.Data
             base.OnModelCreating(modelBuilder);
         }
 
+        private Sport[] CreateSportDataSeed()
+        {
+            return new Sport[]
+            {
+                new Sport
+                {
+                    Id = 1,
+                    Name = "Basquet",
+                    Capacity = 60
+                },
+                new Sport
+                {
+                    Id = 2,
+                    Name = "Futbol",
+                    Capacity = 100
+                },
+                new Sport
+                {
+                    Id = 3,
+                    Name = "Voley",
+                    Capacity = 60
+                },
+                new Sport
+                {
+                    Id = 4,
+                    Name = "Tenis",
+                    Capacity = 40
+                }
+            };
+        }
+
+        private SportsField[] CreateSportsFieldDataSeed()
+        {
+            return new SportsField[]
+            {
+                new SportsField
+                {
+                    Id = 1,
+                    Name = "Cancha de Basquet 1",
+                    SportId = 1,
+                },
+                new SportsField
+                {
+                    Id = 2,
+                    Name = "Cancha de Basquet 2",
+                    SportId = 1,
+                },
+                new SportsField
+                {
+                    Id = 3,
+                    Name = "Cancha de Tenis 1",
+                    SportId = 4,
+                },
+                new SportsField
+                {
+                    Id = 4,
+                    Name = "Cancha de Tenis 2",
+                    SportId = 4,
+                },
+                new SportsField
+                {
+                    Id = 5,
+                    Name = "Cancha de Tenis 3",
+                    SportId = 4,
+                },
+                new SportsField
+                {
+                    Id = 6,
+                    Name = "Cancha de Tenis 4",
+                    SportId = 4,
+                },
+                new SportsField
+                {
+                    Id = 7,
+                    Name = "Cancha de Futbol 1",
+                    SportId = 2,
+                },
+                new SportsField
+                {
+                    Id = 8,
+                    Name = "Cancha de Futbol 2",
+                    SportId = 2,
+                },
+                new SportsField
+                {
+                    Id = 9,
+                    Name = "Cancha de Voley 1",
+                    SportId = 3,
+                },
+                new SportsField
+                {
+                    Id = 10,
+                    Name = "Cancha de Voley 2",
+                    SportId = 3,
+                }
+            };
+        }
         private Coach[] CreateCoachDataSeed()
         {
             return new Coach[]
@@ -50,6 +152,7 @@ namespace Infrastructure.Data
                     Email = "john.smith@club.com",
                     Password = "password123",
                     UserName = "coach_john",
+                    SportId = 1
                 },
                 new Coach
                 {
@@ -58,6 +161,7 @@ namespace Infrastructure.Data
                     Email = "susan.green@club.com",
                     Password = "password123",
                     UserName = "coach_susan",
+                    SportId = 2
                 },
                 new Coach
                 {
@@ -66,6 +170,16 @@ namespace Infrastructure.Data
                     Email = "mike.johnson@club.com",
                     Password = "password123",
                     UserName = "coach_mike",
+                    SportId = 3
+                },
+                new Coach
+                {
+                    Id = 4,
+                    Name = "Bob Harris",
+                    Email = "bob.harris@club.com",
+                    Password = "password123",
+                    UserName = "coach_bob",
+                    SportId = 4
                 }
             };
         }
