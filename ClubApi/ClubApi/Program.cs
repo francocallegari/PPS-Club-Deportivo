@@ -1,8 +1,5 @@
-
 using Application.Interfaces;
-
 using Application.Services;
-
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
@@ -10,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using static Infrastructure.Services.AutenticacionService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,9 +79,9 @@ builder.Services.AddScoped<IDirectorService, DirectorService>();
 
 
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.Configure<AutenticacionServiceOptions>(
-    builder.Configuration.GetSection(AutenticacionServiceOptions.AutenticacionService));
+builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
+builder.Services.Configure<AutenticacionService.AutenticacionServiceOptions>(
+    builder.Configuration.GetSection(AutenticacionService.AutenticacionServiceOptions.AutenticacionService));
 builder.Services.AddScoped<IAuthenticationService, AutenticacionService>();
 
 var app = builder.Build();

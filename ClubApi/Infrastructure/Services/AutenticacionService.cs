@@ -13,10 +13,10 @@ namespace Infrastructure.Services
 {
     public class AutenticacionService : IAuthenticationService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IRepositoryUser _userRepository;
         private readonly AutenticacionServiceOptions _options;
 
-        public AutenticacionService(IUserRepository userRepository, IOptions<AutenticacionServiceOptions> options)
+        public AutenticacionService(IRepositoryUser userRepository, IOptions<AutenticacionServiceOptions> options)
         {
             _userRepository = userRepository;
             _options = options.Value;
@@ -27,7 +27,7 @@ namespace Infrastructure.Services
             if (string.IsNullOrEmpty(authenticationRequest.UserName) || string.IsNullOrEmpty(authenticationRequest.Password))
                 return null;
 
-            var user = _userRepository.GetUserByUserName(authenticationRequest.UserName);
+            var user = _userRepository.GetUserByName(authenticationRequest.UserName);
 
             if (user == null)
                 return null;

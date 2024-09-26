@@ -8,9 +8,9 @@ namespace Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IRepositoryUser _userRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IRepositoryUser userRepository)
         {
             _userRepository = userRepository;
         }
@@ -29,7 +29,7 @@ namespace Application.Services
 
         public User? GetUserByUserName(string userName)
         {
-            return _userRepository.GetUserByUserName(userName);
+            return _userRepository.GetUserByName(userName);
         }
 
         public UserResponse CreateUser(UserRequest dto)
@@ -42,7 +42,7 @@ namespace Application.Services
 
             var existingUser = _userRepository.GetByIdAsync(id).Result ?? throw new KeyNotFoundException("No se encontró el usuario");
 
-            if (_userRepository.GetUserByUserName(dto.UserName) != null)
+            if (_userRepository.GetUserByName(dto.UserName) != null)
                 throw new InvalidOperationException("El nombre de usuario ya está en uso.");
 
             existingUser.Name = dto.Name;
