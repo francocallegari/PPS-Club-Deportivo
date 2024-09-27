@@ -1,5 +1,4 @@
 import React from "react";
-import { Accordion } from "react-bootstrap";
 import "./Sports.css";
 
 const Sports = () => {
@@ -62,34 +61,20 @@ const Sports = () => {
 
   return (
     <div className="sports-container">
-      <h2 className="sports-title">Nuestros Deportes </h2>
-      <Accordion>
-        {sportsList.map((sport, index) => (
-          <Accordion.Item
-            eventKey={index.toString()}
-            key={sport.id}
-            className="accordion-item"
-          >
-            <Accordion.Header className="accordion-header">
-              {sport.name}
-            </Accordion.Header>
-            <Accordion.Body className="accordion-body">
-              <div className="sport-details">
-                <ul>
-                  {sport.description.map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </ul>
-                <img
-                  src={sport.image}
-                  alt={sport.name}
-                  className="sport-image"
-                />
-              </div>
-            </Accordion.Body>
-          </Accordion.Item>
+      <h2 className="sports-title">Nuestros Deportes</h2>
+      <div className="sports-grid">
+        {sportsList.map((sport) => (
+          <div key={sport.id} className="sport-card">
+            <img src={sport.image} alt={sport.name} className="sport-image" />
+            <h3 className="sport-name">{sport.name}</h3>
+            <ul className="sport-description">
+              {sport.description.map((item, idx) => (
+                <li key={idx}>{item}</li>
+              ))}
+            </ul>
+          </div>
         ))}
-      </Accordion>
+      </div>
     </div>
   );
 };
