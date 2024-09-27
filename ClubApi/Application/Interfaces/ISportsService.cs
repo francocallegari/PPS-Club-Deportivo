@@ -5,10 +5,11 @@ namespace Application.Interfaces
 {
     public interface ISportsService
     {
-        //ICollection<SportDto> GetAllSports();
+        ICollection<SportDto> GetAllSports();
         SportDto GetSportByName(string name);
         ICollection<Member> GetAllMembers();
-        //SportDto CreateSport(SportDto sport);
-        //void DeleteSport(int id);
+        SportDto CreateSport(SportDto sport);
+        void UpdateSport(int id, SportDto sport);
+        void DeleteSport(int id);
     }
 }
