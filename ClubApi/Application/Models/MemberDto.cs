@@ -1,11 +1,4 @@
 ﻿using Domain.Entities;
-using Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Models
 {
@@ -27,7 +20,6 @@ namespace Application.Models
             dto.SportsAttended = SportDto.CreateList(member.SportsAttended);
 
             return dto;
-
         }
 
         public static List<MemberDto> CreateList(List<Member> members)
@@ -40,5 +32,24 @@ namespace Application.Models
 
             return listDto;
         }
+
+        //public static Member CreateFromDto(MemberDto dto)
+        //{
+        //    return new Member
+        //    {
+        //        SportsAttended = CreateListFromDto(dto.SportsAttended),
+        //    };
+        //}
+
+        //public static List<Member> CreateListFromDto(List<MemberDto> memberDtos)
+        //{
+        //    List<Member> members = new List<Member>();
+        //    foreach (var dto in memberDtos)
+        //    {
+        //        members.Add(CreateFromDto(dto));
+        //    }
+
+        //    return members;
+        //}
     }
 }

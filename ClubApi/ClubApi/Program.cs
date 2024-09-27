@@ -71,11 +71,7 @@ builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 builder.Services.AddScoped<IRepositoryEvent, RepositoryEvent>();
 builder.Services.AddScoped<IRepositorySport, RepositorySport>();
 builder.Services.AddScoped<IRepositoryNews, RepositoryNews>();
-//builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
-//builder.Services.AddScoped<IRepositoryBase<Sport>, RepositoryBase<Sport>>();
-//builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
-
-
+builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
 
 #region services
 builder.Services.AddScoped<IUserService, UserService>();
