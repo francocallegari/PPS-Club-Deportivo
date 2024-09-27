@@ -7,10 +7,11 @@ import cancha_voley from '../../images/cancha_voley.jpeg'
 import cancha_futbol from '../../images/cancha_futbol.jpeg'
 import gente from '../../images/gente_futbol.jpeg'
 import cancha_voley2 from '../../images/cancha_voley2.jpeg'
+import './Carousel.css'; 
 
 const CarouselImages = () => {
     return (
-        <Carousel>
+        <Carousel controls={false} indicators={true}>
             <Carousel.Item interval={4000}>
                 <Image 
                 src={cancha_tenis}

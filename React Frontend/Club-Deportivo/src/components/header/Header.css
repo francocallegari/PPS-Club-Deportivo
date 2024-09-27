@@ -3,10 +3,10 @@
     justify-content: center;
     background-color: rgb(72, 26, 26);
     margin: 0;
-    height: 80px;
-    position: sticky; /* Hace que el navbar quede fijo */
-    top: 0; /* Se asegura que esté en la parte superior de la página */
-    z-index: 1000;  /*Asegura que el navbar quede encima de otros elementos */
+    height: 90px;
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
     width: 100%;
 }
 
@@ -14,13 +14,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 1 1 auto;
+    flex: 0 0 auto; 
     color: antiquewhite;
+    font-family: inherit;
+    font-size: 15px;
     height: 100%;
+    padding: 20px 45px; 
+    margin: 0 15px; 
+    border-radius: 5px; 
 }
+
 
 .Nav-Seccion:hover {
     background-color: rgb(65, 13, 13);
     cursor: pointer;
     color: rgb(230, 177, 111);
+    
 }
