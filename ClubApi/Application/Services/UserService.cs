@@ -9,14 +9,23 @@ namespace Application.Services
     public class UserService : IUserService
     {
         private readonly IRepositoryUser _userRepository;
+        private readonly IEmailService _emailService;
 
-        public UserService(IRepositoryUser userRepository)
+        public UserService(IRepositoryUser userRepository, IEmailService emailService)
         {
             _userRepository = userRepository;
+            _emailService = emailService;
         }
 
         public ICollection<UserResponse> GetAllUsers()
         {
+            //Test Mail Send
+            /*
+            string subject = "Bienvenido a nuestro sistema";
+            string body = "<h1>Bienvenido</h1><p>Gracias por registrarte en nuestro sistema.</p>";
+            _emailService.SendEmail("xxxxxx@gmail.com", subject, body);
+            */
+
             var users = UserResponse.ToDtoList(_userRepository.ListAsync().Result ?? throw new KeyNotFoundException("No se encontraron usuarios"));
             return users;
         }

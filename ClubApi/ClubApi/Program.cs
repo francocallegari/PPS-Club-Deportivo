@@ -77,8 +77,9 @@ builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDirectorService, DirectorService>();
 builder.Services.AddScoped<ISportsService, SportsService>();
-#endregion
 
+builder.Services.AddScoped<IEmailService, EmailService>();
+#endregion
 
 builder.Services.Configure<AutenticacionService.AutenticacionServiceOptions>(
     builder.Configuration.GetSection(AutenticacionService.AutenticacionServiceOptions.AutenticacionService));
