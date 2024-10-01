@@ -9,6 +9,7 @@ import Login from "./components/login/Login";
 import NewsGrid from "./components/newsGrid/NewsGrid";
 import NewsDetail from "./components/newsDetail/NewsDetail";
 import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
+import PaymentMethod from "./components/paymentMethod/PaymentMethod";
 
 function App() {
   const router = createBrowserRouter([
@@ -65,6 +66,14 @@ function App() {
       element: (
         <MainLayout>
           <ActivitiesGrid />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/payment",
+      element: (
+        <MainLayout>
+          <PaymentMethod />
         </MainLayout>
       ),
     },
