@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using MercadoPago.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +66,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:ClubDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
 
+// Configuración de Mercado Pago
+MercadoPagoConfig.AccessToken = builder.Configuration["MercadoPago:AccessToken"];
 
 //Repository
 builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
@@ -88,6 +91,7 @@ builder.Services.AddScoped<ITSessionService, TSessionService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<MercadoPagoService>();
 #endregion
 
 builder.Services.Configure<AutenticacionService.AutenticacionServiceOptions>(
