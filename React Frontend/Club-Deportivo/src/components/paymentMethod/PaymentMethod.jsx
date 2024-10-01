@@ -7,7 +7,7 @@ const PaymentMethod = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  initMercadoPago("YOUR_PUBLIC_KEY", {
+  initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY, { 
     locale: "es-AR",
   });
 
@@ -16,29 +16,30 @@ const PaymentMethod = () => {
     setError(null);
     try {
       const response = await axios.post(
-        "http://localhost:3000/create_preference",
+        "https://localhost:7081/Payment/create-preference", // Cambiar el guion bajo por un guion
         {
-          title: "Pago membresia",
+          title: "Pago membresía",
           quantity: 1,
           price: 100,
+          currencyId: "ARS", // Agregar currencyId si es necesario
+          successUrl: "http://google.com/",
+          failureUrl: "http://google.com/",
+          pendingUrl: "http://google.com/",
         }
       );
 
-      const { id } = response.data;
-      setLoading(false);
-      return id;
+      const { id } = response.data; // Obtén el ID de la respuesta
+      setPreferenceId(id); // Almacena el ID de la preferencia
     } catch (error) {
-      setLoading(false);
       setError("Error al crear la preferencia");
-      console.log(error);
+      console.error(error);
+    } finally {
+      setLoading(false); // Asegúrate de detener el loading en cualquier caso
     }
   };
 
   const handlePay = async () => {
-    const id = await createPreference();
-    if (id) {
-      setPreferenceId(id);
-    }
+    await createPreference(); // Llama a la función para crear la preferencia
   };
 
   return (
@@ -53,7 +54,7 @@ const PaymentMethod = () => {
           {error && <p className="error">{error}</p>}
           {preferenceId && (
             <Wallet
-              initialization={{ preferenceId: preferenceId }}
+              initialization={{ preferenceId: preferenceId }} // Inicializa el Wallet con el ID de la preferencia
               customization={{ texts: { valueProp: "smart_option" } }}
             />
           )}

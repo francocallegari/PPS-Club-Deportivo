@@ -16,7 +16,7 @@ namespace ClubApi.Controllers
             _mercadoPagoService = mercadoPagoService;
         }
 
-        [HttpPost("create_preference")]
+        [HttpPost("create-preference")]
         public async Task<IActionResult> CreatePreference([FromBody] PaymentRequestDto request)
         {
             // Crear preferencia a través del servicio de MercadoPago

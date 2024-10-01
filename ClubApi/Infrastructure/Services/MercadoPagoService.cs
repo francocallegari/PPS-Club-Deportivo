@@ -2,41 +2,52 @@
 using MercadoPago.Client.Preference;
 using MercadoPago.Config;
 using MercadoPago.Resource.Preference;
+using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 public class MercadoPagoService
 {
-    public MercadoPagoService()
+    public MercadoPagoService(IConfiguration configuration)
     {
-        MercadoPagoConfig.AccessToken = "YOUR_ACCESS_TOKEN";  // Configura tu token de acceso aquí
+        MercadoPagoConfig.AccessToken = configuration["MercadoPago:AccessToken"];
+
     }
 
     public async Task<Preference> CrearPreferenciaAsync(PaymentRequestDto request)
     {
-        var client = new PreferenceClient();
-
-        var preferenceRequest = new PreferenceRequest
+        try
         {
-            Items = new List<PreferenceItemRequest>
-    {
-        new PreferenceItemRequest
-        {
-            Title = request.Title,
-            Quantity = request.Quantity,
-            CurrencyId = request.CurrencyId ?? "ARS", // Valor por defecto
-            UnitPrice = request.Price,
-        }
-    },
-            BackUrls = new PreferenceBackUrlsRequest
+            var client = new PreferenceClient();
+            var preferenceRequest = new PreferenceRequest
             {
-                Success = request.SuccessUrl ?? "https://www.tu-sitio.com/success", // Valor por defecto si no se envía
-                Failure = request.FailureUrl ?? "https://www.tu-sitio.com/failure",
-                Pending = request.PendingUrl ?? "https://www.tu-sitio.com/pending",
+                Items = new List<PreferenceItemRequest>
+            {
+                new PreferenceItemRequest
+                {
+                    Title = request.Title,
+                    Quantity = request.Quantity,
+                    CurrencyId = request.CurrencyId ?? "ARS",
+                    UnitPrice = request.Price,
+                }
             },
-            AutoReturn = "approved"
-        };
+                BackUrls = new PreferenceBackUrlsRequest
+                {
+                    Success = request.SuccessUrl ?? "http://google.com/",
+                    Failure = request.FailureUrl ?? "http://google.com/",
+                    Pending = request.PendingUrl ?? "http://google.com/",
+                },
+                AutoReturn = "approved"
+            };
 
-        Preference preference = await client.CreateAsync(preferenceRequest);
-        return preference;
+            Preference preference = await client.CreateAsync(preferenceRequest);
+            return preference;
+        }
+        catch (Exception ex)
+        {
+            // Manejo de errores (puedes loguear el error o devolver un mensaje de error)
+            Console.WriteLine($"Error creando la preferencia: {ex.Message}");
+            return null;
+        }
     }
+
 }
