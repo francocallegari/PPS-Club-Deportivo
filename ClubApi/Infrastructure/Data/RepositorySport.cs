@@ -1,11 +1,5 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
@@ -22,9 +16,7 @@ namespace Infrastructure.Data
             var sport = _context.Sports.FirstOrDefault(s => s.Name == name);
 
             if (sport == null)
-            {
                 throw new Exception("No se encontraron deportes con ese nombre.");
-            }
 
             return sport;
         }
@@ -40,7 +32,6 @@ namespace Infrastructure.Data
             {
                 throw new Exception("No se encontraron miembros.");
             }
-
             return members;
         }
     }

@@ -87,8 +87,8 @@ builder.Services.AddScoped<ISportsService, SportsService>();
 builder.Services.AddScoped<ITSessionService, TSessionService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 #endregion
-
 
 builder.Services.Configure<AutenticacionService.AutenticacionServiceOptions>(
     builder.Configuration.GetSection(AutenticacionService.AutenticacionServiceOptions.AutenticacionService));

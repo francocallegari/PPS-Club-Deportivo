@@ -1,12 +1,75 @@
-.div-footer {
-    display: flex;
-    justify-content: center;
-    background-color: rgb(37, 34, 34);
-    align-items: center;
-    color: aliceblue;
-    padding: 20px 20px;
+.footer {
+  display: flex;
+  position: relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 2em 0;
+  background-color: #3d3d3d;
+  align-items: flex-start;
+  color: white;
+  font-size: 0.9rem;
+  font-family: "Raleway", sans-serif;
+  font-weight: bold;
+  line-height: 250%;
+  justify-content: space-between;
+  margin-top: auto;
+  text-align: center;
 }
 
-.footer-child {
-    margin-left: 100px;
+.footer-section {
+  padding: 0 100px;
+  margin: 0 10px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.club-logo {
+  width: 150px;
+  height: auto;
+  margin-right: 40px;
+}
+
+.contact-info h5 {
+  margin: 5px 15;
+  text-decoration: underline;
+}
+
+.center {
+  flex: 1;
+  text-align: center;
+}
+
+.center ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.center li {
+  margin: 5px 0;
+}
+
+.right {
+  text-align: right;
+}
+
+.right div {
+  margin: 10px 0;
+}
+
+.bi {
+  margin-right: 5px;
+}
+
+.footer-socios h5 {
+  margin: 3px 10;
+  text-decoration: underline;
+}
+
+.footer-section h5 {
+  margin: 3px 10;
+  text-decoration: underline;
 }
