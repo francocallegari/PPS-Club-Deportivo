@@ -7,7 +7,6 @@ namespace Application.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int Capacity { get; set; }
-        public List<MemberDto> Members { get; set; }
 
         public static SportDto Create(Sport sport)
         {
@@ -15,7 +14,6 @@ namespace Application.Models
             dto.Id = sport.Id;
             dto.Name = sport.Name;
             dto.Capacity = sport.Capacity;
-            dto.Members = MemberDto.CreateList(sport.Members);
 
             return dto;
         }

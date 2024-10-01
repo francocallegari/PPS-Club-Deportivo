@@ -26,9 +26,9 @@ namespace Application.Services
             return SportDto.Create(_sportRepository.GetSportByName(name));
         }
 
-        public ICollection<Member> GetAllMembers()
+        public List<MemberDto> GetAllMembers(int sportId)
         {
-            return _sportRepository.GetAllMembers();
+            return MemberDto.CreateList(_sportRepository.GetAllMembers(sportId));
         }
 
         public SportDto CreateSport(SportDto sport)

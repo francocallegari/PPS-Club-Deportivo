@@ -71,13 +71,22 @@ builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 builder.Services.AddScoped<IRepositoryEvent, RepositoryEvent>();
 builder.Services.AddScoped<IRepositorySport, RepositorySport>();
 builder.Services.AddScoped<IRepositoryNews, RepositoryNews>();
-builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
+builder.Services.AddScoped<IRepositoryTrainingSession, RepositoryTrainingSession>();
+builder.Services.AddScoped<IRepositoryCoach, RepositoryCoach>();
+builder.Services.AddScoped<IRepositoryBase<SportsField>, EfRepository<SportsField>>();
+//builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
+//builder.Services.AddScoped<IRepositoryBase<Sport>, RepositoryBase<Sport>>();
+//builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+
+
 
 #region services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDirectorService, DirectorService>();
 builder.Services.AddScoped<ISportsService, SportsService>();
-
+builder.Services.AddScoped<ITSessionService, TSessionService>();
+builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 #endregion
 
