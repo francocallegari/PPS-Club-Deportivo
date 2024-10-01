@@ -39,7 +39,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Sport>()
                 .HasMany(x => x.Members)
                 .WithMany(x => x.SportsAttended)
-                .UsingEntity(j => j.ToTable("MembersSportsAttended"));
+                .UsingEntity(j => j.ToTable("MembersSportsAttended").HasData(CreateMembersSportsAttendedDataSeed()));
 
             base.OnModelCreating(modelBuilder);
         }
@@ -288,6 +288,32 @@ namespace Infrastructure.Data
                     Email = "anabellarustici@gmail.com",
                     Password = "password123",
                     UserName = "ana_rustici",
+                }
+            };
+        }
+        private object[] CreateMembersSportsAttendedDataSeed()
+        {
+            return new object[]
+            {
+                new
+                {
+                    MembersId = 4,
+                    SportsAttendedId = 1,
+                },
+                new
+                {
+                    MembersId = 5,
+                    SportsAttendedId = 1,
+                },
+                new
+                {
+                    MembersId = 6,
+                    SportsAttendedId = 1,
+                },
+                new
+                {
+                    MembersId = 6,
+                    SportsAttendedId = 2,
                 }
             };
         }

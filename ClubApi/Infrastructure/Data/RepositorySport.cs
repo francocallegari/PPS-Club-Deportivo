@@ -29,16 +29,19 @@ namespace Infrastructure.Data
             return sport;
         }
 
-        public ICollection<Member> GetAllMembers()
+        public List<Member> GetAllMembers(int sportId)
         {
-            var member = _context.Members.ToList();
+            var members = _context.Members
+                .Include(m => m.SportsAttended)
+                .Where(m => m.SportsAttended.Any(s => s.Id == sportId))
+                .ToList();
 
-            if (member.Count == 0)
+            if (members.Count == 0)
             {
                 throw new Exception("No se encontraron miembros.");
             }
 
-            return member;
+            return members;
         }
     }
 }

@@ -48,12 +48,12 @@ namespace ClubApi.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult<ICollection<Member>> GetAllMembers()
+        [HttpGet("Members/{id}")]
+        public ActionResult<List<MemberDto>> GetAllMembers([FromRoute] int id)
         {
             try
             {
-                return Ok(_sportsService.GetAllMembers());
+                return Ok(_sportsService.GetAllMembers(id));
             }
             catch (Exception ex)
             {

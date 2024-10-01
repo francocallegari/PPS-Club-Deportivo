@@ -14,7 +14,7 @@ namespace Application.Models
         public TimeSpan Duration { get; set; }
         public SportsFieldDto Field { get; set; }
         public CoachDto Coach { get; set; }
-        public SportDto Sport { get; set; }
+        //public SportDto Sport { get; set; }
 
         public static TrainingSessionDto Create(TrainingSession session)
         {
@@ -24,7 +24,7 @@ namespace Application.Models
             dto.Duration = session.Duration;
             dto.Field = SportsFieldDto.Create(session.Field);
             dto.Coach = CoachDto.Create(session.Coach);
-            dto.Sport = SportDto.Create(session.Sport);
+            //dto.Sport = SportDto.Create(session.Sport);
 
             return dto;
 

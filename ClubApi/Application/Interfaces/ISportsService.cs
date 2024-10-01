@@ -7,7 +7,7 @@ namespace Application.Interfaces
     {
         //ICollection<SportDto> GetAllSports();
         SportDto GetSportByName(string name);
-        ICollection<Member> GetAllMembers();
+        List<MemberDto> GetAllMembers(int sportId);
         //SportDto CreateSport(SportDto sport);
         //void DeleteSport(int id);
     }

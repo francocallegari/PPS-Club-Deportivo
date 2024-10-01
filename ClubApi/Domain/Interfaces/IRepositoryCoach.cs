@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface IRepositorySport : IRepositoryBase<Sport>
+    public interface IRepositoryCoach : IRepositoryBase<Coach>
     {
-        Sport GetSportByName(string name);
-        List<Member> GetAllMembers(int sportId);
+        Coach GetCoachById(int id);
     }
 }
