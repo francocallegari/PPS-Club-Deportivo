@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Models;
 using Domain.Entities;
 using Domain.Interfaces;
 using System;
@@ -37,9 +38,22 @@ namespace Application.Services
             return _repositoryNews.Add(news);
         }
 
-        public void UpDateNews(News upDateNews) 
-        { 
-            _repositoryNews.Update(upDateNews);
+        public void UpDateNews(int id, NewsDto news) 
+        {
+            var existingNews = _repositoryNews.GetById(id);
+            if (existingNews == null)
+                throw new KeyNotFoundException("No se encontró la noticia con ese ID.");
+
+            var newsWithSameTitle = _repositoryNews.GetNewsByTitle(news.Title).FirstOrDefault(n => n.Id != id);
+            if (newsWithSameTitle != null)
+                throw new InvalidOperationException("La noticia con el mismo título ya existe.");
+
+            existingNews.Title = news.Title;
+            existingNews.Description = news.Description;
+            existingNews.ImageUrl = news.ImageUrl;
+            existingNews.PublicationDate = news.PublicationDate;
+
+            _repositoryNews.Update(existingNews);
         }
 
         public void DeleteNews(int id)
@@ -48,6 +62,12 @@ namespace Application.Services
             if(news == null)
                 throw new KeyNotFoundException("No se encontro la noticia con ese ID.");
             _repositoryNews.Delete(news);
+        }
+
+        public News GetNewsByTitle(string title)
+        {
+            var newsList = _repositoryNews.GetNewsByTitle(title);
+            return newsList.FirstOrDefault();
         }
     }
 }

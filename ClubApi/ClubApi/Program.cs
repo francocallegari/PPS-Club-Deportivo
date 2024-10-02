@@ -93,6 +93,7 @@ builder.Services.AddScoped<IMemberService, MemberService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<MercadoPagoService>();
+builder.Services.AddScoped<INewsService, NewsService>();
 #endregion
 
 builder.Services.Configure<AutenticacionService.AutenticacionServiceOptions>(
