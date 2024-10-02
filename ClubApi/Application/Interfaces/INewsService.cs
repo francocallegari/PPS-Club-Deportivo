@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Models;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace Application.Interfaces
         ICollection<News> GetAllNews();
         News GetNewsById(int id);
         News CreateNews(News news);
-        void UpDateNews(News upDateNews);
+        void UpDateNews(int id, NewsDto news);
         void DeleteNews(int id);
+        News GetNewsByTitle(string title);
     }
 }

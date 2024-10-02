@@ -30,14 +30,9 @@ namespace Infrastructure.Data
 
         public ICollection<News> GetNewsByTitle(string title)
         {
-            var newByTitle = _context.News.Where(n => n.Title.Contains(title)).ToList();
-
-            if(newByTitle.Count == 0)
-            {
-                throw new Exception("No se encontraron noticias con el título proporcionado.");
-            }
-
-            return newByTitle;
+            var newsByTitle = _context.News.Where(n => n.Title.Contains(title)).ToList();
+            
+            return newsByTitle;
         }
     }
 }
