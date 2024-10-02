@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces;
+using Application.Models;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 
@@ -8,8 +10,9 @@ namespace Infrastructure.Services
     {
         private readonly SmtpClient _smtpClient;
         private readonly string _fromEmail;
+        private readonly EmailTemplateSettings _emailTemplateSettings;
 
-        public EmailService()
+        public EmailService(IOptions<EmailTemplateSettings> emailTemplateSettings)
         {
             _smtpClient = new SmtpClient("smtp.gmail.com", 587)
             {
@@ -18,6 +21,15 @@ namespace Infrastructure.Services
             };
             _fromEmail = "allstarsclubofficial@gmail.com";
             _smtpClient.UseDefaultCredentials = false;
+            _emailTemplateSettings = emailTemplateSettings.Value;
+        }
+
+        public string GetTemplateByName(string template)
+        {
+            if (_emailTemplateSettings.Templates.TryGetValue(template, out var templateBody))
+                return templateBody;
+
+            return "Template no encontrado";
         }
 
         public void SendEmail(string toEmail, string subject, string body)
