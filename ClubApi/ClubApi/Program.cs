@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using MercadoPago.Config;
+using Application.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,9 @@ builder.Configuration["ConnectionStrings:ClubDBConnectionString"], b => b.Migrat
 // Configuración de Mercado Pago
 MercadoPagoConfig.AccessToken = builder.Configuration["MercadoPago:AccessToken"];
 
+// Configuración de los templates para envio de mails
+builder.Services.Configure<EmailTemplateSettings>(builder.Configuration.GetSection("EmailTemplates"));
+
 //Repository
 builder.Services.AddScoped<IRepositoryUser, RepositoryUser>();
 builder.Services.AddScoped<IRepositoryEvent, RepositoryEvent>();
@@ -77,10 +81,7 @@ builder.Services.AddScoped<IRepositoryNews, RepositoryNews>();
 builder.Services.AddScoped<IRepositoryTrainingSession, RepositoryTrainingSession>();
 builder.Services.AddScoped<IRepositoryCoach, RepositoryCoach>();
 builder.Services.AddScoped<IRepositoryBase<SportsField>, EfRepository<SportsField>>();
-//builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
-//builder.Services.AddScoped<IRepositoryBase<Sport>, RepositoryBase<Sport>>();
-//builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
-
+builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
 
 
 #region services
