@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Models;
 using Application.Models.Request;
 using Application.Models.Response;
 using Domain.Entities;
@@ -91,7 +92,20 @@ namespace Application.Services
             foreach (var ev in eventsToApprove)
             {
                 ev.Status = EventStatus.Approved;
-                ev.ApprovedBy = director.UserName;  
+                ev.ApprovedBy = director.UserName;
+
+                /*var updatedEventDto = new EventDto
+                {
+                    Id = ev.Id,
+                    Name = ev.Name,
+                    Description = ev.Description,
+                    Date = ev.Date,
+                    Status = ev.Status,
+                    //ApprovedBy = ev.ApprovedBy,
+                    //Members = ev.Members,
+                };*/
+
+                //_eventService.UpdateEvent(ev.Id, updatedEventDto);
                 _eventService.UpdateEvent(ev);
             }
         }

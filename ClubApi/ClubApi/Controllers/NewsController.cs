@@ -9,7 +9,7 @@ namespace ClubApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NewsController : Controller
+    public class NewsController : ControllerBase
     {
         private readonly INewsService _newsService;
 
