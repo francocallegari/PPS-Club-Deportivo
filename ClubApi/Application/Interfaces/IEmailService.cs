@@ -1,8 +1,9 @@
-﻿namespace Application.Interfaces
+﻿using Application.Models.Response;
+
+namespace Application.Interfaces
 {
     public interface IEmailService
     {
-        string GetTemplateByName(string template);
-        void SendEmail(string toEmail, string subject, string body);
+        void SendWelcomeEmail(UserResponse user);
     }
 }

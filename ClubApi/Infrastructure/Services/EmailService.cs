@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models;
+using Application.Models.Response;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
@@ -24,7 +25,16 @@ namespace Infrastructure.Services
             _emailTemplateSettings = emailTemplateSettings.Value;
         }
 
-        public string GetTemplateByName(string template)
+        public void SendWelcomeEmail(UserResponse user)
+        {
+            string subject = "Bienvenido a All Stars Club";
+            string template = GetTemplateByName("WelcomeEmail");
+            string emailBody = String.Format(template, user.Name, user.UserRegistrationDate);
+
+            SendEmail(user.Email, subject, emailBody);
+        }
+
+        private string GetTemplateByName(string template)
         {
             if (_emailTemplateSettings.Templates.TryGetValue(template, out var templateBody))
                 return templateBody;
@@ -32,7 +42,7 @@ namespace Infrastructure.Services
             return "Template no encontrado";
         }
 
-        public void SendEmail(string toEmail, string subject, string body)
+        private void SendEmail(string toEmail, string subject, string body)
         {
             var mailMessage = new MailMessage(_fromEmail, toEmail, subject, body)
             {

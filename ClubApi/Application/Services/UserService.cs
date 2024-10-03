@@ -49,7 +49,12 @@ namespace Application.Services
 
         public UserResponse CreateUser(UserRequest dto)
         {
-            return UserResponse.ToDto(_userRepository.AddAsync(UserRequest.ToEntity(dto)).Result);
+            var user=UserResponse.ToDto(_userRepository.AddAsync(UserRequest.ToEntity(dto)).Result);
+
+            if (user != null)
+                _emailService.SendWelcomeEmail(user);
+
+            return user;
         }
 
         public void UpdateUser(int id, UserRequest dto)
