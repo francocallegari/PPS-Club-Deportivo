@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Application.Models;
 
 namespace Application.Services
 {
@@ -25,10 +26,19 @@ namespace Application.Services
 
         public Event GetEventById(int id)
         {
-            var ev = _eventRepository.GetById(id);
-            if (ev == null)
+            var eventId = _eventRepository.GetById(id);
+            if (eventId == null)
                 throw new KeyNotFoundException("No se encontró el evento.");
-            return ev;
+            return eventId;
+        }
+
+        public EventDto GetEventByName(string name)
+        {
+            var eventEntity = _eventRepository.GetEventByName(name);
+            if (eventEntity == null)
+                return null;
+
+            return EventDto.Create(eventEntity);
         }
 
         public Event CreateEvent(Event newEvent)
@@ -37,17 +47,31 @@ namespace Application.Services
             return _eventRepository.Add(newEvent);
         }
 
-        public void UpdateEvent(Event updatedEvent)
+        public void UpdateEvent(int id, EventDto updatedEvent)
         {
-            _eventRepository.Update(updatedEvent);
+            var existingEvent = _eventRepository.GetById(id);
+            if (existingEvent == null)
+                throw new KeyNotFoundException("No se encontro evento con ese ID.");
+
+            var eventWithSameName = _eventRepository.GetEventByName(updatedEvent.Name);
+            if(eventWithSameName != null)
+                throw new InvalidOperationException("El evento ya existe con el mismo nombre.");
+
+            existingEvent.Name = updatedEvent.Name;
+            existingEvent.Description = updatedEvent.Description;
+            existingEvent.Date = updatedEvent.Date;
+            existingEvent.Capacity = updatedEvent.Capacity;
+            existingEvent.Status = updatedEvent.Status;
+
+            _eventRepository.Update(existingEvent);
         }
 
         public void DeleteEvent(int id)
         {
-            var ev = _eventRepository.GetById(id);
-            if (ev == null)
+            var eventId = _eventRepository.GetById(id);
+            if (eventId == null)
                 throw new KeyNotFoundException("No se encontró el evento.");
-            _eventRepository.Delete(ev);
+            _eventRepository.Delete(eventId);
         }
 
         public ICollection<Event> GetEventsByIds(List<int> eventIds)

@@ -40,5 +40,12 @@ namespace Infrastructure.Data
 
             return eventsOnDate;
         }
+
+        public Event GetEventByName(string name)
+        {
+            var events = _context.Events.FirstOrDefault(e => e.Name.ToLower() == name.ToLower());
+
+            return events;
+        }
     }
 }
