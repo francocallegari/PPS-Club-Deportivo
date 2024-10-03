@@ -1,7 +1,9 @@
 ﻿using Application.Interfaces;
 using Application.Models.Request;
 using Application.Models.Response;
+using Domain.Entities;
 using Domain.Enums;
+using Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +17,15 @@ namespace Application.Services
     {
         private readonly IUserService _userService;
         private readonly IEventService _eventService;
+        private readonly IRepositoryCoach _repositoryCoach;
+        private readonly IRepositorySport _repositorySport; 
 
-        public DirectorService(IUserService userService)
+        public DirectorService(IUserService userService, IRepositoryCoach repositoryCoach, IRepositorySport repositorySport)
         {
             _userService = userService;
+            _repositoryCoach = repositoryCoach;
+            _repositorySport = repositorySport;
+            
         }
 
         public ICollection<UserResponse> GetAllDirectors()
@@ -87,6 +94,21 @@ namespace Application.Services
                 ev.ApprovedBy = director.UserName;  
                 _eventService.UpdateEvent(ev);
             }
+        }
+
+        public void AssignTeacherToSport(Coach coachId, Sport sportId)
+        {
+            var coach = _repositoryCoach.GetById(coachId);
+            if (coach == null)
+                throw new InvalidOperationException("No se encontró el coach con ese ID");
+
+            var sport = _repositorySport.GetById(sportId);  
+            if (sport == null)
+                throw new InvalidOperationException("No se encontró el deporte con ese ID");
+
+            coach.SportId = sport.Id;
+            coach.SportAssigned = sport;
+            _repositoryCoach.Update(coach);
         }
     }
 }
