@@ -17,6 +17,6 @@ namespace Application.Interfaces
         void DeleteDirector(int id);
         void CreateDirector(UserRequest directorRequest);
         void ApproveEvents(int directorId, List<int> eventIds);
-
+        void AssignTeacherToSport(Coach coachId, Sport sportId);
     }
 }
