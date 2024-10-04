@@ -1,0 +1,73 @@
+
+
+
+.calendar-title {
+    text-align: center; 
+    font-size: 3.5rem;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: rgb(72, 26, 26);
+}
+
+.calendar-container {
+    justify-items: center;
+    max-width: 1500px; /* Reduce el tamaño del calendario */
+    margin: auto;
+    transform: scale(0.9); /* Ajusta la escala para hacerlo más pequeño */
+  }
+
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.modal-description {
+  margin-bottom: 1rem;
+}
+
+.btn-signup {
+  margin-left: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: white;
+  background-color: #38a169;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.btn-signup:hover {
+  background-color: #2f855a;
+}
+
+.btn-close {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: white;
+  background-color: #f6ad55;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.btn-close:hover {
+  background-color: #dd6b20;
+}

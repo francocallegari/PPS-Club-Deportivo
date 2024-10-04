@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login/Login";
 import NewsGrid from "./components/newsGrid/NewsGrid";
 import NewsDetail from "./components/newsDetail/NewsDetail";
-import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
+import CalendarEvents from "./components/calendarEvents/CalendarEvents";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
 
 function App() {
@@ -62,10 +62,10 @@ function App() {
       ),
     },
     {
-      path: "/activities",
+      path: "/calendar",
       element: (
         <MainLayout>
-          <ActivitiesGrid />
+          <CalendarEvents />
         </MainLayout>
       ),
     },
