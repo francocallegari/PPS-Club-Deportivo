@@ -9,18 +9,28 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    public class RepositoryEvent : RepositoryBase<Event>, IRepositoryEvent
+    public class RepositoryEvent : EfRepository<Event>, IRepositoryEvent
     {
-        private readonly ApplicationContext _context;
         public RepositoryEvent(ApplicationContext context) : base(context)
-        {
-            _context = context;
-        }
+        { }
 
-        public ICollection<Member> GetAllMembers()
+        public List<Event> GetAllEvents()
         {
-            var listMembers = _context.Events.Include(e => e.Members).SelectMany(e => e.Members).ToList(); //el selectMany extrae todos los miembros de los eventos
-            
+            return _context.Events.Include(e => e.Members).ToList();
+        }
+        public Event GetEventById(int id)
+        {
+            return _context.Events.Include(e => e.Members).FirstOrDefault(e => e.Id == id);
+        }
+        public List<Member> GetAllMembers(int eventId)
+        {
+            var listMembers = _context.Events
+                .Include(e => e.Members)
+                .Where(e => e.Id == eventId)
+                .Select(e => e.Members)
+                .FirstOrDefault()        
+                ?.ToList();
+
             if (listMembers.Count == 0)
             {
                 throw new Exception("No se encontraron miembros");
@@ -39,6 +49,12 @@ namespace Infrastructure.Data
             }
 
             return eventsOnDate;
+        }
+        public Event GetEventByName(string name)
+        {
+            var events = _context.Events.FirstOrDefault(e => e.Name.ToLower() == name.ToLower());
+
+            return events;
         }
     }
 }

@@ -16,7 +16,5 @@ namespace Application.Interfaces
         void UpDateAdmin(int id, UserRequest adminRequest);
         void DeleteAdmin(int id);
         void CreateAdmin(UserRequest adminRequest);
-        void PostNews(int idAdmin, NewsDto newsDto);
-        void PostEvent(int idAdmin, EventDto eventDto);
     }
 }

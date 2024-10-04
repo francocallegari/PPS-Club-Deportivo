@@ -63,7 +63,9 @@ namespace Application.Services
             _userService.CreateUser(directorRequest);
         }
 
-        public void ApproveEvents(int directorId, List<int> eventIds)
+        // Iria en el Event Service
+
+        /*public void ApproveEvents(int directorId, List<int> eventIds)
         {
             var director = _userService.GetUserById(directorId);
 
@@ -87,6 +89,6 @@ namespace Application.Services
                 ev.ApprovedBy = director.UserName;  
                 _eventService.UpdateEvent(ev);
             }
-        }
+        }*/
     }
 }

@@ -55,8 +55,9 @@ namespace Application.Services
             _userService.CreateUser(memberRequest);
         }
 
+        // Iria en el Event Service
         //Un usuario puede anotarse a un evento
-        public void SigUpEvent(int memberId, int eventId)
+        /*public void SigUpEvent(int memberId, int eventId)
         {
             var response = _userService.GetUserById(memberId);
             if (response == null || response.UserType != "Member")
@@ -79,6 +80,6 @@ namespace Application.Services
 
             eventEntity.Members.Add(member);
             _eventService.UpdateEvent(eventEntity);
-        }
+        }*/
     }
 }

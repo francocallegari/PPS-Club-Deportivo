@@ -16,7 +16,7 @@ namespace Application.Models
         public int Capacity { get; set; }
         public DateTime Date { get; set; }
         public EventStatus Status { get; set; }
-        public List<MemberDto> Members { get; set; }
+        //public List<MemberDto> Members { get; set; }
 
         public static EventDto Create(Event club_event)
         {
@@ -27,7 +27,7 @@ namespace Application.Models
             dto.Capacity = club_event.Capacity;
             dto.Date = club_event.Date;
             dto.Status = club_event.Status;
-            dto.Members = MemberDto.CreateList(club_event.Members);
+            //dto.Members = MemberDto.CreateList(club_event.Members);
 
             return dto;
 

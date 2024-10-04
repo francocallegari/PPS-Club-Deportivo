@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Interfaces;
+using Application.Models;
+using Application.Models.Request;
 
 namespace Application.Services
 {
@@ -18,33 +20,59 @@ namespace Application.Services
             _eventRepository = eventRepository;
         }
 
-        public ICollection<Event> GetAllEvents()
+        public List<EventDto> GetAllEvents()
         {
-            return _eventRepository.GetAll();
+            return EventDto.CreateList(_eventRepository.GetAllEvents());
         }
 
-        public Event GetEventById(int id)
+        public EventDto GetEventById(int id)
         {
-            var ev = _eventRepository.GetById(id);
+            var ev = _eventRepository.GetEventById(id);
             if (ev == null)
                 throw new KeyNotFoundException("No se encontró el evento.");
-            return ev;
+            return EventDto.Create(ev);
+        }
+        public EventDto GetEventByName(string name)
+        {
+            var eventEntity = _eventRepository.GetEventByName(name);
+            if (eventEntity == null)
+                return null;
+
+            return EventDto.Create(eventEntity);
+        }
+        public List<MemberDto> GetMembersFromEvent(int id)
+        {
+            return MemberDto.CreateList(_eventRepository.GetAllMembers(id));
         }
 
-        public Event CreateEvent(Event newEvent)
+        public EventDto CreateEvent(EventRequest newEvent)
         {
-            newEvent.Status = Domain.Enums.EventStatus.Pending;
-            return _eventRepository.Add(newEvent);
+            var eventCreated = new Event();
+            eventCreated.Name = newEvent.Name;
+            eventCreated.Description = newEvent.Description;
+            eventCreated.Date = newEvent.Date;
+            eventCreated.Capacity = newEvent.Capacity;
+            eventCreated.Status = Domain.Enums.EventStatus.Pending;
+
+            return EventDto.Create(_eventRepository.Add(eventCreated));
         }
 
-        public void UpdateEvent(Event updatedEvent)
+        public void UpdateEvent(int id, EventRequest updatedEvent)
         {
-            _eventRepository.Update(updatedEvent);
+            var eventUp = _eventRepository.GetEventById(id)
+                ?? throw new Exception("Evento no encontrado");
+
+            eventUp.Name = updatedEvent.Name;
+            eventUp.Description = updatedEvent.Description;
+            eventUp.Date = updatedEvent.Date;
+            eventUp.Capacity = updatedEvent.Capacity;
+
+            _eventRepository.Update(eventUp);
         }
 
         public void DeleteEvent(int id)
         {
-            var ev = _eventRepository.GetById(id);
+            var ev = _eventRepository.GetEventById(id);
             if (ev == null)
                 throw new KeyNotFoundException("No se encontró el evento.");
             _eventRepository.Delete(ev);
