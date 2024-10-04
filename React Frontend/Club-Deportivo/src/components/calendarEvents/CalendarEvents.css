@@ -39,7 +39,7 @@
     justify-items: center;
     max-width: 1220px;
     margin: auto;
-
+    transform: scale(0.95);
   }
 
 
