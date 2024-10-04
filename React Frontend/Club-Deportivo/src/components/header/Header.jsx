@@ -39,7 +39,7 @@ const Header = () => {
 
   return (
     <Navbar className="navbar-container" expand="lg">
-      <Nav className="mx-auto"> 
+      <Nav className="mx-auto">
         <Nav.Item className="Nav-Seccion" onClick={handleHomeNavigation}>
           Inicio
         </Nav.Item>
