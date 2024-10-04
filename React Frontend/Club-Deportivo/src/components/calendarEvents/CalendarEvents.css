@@ -1,19 +1,45 @@
+.fc-event-main {
+  @apply bg-orange-400
+}
 
+.fc-day-today {
+  @apply text-yellow-500
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  @apply bg-orange-300
+}
+
+.fc-daygrid-event-harness {
+  @apply rounded-xl bg-white
+}
+
+.fc-event {
+  @apply border-none rounded-xl
+}
+
+.fc .fc-button-primary {
+  @apply bg-zinc-900 hover:bg-zinc-800 hover:scale-105 transition-all duration-200 border-none
+}
+
+.fc .fc-button-primary:disabled {
+  @apply bg-zinc-800
+}
 
 .calendar-title {
     text-align: center; 
     font-size: 3.5rem;
     margin-top: 50px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     font-weight: bold;
     color: rgb(72, 26, 26);
 }
 
 .calendar-container {
     justify-items: center;
-    max-width: 1500px; /* Reduce el tamaño del calendario */
+    max-width: 1220px;
     margin: auto;
-    transform: scale(0.9); /* Ajusta la escala para hacerlo más pequeño */
+
   }
 
 
