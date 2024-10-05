@@ -77,9 +77,15 @@ const CalendarEvents = () => {
   const renderEventContent = (eventInfo) => {
     const { time, title } = eventInfo.event.extendedProps;
     return (
-      <div style={{ display: "grid", gridTemplateColumns: "0.3fr 1fr", whiteSpace: "normal", alignItems: "center", alignItems: "start", padding: "3px"  }}>
-      <span style={{ textAlign: "left", paddingLeft: "3px"}}>{time}</span>
-      <span style={{ textAlign: "left" }}>{title}</span>
+      <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "0.3fr 1fr",
+        alignItems: "start",
+        padding: "3px",
+      }}
+    >
+      <span style={{ textAlign: "left", paddingLeft: "3px"}}>{time} {title}</span>
     </div>
     );
   };
