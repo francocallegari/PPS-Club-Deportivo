@@ -10,6 +10,7 @@ import NewsGrid from "./components/newsGrid/NewsGrid";
 import NewsDetail from "./components/newsDetail/NewsDetail";
 import CalendarEvents from "./components/calendarEvents/CalendarEvents";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
+import PageNotFound from "./components/pageNotFound/PageNotFound";
 
 function App() {
   const router = createBrowserRouter([
@@ -74,6 +75,14 @@ function App() {
       element: (
         <MainLayout>
           <PaymentMethod />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/*",
+      element: (
+        <MainLayout>
+          <PageNotFound />
         </MainLayout>
       ),
     },
