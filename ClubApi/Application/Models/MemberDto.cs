@@ -17,7 +17,11 @@ namespace Application.Models
             dto.UserName = member.UserName;
             dto.Name = member.Name;
             dto.Email = member.Email;
-            dto.SportsAttended = SportDto.CreateList(member.SportsAttended);
+            if (member.SportsAttended != null)
+            {
+                dto.SportsAttended = SportDto.CreateList(member.SportsAttended);
+            } else { dto.SportsAttended = null; }
+            
 
             return dto;
         }
