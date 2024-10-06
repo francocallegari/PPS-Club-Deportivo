@@ -64,7 +64,10 @@ namespace Application.Services
             _userService.CreateUser(adminRequest);
         }
 
-        public void PostNews(int idAdmin, NewsDto newsDto)
+
+        //Estos metodos se utilizan desde News Service y Event Service
+        //y se validan que solo los admins los puedan usar mediante el rol de las claims
+        /*public void PostNews(int idAdmin, NewsDto newsDto)
         {
             var admin = _userService.GetUserById(idAdmin);
 
@@ -99,6 +102,6 @@ namespace Application.Services
             };
 
             _eventService.CreateEvent(events);
-        }
+        }*/
     }
 }
