@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Models;
 using Application.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,29 @@ namespace Web.Controllers
             string token = _customAuthenticationService.Autenticar(authenticationRequest);
 
             return Ok(token);
+        }
+
+        [HttpPost("ForgotPassword")]
+        public ActionResult ForgotPassword(ForgotPasswordDto model)
+        {
+            var result = _customAuthenticationService.ForgotPasswordAsync(model);
+            if (result.IsCompletedSuccessfully)
+            {
+                return Ok("Se ha enviado un correo con las instrucciones para restablecer la contraseña.");
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("ResetPassword")]
+        //[Authorize]
+        public ActionResult ResetPassword(ResetPasswordDto model)
+        {
+            var result = _customAuthenticationService.ResetPassword(model);
+            if (result.IsCompletedSuccessfully)
+            {
+                return Ok("La contraseña se ha restablecido correctamente.");
+            }
+            return BadRequest(result);
         }
     }
 }

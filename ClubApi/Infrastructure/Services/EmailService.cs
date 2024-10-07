@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models;
 using Application.Models.Response;
+using Domain.Entities;
 using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
@@ -30,6 +31,15 @@ namespace Infrastructure.Services
             string subject = "Bienvenido a All Stars Club";
             string template = GetTemplateByName("WelcomeEmail");
             string emailBody = String.Format(template, user.Name, user.UserRegistrationDate);
+
+            SendEmail(user.Email, subject, emailBody);
+        }
+
+        public void SendForgotPassword(User user, string url)
+        {
+            string subject = "Solicitud de restablecimiento de contraseña";
+            string template = GetTemplateByName("PasswordReset");
+            string emailBody = String.Format(template, user.Name, url);
 
             SendEmail(user.Email, subject, emailBody);
         }
