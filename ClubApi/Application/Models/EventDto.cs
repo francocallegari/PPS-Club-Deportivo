@@ -27,7 +27,11 @@ namespace Application.Models
             dto.Capacity = club_event.Capacity;
             dto.Date = club_event.Date;
             dto.Status = club_event.Status;
-            dto.Members = MemberDto.CreateList(club_event.Members);
+            if (club_event.Members != null)
+            {
+                dto.Members = MemberDto.CreateList(club_event.Members);
+            }
+            else { dto.Members = null; }
 
             return dto;
 

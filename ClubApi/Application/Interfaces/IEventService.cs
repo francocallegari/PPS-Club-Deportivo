@@ -1,4 +1,5 @@
 ﻿using Application.Models;
+using Application.Models.Request;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,14 @@ namespace Application.Interfaces
 {
     public interface IEventService
     {
-        ICollection<Event> GetAllEvents();       
-        Event GetEventById(int id);
+        List<EventDto> GetAllEvents();
+        EventDto GetEventById(int id);
         EventDto GetEventByName(string name);
-        Event CreateEvent(Event newEvent);
-        void UpdateEvent(int id, EventDto updatedEvent);
-        void DeleteEvent(int id);                
+        List<MemberDto> GetMembersFromEvent(int id);
+        EventDto CreateEvent(EventRequest newEvent, string creatorName);
+        void UpdateEvent(int id, EventRequest updatedEvent);
+        void DeleteEvent(int id);
         ICollection<Event> GetEventsByIds(List<int> eventIds);
+        void SignUpEvent(int memberId, int eventId);
     }
 }

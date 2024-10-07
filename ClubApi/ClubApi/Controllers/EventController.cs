@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models;
+using Application.Models.Request;
 using Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +13,6 @@ namespace ClubApi.Controllers
     public class EventController : ControllerBase
     {
         private readonly IEventService _eventService;
-
         public EventController(IEventService eventService)
         {
             _eventService = eventService;
@@ -49,28 +49,27 @@ namespace ClubApi.Controllers
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
-
-        [HttpPost]
-        public ActionResult<EventDto> CreateEvent([FromBody] EventDto eventDto)
+        // Se obtienen los socios inscriptos a un evento por el id del evento
+        [HttpGet("Members/{id}")]
+        public IActionResult GetMembersFromEvent([FromRoute] int id)
         {
             try
             {
-                var existingEvent = _eventService.GetEventByName(eventDto.Name);
+                return Ok(_eventService.GetMembersFromEvent(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
-                if (existingEvent != null)
-                    return BadRequest("El evento ya existe.");
+        }
 
-                var createEvent = _eventService.CreateEvent(new Event
-                {
-                    Name = eventDto.Name,
-                    Description = eventDto.Description,
-                    Capacity = eventDto.Capacity,
-                    Date = eventDto.Date,
-                    Status = eventDto.Status,
-                    Members = new List<Member>()
-                });
-
-                return Ok(EventDto.Create(createEvent));
+        [HttpPost]
+        public ActionResult<EventDto> CreateEvent([FromBody] EventRequest eventDto, string creatorName)
+        {
+            try
+            {
+                return Ok(_eventService.CreateEvent(eventDto, creatorName));
             }
             catch (Exception ex)
             {
@@ -80,7 +79,7 @@ namespace ClubApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpDateEvent([FromRoute] int id, [FromBody] EventDto eventDto)
+        public IActionResult UpDateEvent([FromRoute] int id, [FromBody] EventRequest eventDto)
         {
             try
             {
@@ -106,6 +105,19 @@ namespace ClubApi.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
+            }
+        }
+        [HttpPost("SignUpEvent")]
+        public IActionResult SignUpEvent(int memberId, int eventId)
+        {
+            try
+            {
+                _eventService.SignUpEvent(memberId, eventId);
+                return Ok("El miembro se ha inscipto correctamente");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }
