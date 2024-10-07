@@ -15,7 +15,7 @@
 
 .sports-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 20px;
 }
 
@@ -51,4 +51,9 @@
 
 .sport-description li {
   margin-bottom: 8px;
+}
+
+.btn-ver-mas {
+  background-color: rgb(72, 26, 26) !important; 
+  border: rgb(72, 26, 26) !important;
 }
