@@ -3,9 +3,41 @@ import { Form, Button } from "react-bootstrap";
 
 function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
+  const [isRecoveringPassword, setIsRecoveringPassword] = useState(false);
+  const [email, setEmail] = useState("");
 
   const toggleRegistering = () => {
     setIsRegistering(!isRegistering);
+    setIsRecoveringPassword(false);
+  };
+
+  const toggleRecoveringPassword = () => {
+    setIsRecoveringPassword(!isRecoveringPassword);
+    setIsRegistering(false);
+  };
+
+  const handleRecoverPasswordSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('https://localhost:7081/api/Autenticacion/ForgotPassword', {
+        method: 'POST',
+        headers: {
+          'accept': '*/*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al recuperar la contraseña');
+      }
+
+      alert("Se ha enviado un correo para recuperar la contraseña.");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Hubo un problema al recuperar la contraseña. Inténtalo de nuevo más tarde.");
+    }
   };
 
   return (
@@ -15,9 +47,13 @@ function Login() {
         style={{ width: "400px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
       >
         <h3 className="text-center mb-4">
-          {isRegistering ? "Registrarse" : "Iniciar Sesión"}
+          {isRegistering
+            ? "Registrarse"
+            : isRecoveringPassword
+            ? "Recuperar Contraseña"
+            : "Iniciar Sesión"}
         </h3>
-        <Form>
+        <Form onSubmit={isRecoveringPassword ? handleRecoverPasswordSubmit : undefined}> 
           {isRegistering ? (
             <>
               <Form.Group controlId="formName">
@@ -37,6 +73,21 @@ function Login() {
               </Form.Group>
               <Button variant="primary" type="submit" className="w-100 mt-4">
                 Registrarse
+              </Button>
+            </>
+          ) : isRecoveringPassword ? (
+            <>
+              <Form.Group controlId="formEmail" className="mt-3">
+                <Form.Label>Correo Electrónico</Form.Label>
+                <Form.Control 
+                  type="email" 
+                  placeholder="Ingresa tu correo" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Form.Group>
+              <Button variant="primary" type="submit" className="w-100 mt-4">
+                Recuperar Contraseña
               </Button>
             </>
           ) : (
@@ -60,16 +111,33 @@ function Login() {
         </Form>
 
         <div className="d-flex justify-content-between mt-3">
-          <a href="#forgot-password" className="text-decoration-none">
-            ¿No recuerdas tu contraseña?
-          </a>
-          <a
-            href="#register"
-            className="text-decoration-none"
-            onClick={toggleRegistering}
-          >
-            {isRegistering ? "Iniciar Sesión" : "Registrarse"}
-          </a>
+          {!isRecoveringPassword && (
+            <a
+              href="#forgot-password"
+              className="text-decoration-none"
+              onClick={toggleRecoveringPassword}
+            >
+              ¿No recuerdas tu contraseña?
+            </a>
+          )}
+          {!isRecoveringPassword && (
+            <a
+              href="#register"
+              className="text-decoration-none"
+              onClick={toggleRegistering}
+            >
+              {isRegistering ? "Iniciar Sesión" : "Registrarse"}
+            </a>
+          )}
+          {isRecoveringPassword && (
+            <a
+              href="#login"
+              className="text-decoration-none"
+              onClick={toggleRecoveringPassword}
+            >
+              Volver a Iniciar Sesión
+            </a>
+          )}
         </div>
       </div>
     </div>

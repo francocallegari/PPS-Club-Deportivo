@@ -32,15 +32,15 @@ namespace Infrastructure.Services
 
         private User? ValidateUser(AuthenticationRequest authenticationRequest)
         {
-            if (string.IsNullOrEmpty(authenticationRequest.UserName) || string.IsNullOrEmpty(authenticationRequest.Password))
+            if (string.IsNullOrEmpty(authenticationRequest.Email) || string.IsNullOrEmpty(authenticationRequest.Password))
                 return null;
 
-            var user = _userRepository.GetUserByName(authenticationRequest.UserName);
+            var user = _userRepository.GetUserByEmail(authenticationRequest.Email);
 
             if (user == null)
                 return null;
 
-            if (authenticationRequest.UserName == user.UserName && user.Password == authenticationRequest.Password) return user;
+            if (authenticationRequest.Email == user.Email && user.Password == authenticationRequest.Password) return user;
 
             return null;
         }
@@ -147,7 +147,7 @@ namespace Infrastructure.Services
             var baseUrl = "http://localhost:5173";
             var uriBuilder = new UriBuilder(baseUrl)
             {
-                Path = "api/Autenticacion/ResetPassword",
+                Path = "password",
                 Query = $"token={Uri.EscapeDataString(token)}&email={Uri.EscapeDataString(user.Email)}"
             };
 

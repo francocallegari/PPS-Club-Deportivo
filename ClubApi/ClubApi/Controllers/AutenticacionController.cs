@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Models;
 using Application.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
@@ -38,7 +39,7 @@ namespace Web.Controllers
         }
 
         [HttpPost("ResetPassword")]
-        //[Authorize]
+        [Authorize]
         public ActionResult ResetPassword(ResetPasswordDto model)
         {
             var result = _customAuthenticationService.ResetPassword(model);
