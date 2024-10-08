@@ -2,6 +2,8 @@ import React from "react";
 import "./Header.css";
 import { Navbar, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Image } from "react-bootstrap";
+import logo from "../../images/logo.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -39,13 +41,15 @@ const Header = () => {
 
   return (
     <Navbar className="navbar-container" expand="lg">
-      <div className="navbar-logo">
-        <span>Sports Club</span> {/* Texto alineado a la izquierda */}
+      <div className="footer-section ">
+        <Image
+          className="club-logo"
+          src={logo}
+          alt="Club Logo"
+          onClick={handleHomeNavigation}
+        />
       </div>
       <Nav className="mx-auto navbar-menu">
-        <Nav.Item className="Nav-Seccion" onClick={handleHomeNavigation}>
-          Inicio
-        </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleSportsNavigation}>
           Deportes
         </Nav.Item>

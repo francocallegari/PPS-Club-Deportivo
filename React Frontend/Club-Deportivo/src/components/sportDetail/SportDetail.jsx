@@ -1,22 +1,26 @@
-import React from 'react';
-import { Modal, Button, Table } from 'react-bootstrap';
+import React from "react";
+import { Modal, Button, Table } from "react-bootstrap";
 import "./SportDetail.css";
 
 const SportDetail = ({ sport, onClose }) => {
   return (
-    <Modal 
-      show={!!sport} 
-      onHide={onClose} 
-      centered 
-      className="sport-detail-modal">
-        
-      <Modal.Header closeButton className='sport-title'>
+    <Modal
+      show={!!sport}
+      onHide={onClose}
+      centered
+      className="sport-detail-modal"
+    >
+      <Modal.Header closeButton className="sport-title">
         <Modal.Title>{sport?.name}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
         <div className="sport-detail-content">
-          <img  src={sport?.image}  alt={sport?.name}  className="sport-detail-image"/>
+          <img
+            src={sport?.image}
+            alt={sport?.name}
+            className="sport-detail-image"
+          />
 
           <h4>Horarios de Entrenamiento</h4>
           <Table striped bordered hover className="sport-schedule">
@@ -44,14 +48,14 @@ const SportDetail = ({ sport, onClose }) => {
           </ul>
         </div>
       </Modal.Body>
-      
-      <Modal.Footer >
+
+      <Modal.Footer>
         <Button className="btn-cerrar" onClick={onClose}>
           Cerrar
         </Button>
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default SportDetail;
