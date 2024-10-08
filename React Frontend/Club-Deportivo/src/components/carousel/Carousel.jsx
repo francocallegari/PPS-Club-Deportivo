@@ -1,68 +1,68 @@
-import React from 'react'
-import { Carousel, Image } from 'react-bootstrap'
-import cancha_tenis from '../../images/cancha_tenis.jpeg'
-import raqueta from '../../images/raqueta.jpeg'
-import cancha_basquet from '../../images/cancha_basquet.jpeg'
-import cancha_voley from '../../images/cancha_voley.jpeg'
-import cancha_futbol from '../../images/cancha_futbol.jpeg'
-import gente from '../../images/gente_futbol.jpeg'
-import cancha_voley2 from '../../images/cancha_voley2.jpeg'
-import './Carousel.css'; 
+import React from "react";
+import { Carousel, Image } from "react-bootstrap";
+import image1 from "../../images/image1.jpg";
+import image2 from "../../images/image2.jpg";
+import image3 from "../../images/image3.jpg";
+import image4 from "../../images/image4.jpg";
+import image5 from "../../images/image5.jpg";
+import image6 from "../../images/image6.jpg";
+import image7 from "../../images/image7.jpg";
+import "./Carousel.css";
 
 const CarouselImages = () => {
-    return (
-        <Carousel controls={false} indicators={true}>
-            <Carousel.Item interval={4000}>
-                <Image 
-                src={cancha_tenis}
-                style={{ width: '100%', height: 'auto', maxHeight: '500px' }}
-                fluid>
-                </Image>
-            </Carousel.Item>
-            <Carousel.Item interval={4000}>
-                <Image 
-                src={raqueta}
-                style={{ width: '100%', height: 'auto', maxHeight: '500px' }}
-                fluid>
-                </Image>
-            </Carousel.Item>
-            <Carousel.Item interval={4000}>
-                <Image 
-                src={cancha_basquet}
-                style={{ width: '100%', height: 'auto', maxHeight: '500px' }}
-                fluid>
-                </Image>
-            </Carousel.Item>
-            <Carousel.Item interval={4000}>
-                <Image 
-                src={cancha_voley}
-                style={{ width: '100%', height: 'auto', maxHeight: '500px' }}
-                fluid>
-                </Image>
-            </Carousel.Item>
-            <Carousel.Item interval={4000}>
-                <Image 
-                src={cancha_futbol}
-                style={{ width: '100%', height: 'auto', maxHeight: '500px' }}
-                fluid>
-                </Image>
-            </Carousel.Item>
-            <Carousel.Item interval={4000}>
-                <Image 
-                src={gente}
-                style={{ width: '100%', height: 'auto', maxHeight: '500px' }}
-                fluid>
-                </Image>
-            </Carousel.Item>
-            <Carousel.Item interval={4000}>
-                <Image 
-                src={cancha_voley2}
-                style={{ width: '100%', height: 'auto', maxHeight: '500px' }}
-                fluid>
-                </Image>
-            </Carousel.Item>
-        </Carousel>
-    )
-}
+  return (
+    <Carousel controls={false} indicators={true} className="carousel-container">
+      <Carousel.Item interval={4000}>
+        <Image
+          src={image2}
+          style={{ width: "100vw", height: "100vh", objectFit: "cover" }}
+          fluid
+        />
+      </Carousel.Item>
+      <Carousel.Item interval={4000}>
+        <Image
+          src={image1}
+          style={{ width: "100vw", height: "100vh", objectFit: "cover" }}
+          fluid
+        />
+      </Carousel.Item>
+      <Carousel.Item interval={4000}>
+        <Image
+          src={image3}
+          style={{ width: "100vw", height: "100vh", objectFit: "cover" }}
+          fluid
+        />
+      </Carousel.Item>
+      <Carousel.Item interval={4000}>
+        <Image
+          src={image4}
+          style={{ width: "100vw", height: "100vh", objectFit: "cover" }}
+          fluid
+        />
+      </Carousel.Item>
+      <Carousel.Item interval={4000}>
+        <Image
+          src={image5}
+          style={{ width: "100vw", height: "100vh", objectFit: "cover" }}
+          fluid
+        />
+      </Carousel.Item>
+      <Carousel.Item interval={4000}>
+        <Image
+          src={image6}
+          style={{ width: "100vw", height: "100vh", objectFit: "cover" }}
+          fluid
+        />
+      </Carousel.Item>
+      <Carousel.Item interval={4000}>
+        <Image
+          src={image7}
+          style={{ width: "100vw", height: "100vh", objectFit: "cover" }}
+          fluid
+        />
+      </Carousel.Item>
+    </Carousel>
+  );
+};
 
-export default CarouselImages
+export default CarouselImages;

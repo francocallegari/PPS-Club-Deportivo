@@ -1,33 +1,44 @@
+/* Contenedor del Header */
 .navbar-container {
-    display: flex;
-    justify-content: center;
-    background-color: rgb(72, 26, 26);
-    margin: 0;
-    height: 90px;
-    position: sticky; 
-    top: 0; 
-    z-index: 1000; 
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 100px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle profundidad */
+}
+
+/* Logo en el Header */
+.navbar-logo {
+  margin-left: 100px;
+
+  font-size: 26px;
+  color: rgba(72, 26, 26, 0.8);
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+}
+
+/* Contenedor del Menú de Navegación */
+.navbar-menu {
+  display: flex;
+  align-items: center;
 }
 
 .Nav-Seccion {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 0 0 auto; 
-    color: antiquewhite;
-    font-family: inherit;
-    font-size: 15px;
-    height: 100%;
-    padding: 20px 45px; 
-    margin: 0 15px; 
-    border-radius: 5px; 
+  color: rgba(72, 26, 26, 0.8);
+  font-family: "Arial", sans-serif;
+  font-size: 22px;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 7px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  letter-spacing: 0.05em;
 }
 
-
 .Nav-Seccion:hover {
-    background-color: rgb(65, 13, 13);
-    cursor: pointer;
-    color: rgb(230, 177, 111);
-    
+  background-color: #e6b06f;
+  color: #333;
+  transform: scale(1.05);
+  transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
 }
