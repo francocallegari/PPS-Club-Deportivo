@@ -39,7 +39,10 @@ const Header = () => {
 
   return (
     <Navbar className="navbar-container" expand="lg">
-      <Nav className="mx-auto">
+      <div className="navbar-logo">
+        <span>Sports Club</span> {/* Texto alineado a la izquierda */}
+      </div>
+      <Nav className="mx-auto navbar-menu">
         <Nav.Item className="Nav-Seccion" onClick={handleHomeNavigation}>
           Inicio
         </Nav.Item>
