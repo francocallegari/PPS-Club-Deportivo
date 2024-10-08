@@ -10,6 +10,7 @@ import NewsGrid from "./components/newsGrid/NewsGrid";
 import NewsDetail from "./components/newsDetail/NewsDetail";
 import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
+import ResetPassword from "./components/resetPassword/ResetPassword";
 
 function App() {
   const router = createBrowserRouter([
@@ -42,6 +43,14 @@ function App() {
       element: (
         <MainLayout>
           <Login />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/password",
+      element: (
+        <MainLayout>
+          <ResetPassword />
         </MainLayout>
       ),
     },
