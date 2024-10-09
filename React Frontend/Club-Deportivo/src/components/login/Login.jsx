@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import RegisterForm from "./Register";
+import { useNavigate } from "react-router-dom"; // Mantén esta línea de `principal`
 
 function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
