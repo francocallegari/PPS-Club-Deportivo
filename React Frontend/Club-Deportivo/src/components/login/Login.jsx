@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import "./Login.css";
+import RegisterForm from "./Register";
 
 function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -20,121 +21,108 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://localhost:7081/api/Autenticacion/ForgotPassword', {
-        method: 'POST',
-        headers: {
-          'accept': '*/*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email })
-      });
+      const response = await fetch(
+        "https://localhost:7081/api/Autenticacion/ForgotPassword",
+        {
+          method: "POST",
+          headers: {
+            accept: "*/*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Error al recuperar la contraseña');
+        throw new Error("Error al recuperar la contraseña");
       }
 
       alert("Se ha enviado un correo para recuperar la contraseña.");
     } catch (error) {
       console.error("Error:", error);
-      alert("Hubo un problema al recuperar la contraseña. Inténtalo de nuevo más tarde.");
+      alert(
+        "Hubo un problema al recuperar la contraseña. Inténtalo de nuevo más tarde."
+      );
     }
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
+    <div className="Login-form-container">
       <div
-        className="card p-4"
-        style={{ width: "400px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
+        className={`Login-card ${
+          isRegistering ? "register-card" : "login-card"
+        }`}
       >
-        <h3 className="text-center mb-4">
+        <h3 className="custom-title">
           {isRegistering
             ? "Registrarse"
             : isRecoveringPassword
             ? "Recuperar Contraseña"
             : "Iniciar Sesión"}
         </h3>
-        <Form onSubmit={isRecoveringPassword ? handleRecoverPasswordSubmit : undefined}> 
+        <form
+          onSubmit={
+            isRecoveringPassword ? handleRecoverPasswordSubmit : undefined
+          }
+        >
           {isRegistering ? (
-            <>
-              <Form.Group controlId="formName">
-                <Form.Label>Nombre</Form.Label>
-                <Form.Control type="text" placeholder="Ingresa tu nombre" />
-              </Form.Group>
-              <Form.Group controlId="formEmail" className="mt-3">
-                <Form.Label>Correo Electrónico</Form.Label>
-                <Form.Control type="email" placeholder="Ingresa tu correo" />
-              </Form.Group>
-              <Form.Group controlId="formPassword" className="mt-3">
-                <Form.Label>Contraseña</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Ingresa tu contraseña"
-                />
-              </Form.Group>
-              <Button variant="primary" type="submit" className="w-100 mt-4">
-                Registrarse
-              </Button>
-            </>
+            <RegisterForm />
           ) : isRecoveringPassword ? (
             <>
-              <Form.Group controlId="formEmail" className="mt-3">
-                <Form.Label>Correo Electrónico</Form.Label>
-                <Form.Control 
-                  type="email" 
-                  placeholder="Ingresa tu correo" 
-                  value={email} 
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Group>
-              <Button variant="primary" type="submit" className="w-100 mt-4">
+              <label htmlFor="email">Correo Electrónico</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Ingresa tu correo"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="login-input"
+              />
+
+              <button type="submit" className="login-button">
                 Recuperar Contraseña
-              </Button>
+              </button>
             </>
           ) : (
             <>
-              <Form.Group controlId="formEmail">
-                <Form.Label>Correo Electrónico</Form.Label>
-                <Form.Control type="email" placeholder="Ingresa tu correo" />
-              </Form.Group>
-              <Form.Group controlId="formPassword" className="mt-3">
-                <Form.Label>Contraseña</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Ingresa tu contraseña"
-                />
-              </Form.Group>
-              <Button variant="primary" type="submit" className="w-100 mt-4">
+              <label htmlFor="email">Correo Electrónico</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Ingresa tu correo"
+                className="login-input"
+              />
+
+              <label htmlFor="password" className="mt-3">
+                Contraseña
+              </label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Ingresa tu contraseña"
+                className="login-input"
+              />
+
+              <button type="submit" className="login-button">
                 Iniciar Sesión
-              </Button>
+              </button>
             </>
           )}
-        </Form>
+        </form>
 
-        <div className="d-flex justify-content-between mt-3">
+        <div className="login-links">
           {!isRecoveringPassword && (
-            <a
-              href="#forgot-password"
-              className="text-decoration-none"
-              onClick={toggleRecoveringPassword}
-            >
+            <a href="#forgot-password" onClick={toggleRecoveringPassword}>
               ¿No recuerdas tu contraseña?
             </a>
           )}
           {!isRecoveringPassword && (
-            <a
-              href="#register"
-              className="text-decoration-none"
-              onClick={toggleRegistering}
-            >
+            <a href="#register" onClick={toggleRegistering}>
               {isRegistering ? "Iniciar Sesión" : "Registrarse"}
             </a>
           )}
           {isRecoveringPassword && (
-            <a
-              href="#login"
-              className="text-decoration-none"
-              onClick={toggleRecoveringPassword}
-            >
+            <a href="#login" onClick={toggleRecoveringPassword}>
               Volver a Iniciar Sesión
             </a>
           )}
