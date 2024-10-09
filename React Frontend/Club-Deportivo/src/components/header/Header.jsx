@@ -24,11 +24,6 @@ const Header = () => {
     navigate("/activities");
   };
 
-  const handleNewsNavigation = (e) => {
-    e.preventDefault();
-    navigate("/news");
-  };
-
   const handleLoginNavigation = (e) => {
     e.preventDefault();
     navigate("/login");
@@ -55,9 +50,6 @@ const Header = () => {
         </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleActivitiesNavigation}>
           Actividades
-        </Nav.Item>
-        <Nav.Item className="Nav-Seccion" onClick={handleNewsNavigation}>
-          Noticias
         </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleLoginNavigation}>
           Iniciar Sesión
