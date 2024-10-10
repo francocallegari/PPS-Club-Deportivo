@@ -6,7 +6,7 @@
   font-size: 3.5rem;
   font-weight: bold;
   text-align: center;
-  color: rgb(72, 26, 26);
+  color: rgba(13, 48, 118, 0.912);
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-top: 30px;
@@ -15,7 +15,7 @@
 
 .sports-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 20px;
 }
 
@@ -25,7 +25,7 @@
   padding: 16px;
   text-align: center;
   transition: transform 0.2s;
-  background-color: #fff;
+  background-color: rgb(242, 245, 252);
 }
 
 .sport-card:hover {
@@ -51,4 +51,9 @@
 
 .sport-description li {
   margin-bottom: 8px;
+}
+
+.btn-ver-mas {
+  background-color: rgba(13, 48, 118, 0.912) !important;
+  border: rgba(13, 48, 118, 0.912) !important;
 }

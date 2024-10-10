@@ -2,6 +2,8 @@ import React from "react";
 import "./Header.css";
 import { Navbar, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Image } from "react-bootstrap";
+import logo from "../../images/logo.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -19,12 +21,7 @@ const Header = () => {
 
   const handleActivitiesNavigation = (e) => {
     e.preventDefault();
-    navigate("/activities");
-  };
-
-  const handleNewsNavigation = (e) => {
-    e.preventDefault();
-    navigate("/news");
+    navigate("/calendar");
   };
 
   const handleLoginNavigation = (e) => {
@@ -39,18 +36,20 @@ const Header = () => {
 
   return (
     <Navbar className="navbar-container" expand="lg">
-      <Nav className="mx-auto"> 
-        <Nav.Item className="Nav-Seccion" onClick={handleHomeNavigation}>
-          Inicio
-        </Nav.Item>
+      <div className="footer-section ">
+        <Image
+          className="club-logo"
+          src={logo}
+          alt="Club Logo"
+          onClick={handleHomeNavigation}
+        />
+      </div>
+      <Nav className="mx-auto navbar-menu">
         <Nav.Item className="Nav-Seccion" onClick={handleSportsNavigation}>
           Deportes
         </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleActivitiesNavigation}>
           Actividades
-        </Nav.Item>
-        <Nav.Item className="Nav-Seccion" onClick={handleNewsNavigation}>
-          Noticias
         </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleLoginNavigation}>
           Iniciar Sesión

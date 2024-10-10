@@ -1,16 +1,11 @@
 import React from "react";
-import { Image } from "react-bootstrap";
-import logo from "../../images/logo.png";
 import "./Footer.css";
 
 const Footer = () => {
   return (
     <>
       <footer className="footer">
-        {}
         <div className="footer-section left">
-          <Image className="club-logo" src={logo} alt="Club Logo" />
-
           <div className="contact-info">
             <h5>CONTACTANOS</h5>
             <div>

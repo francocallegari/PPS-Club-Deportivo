@@ -15,6 +15,5 @@ namespace Application.Interfaces
         void UpDateMember(int id, UserRequest memberRequest);
         void DeleteMember(int id);
         void CreateMmeber(UserRequest memberRequest);
-        void SigUpEvent(int memberId, int eventId);
     }
 }

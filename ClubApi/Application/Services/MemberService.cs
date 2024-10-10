@@ -55,49 +55,5 @@ namespace Application.Services
 
             _userService.CreateUser(memberRequest);
         }
-
-        //Un usuario puede anotarse a un evento
-        public void SigUpEvent(int memberId, int eventId)
-        {
-            var response = _userService.GetUserById(memberId);
-            if (response == null || response.UserType != "Member")
-                throw new InvalidOperationException("No se encontró al miembro.");
-
-            var member = new Member
-            {
-                Id = response.Id,
-                Name = response.Name,
-                Email = response.Email,
-                UserType = response.UserType
-            };
-
-            var eventEntity = _eventService.GetEventById(eventId);
-            if (eventEntity == null)
-                throw new InvalidOperationException("No se encontró evento.");
-
-            if (eventEntity.Members.Any(m => m.Id == member.Id))
-                throw new InvalidOperationException("El miembro ya está inscrito en este evento.");
-
-            eventEntity.Members.Add(member);
-
-            /*var eventDto = new EventDto
-            {
-                Id = eventEntity.Id,
-                Name = eventEntity.Name,
-                Description = eventEntity.Description,
-                Date = eventEntity.Date,
-                Capacity = eventEntity.Capacity,
-                Status = eventEntity.Status,
-                Members = eventEntity.Members.Select(m => new MemberDto
-                {
-                    Id = m.Id,
-                    Name = m.Name,
-                    Email = m.Email,
-                }).ToList()
-            };*/
-
-            //_eventService.UpdateEvent(eventEntity.Id, eventDto);
-            _eventService.UpdateEvent(eventEntity);
-        }
     }
 }

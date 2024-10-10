@@ -5,7 +5,7 @@
   bottom: 0;
   width: 100%;
   padding: 2em 0;
-  background-color: #3d3d3d;
+  background-color: #9aa2a9;
   align-items: flex-start;
   color: white;
   font-size: 0.9rem;
@@ -30,7 +30,6 @@
 .club-logo {
   width: 150px;
   height: auto;
-  margin-right: 40px;
 }
 
 .contact-info h5 {
