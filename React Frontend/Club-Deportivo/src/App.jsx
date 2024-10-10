@@ -10,6 +10,7 @@ import NewsGrid from "./components/newsGrid/NewsGrid";
 import NewsDetail from "./components/newsDetail/NewsDetail";
 import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
+import SessionsList from "./components/sessionsList/SessionsList";
 
 function App() {
   const router = createBrowserRouter([
@@ -74,6 +75,14 @@ function App() {
       element: (
         <MainLayout>
           <PaymentMethod />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/sessions",
+      element: (
+        <MainLayout>
+          <SessionsList />
         </MainLayout>
       ),
     },
