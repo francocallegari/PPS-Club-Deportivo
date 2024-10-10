@@ -1,0 +1,22 @@
+.calendar-title {
+  text-align: center; 
+  font-size: 3.5rem;
+  margin-top: 50px;
+  margin-bottom: 40px;
+  font-weight: bold;
+  color: rgba(13, 48, 118, 0.912);
+}
+
+
+/* Aplica estilos específicos al título (mes y año) */
+.fc-toolbar-title {
+  @apply uppercase; /* Convierte mes y año a mayúsculas */
+  @apply text-lg; /* Ajusta el tamaño del texto si es necesario */
+  @apply font-bold; /* Hace que el texto sea más grueso */
+}
+
+/* Aplica estilos a los días de la semana */
+.fc-day-header {
+  @apply uppercase; /* Convierte los días a mayúsculas */
+  @apply font-bold; /* Hace que el texto sea más grueso */
+}

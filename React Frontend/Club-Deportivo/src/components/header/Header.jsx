@@ -2,6 +2,8 @@ import React from "react";
 import "./Header.css";
 import { Navbar, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Image } from "react-bootstrap";
+import logo from "../../images/logo.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -22,11 +24,6 @@ const Header = () => {
     navigate("/activities");
   };
 
-  const handleNewsNavigation = (e) => {
-    e.preventDefault();
-    navigate("/news");
-  };
-
   const handleLoginNavigation = (e) => {
     e.preventDefault();
     navigate("/login");
@@ -36,12 +33,30 @@ const Header = () => {
     e.preventDefault();
     navigate("/");
   };
+  
+  const handleProfile = (e) => {
+    e.preventDefault();
+    navigate("/profile");
+  };
+  
+  const handleClubNavigation = (e) => {
+    e.preventDefault();
+    navigate("/club");
+  };
 
   return (
     <Navbar className="navbar-container" expand="lg">
-      <Nav className="mx-auto">
-        <Nav.Item className="Nav-Seccion" onClick={handleHomeNavigation}>
-          Inicio
+      <div className="Header-section ">
+        <Image
+          className="club-logo"
+          src={logo}
+          alt="Club Logo"
+          onClick={handleHomeNavigation}
+        />
+      </div>
+      <Nav className="mx-auto navbar-menu">
+        <Nav.Item className="Nav-Seccion" onClick={handleClubNavigation}>
+          El club
         </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleSportsNavigation}>
           Deportes
@@ -49,15 +64,13 @@ const Header = () => {
         <Nav.Item className="Nav-Seccion" onClick={handleActivitiesNavigation}>
           Actividades
         </Nav.Item>
-        <Nav.Item className="Nav-Seccion" onClick={handleNewsNavigation}>
-          Noticias
-        </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleLoginNavigation}>
-          Iniciar Sesión
+          Iniciar sesión
         </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleLogout}>
-          Cerrar Sesión
+          Cerrar sesión
         </Nav.Item>
+        <i class="fa-regular fa-circle-user" onClick={handleProfile}></i>
       </Nav>
     </Navbar>
   );

@@ -11,6 +11,10 @@ import NewsDetail from "./components/newsDetail/NewsDetail";
 import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
 import SessionsList from "./components/sessionsList/SessionsList";
+import ResetPassword from "./components/resetPassword/ResetPassword";
+import Director from "./components/director/Director";
+import Register from "./components/login/Register";
+import ClubInfo from "./components/club/Club";
 
 function App() {
   const router = createBrowserRouter([
@@ -47,6 +51,14 @@ function App() {
       ),
     },
     {
+      path: "/password",
+      element: (
+        <MainLayout>
+          <ResetPassword />
+        </MainLayout>
+      ),
+    },
+    {
       path: "/news",
       element: (
         <MainLayout>
@@ -55,7 +67,7 @@ function App() {
       ),
     },
     {
-      path: "/noticia/:id", 
+      path: "/noticia/:id",
       element: (
         <MainLayout>
           <NewsDetail />
@@ -83,6 +95,30 @@ function App() {
       element: (
         <MainLayout>
           <SessionsList />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/register",
+      element: (
+        <MainLayout>
+          <Register />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/director",
+      element: (
+        <MainLayout>
+          <Director />
+        </MainLayout>
+      )
+      },
+    {
+      path: "/club",
+      element: (
+        <MainLayout>
+          <ClubInfo />
         </MainLayout>
       ),
     },

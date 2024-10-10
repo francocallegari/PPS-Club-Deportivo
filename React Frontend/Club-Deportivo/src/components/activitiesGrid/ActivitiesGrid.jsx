@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ActivityCard from "../activityCard/ActivityCard";
 import { Modal, Button } from "react-bootstrap";
 import "./ActivitiesGrid.css";
+import CalendarEvents from "../calendarEvents/CalendarEvents";
 
 const ActivitiesGrid = () => {
   const [showModal, setShowModal] = useState(false);
@@ -76,6 +77,9 @@ const ActivitiesGrid = () => {
         ))}
       </div>
 
+      <CalendarEvents
+        
+      />
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Confirmación</Modal.Title>
