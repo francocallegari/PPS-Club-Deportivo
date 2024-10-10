@@ -8,8 +8,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login/Login";
 import NewsGrid from "./components/newsGrid/NewsGrid";
 import NewsDetail from "./components/newsDetail/NewsDetail";
-import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
+import CalendarEvents from "./components/calendarEvents/CalendarEvents";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
+import PageNotFound from "./components/pageNotFound/PageNotFound";
 import ResetPassword from "./components/resetPassword/ResetPassword";
 import Register from "./components/login/Register"
 
@@ -72,10 +73,10 @@ function App() {
       ),
     },
     {
-      path: "/activities",
+      path: "/calendar",
       element: (
         <MainLayout>
-          <ActivitiesGrid />
+          <CalendarEvents />
         </MainLayout>
       ),
     },
@@ -86,14 +87,20 @@ function App() {
           <PaymentMethod />
         </MainLayout>
       ),
-    },
-    {
+          {
       path: "/register",
       element: (
         <MainLayout>
           <Register />
-        </MainLayout>
+         </MainLayout>
       ),
+    },
+    {
+      path: "/*",
+      element: (
+        <MainLayout>
+          <PageNotFound />
+        </MainLayout>
     },
   ]);
 

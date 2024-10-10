@@ -21,7 +21,7 @@ const Header = () => {
 
   const handleActivitiesNavigation = (e) => {
     e.preventDefault();
-    navigate("/activities");
+    navigate("/calendar");
   };
 
   const handleLoginNavigation = (e) => {
