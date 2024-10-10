@@ -20,7 +20,10 @@
   transition: color 0.3s ease;
 }
 
-/* Efecto de línea en hover */
+.Nav-Seccion {
+  cursor: pointer;
+}
+
 .Nav-Seccion::after {
   content: "";
   position: absolute;
@@ -43,4 +46,6 @@
 .fa-circle-user{
   font-size: 30px;
   color: rgba(255, 255, 255, 0.8);
+  margin-top: 20px;
+  cursor: pointer;
 }

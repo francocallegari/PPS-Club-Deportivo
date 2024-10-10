@@ -103,6 +103,7 @@ function App() {
         <MainLayout>
           <Director />
         </MainLayout>
+      )
       },
     {
       path: "/club",
