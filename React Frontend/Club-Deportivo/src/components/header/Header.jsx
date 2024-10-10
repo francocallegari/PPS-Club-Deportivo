@@ -34,6 +34,11 @@ const Header = () => {
     navigate("/");
   };
 
+  
+  const handleProfile = (e) => {
+    e.preventDefault();
+    navigate("/profile");
+  }
   return (
     <Navbar className="navbar-container" expand="lg">
       <div className="footer-section ">
@@ -57,6 +62,7 @@ const Header = () => {
         <Nav.Item className="Nav-Seccion" onClick={handleLogout}>
           Cerrar Sesión
         </Nav.Item>
+        <i class="fa-regular fa-circle-user" onClick={handleProfile}></i>
       </Nav>
     </Navbar>
   );

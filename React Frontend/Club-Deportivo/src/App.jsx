@@ -12,6 +12,7 @@ import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
 import ResetPassword from "./components/resetPassword/ResetPassword";
 import Register from "./components/login/Register"
+import Director from "./components/director/Director";
 
 function App() {
   const router = createBrowserRouter([
@@ -92,6 +93,14 @@ function App() {
       element: (
         <MainLayout>
           <Register />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/director",
+      element: (
+        <MainLayout>
+          <Director />
         </MainLayout>
       ),
     },

@@ -1,0 +1,107 @@
+.user-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.user-column {
+    flex: 1;
+    padding: 10px;
+    margin: 0 10px;
+}
+
+.user-title {
+    color: rgba(13, 48, 118, 0.912) !important;
+    border-bottom: 0.5px solid rgba(13, 48, 118, 0.912);
+    padding-bottom: 5px;
+}
+
+.user {
+    background-color: rgb(242, 245, 252) !important;
+    color: rgba(13, 48, 118, 0.912) !important;
+    margin: 20px 0px;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.fa-user {
+    margin-right: 5px;
+}
+
+.events-container {
+    padding: 0px 40px;
+    border-radius: 5px;
+}
+
+.events-header {
+    display: flex;
+}
+
+.estado{
+    margin-left: 300px;
+}
+
+.eventos-title {
+    color: rgba(13, 48, 118, 0.912) !important;
+    border-bottom: 0.5px solid rgba(13, 48, 118, 0.912);
+    margin-bottom: 20px;
+}
+
+.event-card {
+    background-color: rgb(242, 245, 252);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    width: 63%;
+}
+
+.event-card:hover {
+    transform: scale(1.05);
+}
+
+.event-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    color: rgba(13, 48, 118, 0.912) !important;
+}
+
+.event-status {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+    color: #333;
+}
+
+.approve-btn {
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.approve-btn:hover {
+    background-color: #218838;
+}
+
+.aprobado {
+    background-color: #d4edda;
+}
+
+.event-status.aprobado {
+    background-color: #28a745;
+    color: white;
+}
+
+.event-status.pendiente {
+    background-color: #ffc107;
+    color: black;
+}

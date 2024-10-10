@@ -3,6 +3,7 @@ import "./Dashboard.css";
 import { Card, Button, Carousel } from "react-bootstrap";
 import CarouselImages from "../carousel/Carousel";
 import { useNavigate } from "react-router-dom";
+import Director from "../director/Director";
 
 const Dashboard = () => {
   const noticias = [
