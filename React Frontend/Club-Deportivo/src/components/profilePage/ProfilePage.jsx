@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import "./ProfilePage.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFutbol,
+  faSwimmer,
+  faVolleyballBall,
+} from "@fortawesome/free-solid-svg-icons";
 
 const ProfilePage = () => {
   const [show, setShow] = useState(false);
@@ -14,6 +20,7 @@ const ProfilePage = () => {
         <Modal.Header closeButton>
           <Modal.Title>Modificar mis datos</Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
           <Form>
             <Form.Group controlId="formSocioNumber">
@@ -49,7 +56,11 @@ const ProfilePage = () => {
           <Button variant="secondary" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button
+            classname="boton-guardar"
+            variant="primary"
+            onClick={handleClose}
+          >
             Guardar cambios
           </Button>
         </Modal.Footer>
@@ -61,8 +72,13 @@ const ProfilePage = () => {
           alt="Foto de perfil"
           className="foto-perfil"
         />
-        <h2>Alexa Rodríguez</h2>
-        <Button variant="primary" onClick={handleShow}>
+        <h2 className="nombre-usuario">Alexa Rodríguez</h2>
+
+        <Button
+          className="boton-modificar"
+          variant="primary"
+          onClick={handleShow}
+        >
           Modificar mis datos
         </Button>
       </div>
@@ -100,18 +116,28 @@ const ProfilePage = () => {
       <div className="suscripcion">
         <h3>Mi suscripción</h3>
         <p>
-          <label>Estado</label>
+          <label>
+            <b>Estado:</b>
+          </label>
           Socio Activo
         </p>
         <p>
-          <label>Datos de facturación:</label>
+          <label>
+            <b>Datos de facturación:</b>
+          </label>
           XXXX XXXX XXXX 3096
         </p>
       </div>
 
       <div className="deportes">
-        <h3>Deportes y actividades</h3>
-        <p>Voley 🏐 Fútbol ⚽ Natación 🏊‍♂️</p>
+        <p className="titulo-deportes">
+          <b>Deportes y actividades</b>
+        </p>
+        <FontAwesomeIcon icon={faVolleyballBall} /> Voley
+        <h1></h1>
+        <FontAwesomeIcon icon={faFutbol} /> Fútbol
+        <h1></h1>
+        <FontAwesomeIcon icon={faSwimmer} /> Natación
       </div>
     </div>
   );
