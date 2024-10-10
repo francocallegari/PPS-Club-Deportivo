@@ -55,20 +55,20 @@ const Header = () => {
         />
       </div>
       <Nav className="mx-auto navbar-menu">
+        <Nav.Item className="Nav-Seccion" onClick={handleClubNavigation}>
+          El club
+        </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleSportsNavigation}>
           Deportes
         </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleActivitiesNavigation}>
           Actividades
         </Nav.Item>
-        <Nav.Item className="Nav-Seccion" onClick={handleClubNavigation}>
-          El club
-        </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleLoginNavigation}>
-          Iniciar Sesión
+          Iniciar sesión
         </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleLogout}>
-          Cerrar Sesión
+          Cerrar sesión
         </Nav.Item>
         <i class="fa-regular fa-circle-user" onClick={handleProfile}></i>
       </Nav>

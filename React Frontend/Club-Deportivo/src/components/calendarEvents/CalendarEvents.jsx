@@ -96,9 +96,9 @@ const CalendarEvents = () => {
   };
 
   return (
-    <div className="bg-[antiquewhite] p-6">
+    <div className="p-6">
       <div className="activities-container">
-        <h2 className="calendar-title">ACTIVIDADES</h2>
+        <h2 className="calendar-title">CALENDARIO</h2>
 
         <div className="calendar-container bg-white p-4 rounded-md shadow-md mx-auto w-3/4">
           <FullCalendar
