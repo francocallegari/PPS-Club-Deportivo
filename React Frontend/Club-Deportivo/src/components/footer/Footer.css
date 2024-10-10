@@ -1,24 +1,20 @@
 .footer {
   display: flex;
-  position: relative;
-  left: 0;
-  bottom: 0;
+
   width: 100%;
   padding: 2em 0;
   background-color: #9aa2a9;
   align-items: flex-start;
   color: white;
   font-size: 0.9rem;
-  font-family: "Raleway", sans-serif;
+
   font-weight: bold;
   line-height: 250%;
-  justify-content: space-between;
-  margin-top: auto;
   text-align: center;
 }
 
 .footer-section {
-  padding: 0 100px;
+  padding: 0 200px;
   margin: 0 10px;
 }
 
@@ -28,7 +24,7 @@
 }
 
 .club-logo {
-  width: 150px;
+  width: 125px;
   height: auto;
 }
 
@@ -47,10 +43,6 @@
   padding: 0;
 }
 
-.center li {
-  margin: 5px 0;
-}
-
 .right {
   text-align: right;
 }
@@ -64,7 +56,7 @@
 }
 
 .footer-socios h5 {
-  margin: 3px 10;
+  margin: 0px 8;
   text-decoration: underline;
 }
 
