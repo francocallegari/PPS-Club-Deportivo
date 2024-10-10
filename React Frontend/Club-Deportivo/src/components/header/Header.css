@@ -1,40 +1,41 @@
 /* Contenedor del Header */
 .navbar-container {
-  height: 111px;
+  height: 100px;
   background-color: rgba(13, 48, 118, 0.912);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle profundidad */
-}
-
-/* Logo en el Header */
-.navbar-logo {
-  margin-left: 100px;
-  font-size: 26px;
-  color: rgba(0, 0, 0, 0.8);
-  font-weight: bold;
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-}
-
-/* Contenedor del Menú de Navegación */
-.navbar-menu {
-  display: flex;
   align-items: center;
-  margin: 0 px 10 px;
+  width: 100%;
 }
 
+/* Estilos para los enlaces del menú de navegación */
 .Nav-Seccion {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
   font-family: "Arial", sans-serif;
-  font-size: 22px;
-  padding: 10px 20px;
-  margin: 0 10px;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 20px 40px;
   border-radius: 7px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.01em;
+  position: relative;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.Nav-Seccion:hover {
-  background-color: rgb(59, 88, 146);
-  transform: scale(1.05);
-  transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+/* Efecto de línea en hover */
+.Nav-Seccion::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 3px;
+  background-color: #c6dbed;
+  left: 0;
+  bottom: 0;
+  transition: width 0.4s ease;
+}
+
+.Nav-Seccion:hover::after {
+  width: 100%; /* Expande la línea al 100% del ancho del enlace */
+}
+
+.Header-section {
+  margin-left: 100px;
 }
