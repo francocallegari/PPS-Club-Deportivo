@@ -11,6 +11,7 @@ import NewsDetail from "./components/newsDetail/NewsDetail";
 import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
 import ResetPassword from "./components/resetPassword/ResetPassword";
+import Director from "./components/director/Director";
 import Register from "./components/login/Register";
 import ClubInfo from "./components/club/Club";
 
@@ -96,6 +97,13 @@ function App() {
         </MainLayout>
       ),
     },
+    {
+      path: "/director",
+      element: (
+        <MainLayout>
+          <Director />
+        </MainLayout>
+      },
     {
       path: "/club",
       element: (

@@ -33,7 +33,12 @@ const Header = () => {
     e.preventDefault();
     navigate("/");
   };
-
+  
+  const handleProfile = (e) => {
+    e.preventDefault();
+    navigate("/profile");
+  };
+  
   const handleClubNavigation = (e) => {
     e.preventDefault();
     navigate("/club");
@@ -65,6 +70,7 @@ const Header = () => {
         <Nav.Item className="Nav-Seccion" onClick={handleLogout}>
           Cerrar Sesión
         </Nav.Item>
+        <i class="fa-regular fa-circle-user" onClick={handleProfile}></i>
       </Nav>
     </Navbar>
   );
