@@ -9,18 +9,17 @@ const Footer = () => {
           <div className="contact-info">
             <h5>CONTACTANOS</h5>
             <div>
-              <i className="telephone"></i> +54 26741812342
+              <i className="bi bi-telephone-fill"></i> +54 26741812342
             </div>
             <div>
-              <i className="mail"></i> SportClub@gmail.com
+              <i className="bi bi-envelope-fill"></i> SportClub@gmail.com
             </div>
             <div>
-              <i className="adress"></i> Corrientes 3467, Rosario
+              <i className="bi bi-geo-alt-fill"></i> Corrientes 3467, Rosario
             </div>
           </div>
         </div>
 
-        {}
         <div className="socios center">
           <div className="footer-socios">
             <h5>SOCIOS</h5>
@@ -38,8 +37,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {}
-        <div className="footer-section ">
+        <div className="footer-section">
           <h5>REDES SOCIALES</h5>
           <div>
             <i className="bi bi-instagram"></i> INSTAGRAM
@@ -48,7 +46,7 @@ const Footer = () => {
             <i className="bi bi-facebook"></i> FACEBOOK
           </div>
           <div>
-            <i className="bi bi-twitter-x"></i> TWITTER
+            <i className="bi bi-twitter"></i> TWITTER
           </div>
         </div>
       </footer>

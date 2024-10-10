@@ -33,15 +33,20 @@ const Header = () => {
     e.preventDefault();
     navigate("/");
   };
-
   
   const handleProfile = (e) => {
     e.preventDefault();
     navigate("/profile");
-  }
+  };
+  
+  const handleClubNavigation = (e) => {
+    e.preventDefault();
+    navigate("/club");
+  };
+
   return (
     <Navbar className="navbar-container" expand="lg">
-      <div className="footer-section ">
+      <div className="Header-section ">
         <Image
           className="club-logo"
           src={logo}
@@ -55,6 +60,9 @@ const Header = () => {
         </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleActivitiesNavigation}>
           Actividades
+        </Nav.Item>
+        <Nav.Item className="Nav-Seccion" onClick={handleClubNavigation}>
+          El club
         </Nav.Item>
         <Nav.Item className="Nav-Seccion" onClick={handleLoginNavigation}>
           Iniciar Sesión
