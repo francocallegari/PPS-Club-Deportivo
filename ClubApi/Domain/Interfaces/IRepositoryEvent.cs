@@ -9,7 +9,9 @@ namespace Domain.Interfaces
 {
     public interface IRepositoryEvent : IRepositoryBase<Event>
     {
-        ICollection<Member> GetAllMembers();
+        List<Event> GetAllEvents();
+        Event GetEventById(int id);
+        List<Member> GetAllMembers(int eventId);
         ICollection<Event> GetEventsByDate(DateTime eventDate);
         Event GetEventByName(string name);
     }

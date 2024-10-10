@@ -1,0 +1,59 @@
+.register-form-container {
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #e0e0e0;
+}
+
+.register-card {
+  border-radius: 12px;
+  width: 1200px;
+  transition: transform 0.3s ease;
+  padding: 5px;
+  margin-left: 160px;
+}
+
+.custom-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  color: #333333;
+}
+
+.register-input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1px solid #bbb; /* Borde más claro */
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.register-button {
+  width: 10%;
+  padding: 12px;
+  background-color: #2c55d0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.login-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0px;
+}
+
+.login-links a {
+  text-decoration: underline;
+  color: #0056b3;
+  font-weight: bold;
+}
+
+.login-links a:hover {
+  color: #003f7f;
+}

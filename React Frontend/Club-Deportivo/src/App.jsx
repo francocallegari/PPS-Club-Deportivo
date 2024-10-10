@@ -11,6 +11,8 @@ import NewsDetail from "./components/newsDetail/NewsDetail";
 import CalendarEvents from "./components/calendarEvents/CalendarEvents";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
 import PageNotFound from "./components/pageNotFound/PageNotFound";
+import ResetPassword from "./components/resetPassword/ResetPassword";
+import Register from "./components/login/Register"
 
 function App() {
   const router = createBrowserRouter([
@@ -47,6 +49,14 @@ function App() {
       ),
     },
     {
+      path: "/password",
+      element: (
+        <MainLayout>
+          <ResetPassword />
+        </MainLayout>
+      ),
+    },
+    {
       path: "/news",
       element: (
         <MainLayout>
@@ -77,6 +87,13 @@ function App() {
           <PaymentMethod />
         </MainLayout>
       ),
+          {
+      path: "/register",
+      element: (
+        <MainLayout>
+          <Register />
+         </MainLayout>
+      ),
     },
     {
       path: "/*",
@@ -84,7 +101,6 @@ function App() {
         <MainLayout>
           <PageNotFound />
         </MainLayout>
-      ),
     },
   ]);
 

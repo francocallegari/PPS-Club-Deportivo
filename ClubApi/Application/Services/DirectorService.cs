@@ -71,46 +71,7 @@ namespace Application.Services
             _userService.CreateUser(directorRequest);
         }
 
-        public void ApproveEvents(int directorId, List<int> eventIds)
-        {
-            var director = _userService.GetUserById(directorId);
-
-            
-            if (!director.UserType.Equals("Director", StringComparison.OrdinalIgnoreCase))
-                throw new InvalidOperationException("Solo los directores pueden aprobar eventos.");
-
-            
-            var eventsToApprove = _eventService.GetEventsByIds(eventIds)
-                .Where(e => e.Status == EventStatus.Pending &&
-                            _userService.GetUserByUserName(e.CreatedBy).UserType == "Administrator")
-                .ToList();
-
-            if (!eventsToApprove.Any())
-                throw new InvalidOperationException("No hay eventos válidos para aprobar.");
-
-            
-            foreach (var ev in eventsToApprove)
-            {
-                ev.Status = EventStatus.Approved;
-                ev.ApprovedBy = director.UserName;
-
-                /*var updatedEventDto = new EventDto
-                {
-                    Id = ev.Id,
-                    Name = ev.Name,
-                    Description = ev.Description,
-                    Date = ev.Date,
-                    Status = ev.Status,
-                    //ApprovedBy = ev.ApprovedBy,
-                    //Members = ev.Members,
-                };*/
-
-                //_eventService.UpdateEvent(ev.Id, updatedEventDto);
-                _eventService.UpdateEvent(ev);
-            }
-        }
-
-        public void AssignTeacherToSport(Coach coachId, Sport sportId)
+        public void AssignCoachToSport(Coach coachId, Sport sportId)
         {
             var coach = _repositoryCoach.GetById(coachId);
             if (coach == null)

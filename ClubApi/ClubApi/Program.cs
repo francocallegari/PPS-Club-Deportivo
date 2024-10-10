@@ -1,19 +1,20 @@
 using Application.Interfaces;
+using Application.Models;
 using Application.Services;
 using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
+using MercadoPago.Config;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using MercadoPago.Config;
-using Application.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setupAction =>
@@ -82,6 +83,7 @@ builder.Services.AddScoped<IRepositoryTrainingSession, RepositoryTrainingSession
 builder.Services.AddScoped<IRepositoryCoach, RepositoryCoach>();
 builder.Services.AddScoped<IRepositoryBase<SportsField>, EfRepository<SportsField>>();
 builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
+builder.Services.AddScoped<IRepositoryStatistics, RepositoryStatistics>();
 
 
 #region services
@@ -94,6 +96,7 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<MercadoPagoService>();
 builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 #endregion
 
 builder.Services.Configure<AutenticacionService.AutenticacionServiceOptions>(
