@@ -65,7 +65,7 @@ function App() {
       ),
     },
     {
-      path: "/noticia/:id", 
+      path: "/noticia/:id",
       element: (
         <MainLayout>
           <NewsDetail />
@@ -87,12 +87,13 @@ function App() {
           <PaymentMethod />
         </MainLayout>
       ),
-          {
+    },
+    {
       path: "/register",
       element: (
         <MainLayout>
           <Register />
-         </MainLayout>
+        </MainLayout>
       ),
     },
     {
@@ -101,6 +102,7 @@ function App() {
         <MainLayout>
           <PageNotFound />
         </MainLayout>
+      ),
     },
   ]);
 
