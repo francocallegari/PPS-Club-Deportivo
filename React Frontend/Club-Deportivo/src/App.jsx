@@ -15,6 +15,7 @@ import ResetPassword from "./components/resetPassword/ResetPassword";
 import Director from "./components/director/Director";
 import Register from "./components/login/Register";
 import ClubInfo from "./components/club/Club";
+import PageNotFound from "./components/pageNotFound/PageNotFound";
 
 function App() {
   const router = createBrowserRouter([
@@ -119,6 +120,14 @@ function App() {
       element: (
         <MainLayout>
           <ClubInfo />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "*",
+      element: (
+        <MainLayout>
+          <PageNotFound />
         </MainLayout>
       ),
     },
