@@ -70,7 +70,7 @@ const Header = () => {
         <Nav.Item className="Nav-Seccion" onClick={handleLogout}>
           Cerrar sesión
         </Nav.Item>
-        <i class="fa-regular fa-circle-user" onClick={handleProfile}></i>
+        <i className="fa-regular fa-circle-user" onClick={handleProfile}></i>
       </Nav>
     </Navbar>
   );

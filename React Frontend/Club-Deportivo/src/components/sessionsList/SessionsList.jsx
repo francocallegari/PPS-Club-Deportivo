@@ -3,11 +3,16 @@ import SessionCard from '../sessionCard/SessionCard'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import './SessionsList.css'
+import SessionForm from '../sessionForm/SessionForm'
+import { Button } from 'react-bootstrap'
+import UsersList from '../usersList/UsersList'
 
 const SessionsList = () => {
     const sessionRefs = useRef({})
     const [highlightedSessionId, setHighlightedSessionId] = useState(null)
     const [previousHighlightedSessionId, setPreviousHighlightedSessionId] = useState(null);
+    const [showModal, setShowModal] = useState(false)
+    const [selectedSession, setSelectedSession] = useState(null)
 
     const SESSIONS = [
         {
@@ -34,7 +39,7 @@ const SessionsList = () => {
             daysOfWeek: [2, 4],
             startTime: '10:00:00',
             endTime: '12:00:00',
-            field: "Cancha de tenis 1",
+            field: "Cancha de Tenis 1",
             coach: "Juan Perez"
         },
         {
@@ -43,7 +48,7 @@ const SessionsList = () => {
             daysOfWeek: [2, 4],
             startTime: '17:00:00',
             endTime: '18:00:00',
-            field: "Cancha de tenis 2",
+            field: "Cancha de Tenis 2",
             coach: "Juan Perez"
         }
     ]
@@ -62,7 +67,7 @@ const SessionsList = () => {
                 }
             }
         }
-    }, [highlightedSessionId, previousHighlightedSessionId]);
+    }, [highlightedSessionId, previousHighlightedSessionId])
 
     const handleEventClick = (clickInfo) => {
         const sessionId = clickInfo.event.id;
@@ -70,15 +75,35 @@ const SessionsList = () => {
         // Desplaza hacia el evento elegido
         if (sessionRefs.current[sessionId]) {
             sessionRefs.current[sessionId].scrollIntoView({ behavior: 'smooth' });
-            setPreviousHighlightedSessionId(highlightedSessionId); // Actualiza el id del evento anterior
+            if (sessionId === highlightedSessionId){
+                return
+            }
+            setPreviousHighlightedSessionId(highlightedSessionId) // Actualiza el id del evento anterior 
             setHighlightedSessionId(sessionId); // Marca el evento como seleccionado
         }
-    };
+    }
+
+    const handleEdit = (session) => {
+        setSelectedSession(session);  // Actualiza la clase que se quiere editar
+        setShowModal(true)
+    }
 
     return (
         <div>
             <h2 className="activities-title">CLASES</h2>
             <div style={{ display: 'flex', flexDirection: 'column', margin: '20px' }}>
+                <Button variant="primary" className='modal-button mb-5 mt-5' onClick={() => {
+                    setSelectedSession(null)
+                    setShowModal(true)
+                }}>
+                    + Nueva Clase
+                </Button>
+
+                <SessionForm
+                    selectedSession={selectedSession}
+                    show={showModal}
+                    onHide={() => setShowModal(false)}
+                />
                 <div className="calendar">
                     <FullCalendar
                         plugins={[timeGridPlugin]}
@@ -104,15 +129,23 @@ const SessionsList = () => {
                             className={s.id === highlightedSessionId ? 'highlighted' : ''}
                         >
                             <SessionCard
+                                id={s.id}
                                 startTime={s.startTime}
                                 endTime={s.endTime}
                                 daysOfWeek={s.daysOfWeek}
                                 field={s.field}
                                 coach={s.coach}
                                 sport={s.title}
+                                onEdit={handleEdit}
                             />
                         </div>
                     ))}
+                </div>
+                <div className='mt-5'>
+                    <h2 className='membersList-title'>SOCIOS ANOTADOS</h2>
+                    <div className='users-list-container'>
+                        <UsersList></UsersList>
+                    </div>
                 </div>
 
             </div>
