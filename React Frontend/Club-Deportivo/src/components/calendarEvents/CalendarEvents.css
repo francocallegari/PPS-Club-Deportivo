@@ -31,17 +31,21 @@
 }
 
 .event-full-title {
-  display: none;
+  display: block; 
   position: absolute;
   background-color: rgba(255, 255, 255, 0.9);
   border: 1px solid #ccc;
   padding: 4px;
   z-index: 10;
   color: #000;
+  opacity: 0; 
+  transition: opacity 1s ease; 
+  pointer-events: none; 
 }
 
 .event-content:hover .event-full-title {
-  display: block;
+  opacity: 1; 
+  pointer-events: auto;
 }
 
 
