@@ -16,6 +16,7 @@ import Director from "./components/director/Director";
 import Register from "./components/login/Register";
 import ClubInfo from "./components/club/Club";
 import PageNotFound from "./components/pageNotFound/PageNotFound";
+import CalendarEvents from "./components/calendarEvents/CalendarEvents";
 
 function App() {
   const router = createBrowserRouter([
@@ -79,7 +80,7 @@ function App() {
       path: "/activities",
       element: (
         <MainLayout>
-          <ActivitiesGrid />
+          <CalendarEvents />
         </MainLayout>
       ),
     },

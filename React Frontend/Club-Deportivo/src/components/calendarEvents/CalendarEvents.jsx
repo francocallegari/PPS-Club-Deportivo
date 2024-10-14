@@ -2,16 +2,12 @@ import React, { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import esLocale from "@fullcalendar/core/locales/es";
-import { Button, Modal } from "react-bootstrap";
 import "./CalendarEvents.css";
+import ActivityCard from "../activityCard/ActivityCard";
 
 const CalendarEvents = () => {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const fetchEvents = async () => {
     const activities = [
@@ -71,23 +67,6 @@ const CalendarEvents = () => {
     const time = extendedProps.time;
     const image = extendedProps.image;
     setSelectedEvent({ title, description, date, time, image });
-    handleShow();
-  };
-
-  const renderEventContent = (eventInfo) => {
-    const { time, title } = eventInfo.event.extendedProps;
-    return (
-      <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "0.3fr 1fr",
-        alignItems: "start",
-        padding: "3px",
-      }}
-    >
-      <span style={{ textAlign: "left", paddingLeft: "3px"}}>{time} {title}</span>
-    </div>
-    );
   };
 
   const formatDate = (date) => {
@@ -95,12 +74,26 @@ const CalendarEvents = () => {
     return date.toLocaleDateString("es-ES", options);
   };
 
-  return (
-    <div className="p-6">
-      <div className="activities-container">
-        <h2 className="calendar-title">CALENDARIO</h2>
+  const eventContent = (eventInfo) => {
+    const { time, title } = eventInfo.event.extendedProps;
+    return (
+      <div className="event-content">
+        <span className="event-time-title">
+          {time} {title}
+        </span>
+        <span className="event-full-title">
+          {time} {title}
+        </span>{" "}
+        {/* oculto inicialmente */}
+      </div>
+    );
+  };
 
-        <div className="calendar-container bg-white p-4 rounded-md shadow-md mx-auto w-3/4">
+  return (
+    <div>
+      <h2 className="calendar-title">ACTIVIDADES</h2>
+      <div className="calendar-events-container">
+        <div className="calendar-container bg-white p-4 rounded-md">
           <FullCalendar
             plugins={[dayGridPlugin]}
             initialView="dayGridMonth"
@@ -120,42 +113,38 @@ const CalendarEvents = () => {
             dayHeaderFormat={{ weekday: "long" }}
             locales={[esLocale]}
             locale="es"
-            eventContent={renderEventContent}
-            fixedWeekCount={false}
+            eventContent={eventContent} // Contenido personalizado
+            eventLimit={true}
+            fixedWeekCount={false} 
           />
         </div>
 
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>{selectedEvent?.title}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {selectedEvent?.image && (
-              <img
-                src={selectedEvent.image}
-                alt={selectedEvent.title}
-                style={{ width: "100%", height: "auto", marginBottom: "1rem" }}
-              />
+        <div className="details-column">
+          <h2 className="details-column-title">Detalles</h2>
+          <div className="selected-event-card">
+            {selectedEvent ? (
+              <div>
+                <button
+                  className="close-button"
+                  onClick={() => setSelectedEvent(null)}
+                >
+                  &times;
+                </button>
+                <ActivityCard
+                  title={selectedEvent.title}
+                  date={formatDate(selectedEvent.date)}
+                  time={selectedEvent.time}
+                  description={selectedEvent.description}
+                  image={selectedEvent.image}
+                />
+              </div>
+            ) : (
+              <div className="placeholder-text">
+                <p>Seleccione un evento para más detalles</p>
+              </div>
             )}
-            <h3>
-              {selectedEvent ? formatDate(selectedEvent.date) : ""} -{" "}
-              {selectedEvent?.time}
-            </h3>
-            <p>Descripción del evento: </p>
-            <p>{selectedEvent?.description}</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cerrar
-            </Button>
-            <Button
-              variant="primary"
-
-            >
-              Inscribirme
-            </Button>
-          </Modal.Footer>
-        </Modal>
+          </div>
+        </div>
       </div>
     </div>
   );

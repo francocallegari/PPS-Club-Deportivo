@@ -18,11 +18,12 @@
 
 .foto-perfil {
   border-radius: 50%;
-  width: 130px;
-  height: 130px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border: 4px solid rgba(13, 48, 118, 0.912); /* Borde más grueso */
-  margin-right: 40px;
+  margin-right: 8px;
+  margin-left: 15px;
 }
 
 h2 {
@@ -30,11 +31,19 @@ h2 {
   flex-grow: 1;
 }
 
+.section-title {
+  font-size: 2.5em; 
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+
 .nombre-usuario {
   font-size: 1.9em;
   font-weight: bold;
   color: #333;
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
 .info-personal,
@@ -57,12 +66,15 @@ h2 {
   font-size: 1.1em;
   font-weight: bold;
   color: #222;
+  display: block; 
+  margin-bottom: 5px; 
 }
 
 .datos-grid p {
   font-size: 1em;
   font-weight: normal;
   color: #555;
+  margin-top: 0;
 }
 
 .suscripcion label,
@@ -71,6 +83,8 @@ h2 {
   font-size: 1em;
   font-weight: normal;
   color: #555;
+  display: block;
+  margin-bottom: 5px;
 }
 
 p {
@@ -122,10 +136,9 @@ b {
   background-color: rgba(13, 48, 118, 0.912) !important;
   color: white !important;
   border: none !important;
-  padding: 15px 35px !important;
-  font-size: 1.1em !important;
-  font-weight: bold !important;
-  border-radius: 40px !important;
+  padding: 10px 20px !important;
+  font-size: 1em !important;
+  border-radius: 10px !important;
   cursor: pointer !important;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2) !important;
   transition: all 0.3s ease-in-out !important;
@@ -134,11 +147,4 @@ b {
 .deportes {
   color: #555;
   font-weight: normal;
-}
-
-.titulo-deportes {
-  font-size: 1.1em !important;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 15px;
 }

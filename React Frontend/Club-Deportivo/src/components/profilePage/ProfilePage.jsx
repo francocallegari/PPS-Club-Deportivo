@@ -84,7 +84,7 @@ const ProfilePage = () => {
       </div>
 
       <div className="info-personal">
-        <h3>Mis datos personales</h3>
+        <h3 className="section-title">Mis datos personales</h3>
         <div className="datos-grid">
           <p>
             <label>Nº de socio:</label>
@@ -114,7 +114,7 @@ const ProfilePage = () => {
       </div>
 
       <div className="suscripcion">
-        <h3>Mi suscripción</h3>
+        <h3 className="section-title">Mi suscripción</h3>
         <p>
           <label>
             <b>Estado:</b>
@@ -130,9 +130,7 @@ const ProfilePage = () => {
       </div>
 
       <div className="deportes">
-        <p className="titulo-deportes">
-          <b>Deportes y actividades</b>
-        </p>
+        <h3 className="section-title">Deportes y actividades</h3>
         <FontAwesomeIcon icon={faVolleyballBall} /> Voley
         <h1></h1>
         <FontAwesomeIcon icon={faFutbol} /> Fútbol

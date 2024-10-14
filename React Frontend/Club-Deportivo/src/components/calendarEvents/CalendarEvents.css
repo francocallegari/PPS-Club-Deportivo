@@ -7,8 +7,93 @@
   color: rgba(13, 48, 118, 0.912);
 }
 
+.calendar-events-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
 
-/* Aplica estilos específicos al título (mes y año) */
+.calendar-container {
+  width: 60%;
+}
+
+.event-content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2px;
+  font-weight: normal; 
+  position: relative;
+}
+
+.event-time-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.event-full-title {
+  display: none;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ccc;
+  padding: 4px;
+  z-index: 10;
+  color: #000;
+}
+
+.event-content:hover .event-full-title {
+  display: block;
+}
+
+
+.details-column {
+  padding: 20px;
+  width: 700px;
+  border-radius: 8px;
+  align-items: top;
+  justify-content: center;
+}
+
+
+.selected-event-card {
+  position: relative;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.details-column-title {
+  font-size: 1.8rem; 
+  font-weight: bold; 
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: rgba(13, 48, 118, 0.912); 
+}
+
+.placeholder-text {
+  font-size: 1.2rem; 
+  color: #555; 
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 68px;
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: transparent;
+  color: inherit;
+}
+
+.close-button:focus {
+  outline: none;
+}
+
 .fc-toolbar-title {
   @apply uppercase; /* Convierte mes y año a mayúsculas */
   @apply text-lg; /* Ajusta el tamaño del texto si es necesario */
