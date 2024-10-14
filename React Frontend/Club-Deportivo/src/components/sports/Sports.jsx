@@ -115,7 +115,7 @@ const Sports = () => {
             <img src={sport.image} alt={sport.name} className="sport-image" />
             <h3 className="sport-name">{sport.name}</h3>
             <Button className="btn-ver-mas" onClick={() => handleShowDetail(sport)}>
-              VER MÁS
+              VER MÁS  <i className="fas fa-arrow-right"></i>
             </Button>
           </div>
         ))}

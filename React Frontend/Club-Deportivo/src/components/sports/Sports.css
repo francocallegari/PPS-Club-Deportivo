@@ -16,7 +16,6 @@
 .sports-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 20px;
 }
 
 .sport-card {
@@ -26,6 +25,8 @@
   text-align: center;
   transition: transform 0.2s;
   background-color: rgb(242, 245, 252);
+  width: 85%;
+  height: 95%;
 }
 
 .sport-card:hover {
