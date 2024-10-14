@@ -13,9 +13,14 @@
 .title {
     text-align: center;
     text-transform: uppercase;
+    font-size: x-large;
 }
 
 .buttons-div {
     display: flex;
     justify-content: space-around;
+}
+
+.card-info {
+    margin: 7px 7px;
 }
