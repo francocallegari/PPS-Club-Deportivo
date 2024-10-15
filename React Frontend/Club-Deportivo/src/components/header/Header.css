@@ -8,10 +8,9 @@
 
 /* Estilos para los enlaces del menú de navegación */
 .Nav-Seccion {
-  color: rgba(255, 255, 255, 0.85);
-  font-family: "Arial", sans-serif;
+  color: white;
+  font-family: Raleway, sans-serif;
   font-size: 18px;
-  font-weight: bold;
   padding: 20px 40px;
   border-radius: 7px;
   letter-spacing: 0.01em;
@@ -41,11 +40,27 @@
 
 .Header-section {
   margin-left: 100px;
+  cursor: pointer;
 }
 
-.fa-circle-user{
+.fa-circle-user {
   font-size: 30px;
   color: rgba(255, 255, 255, 0.8);
   margin-top: 20px;
   cursor: pointer;
+}
+
+.becomeMember-button {
+  align-items: center;
+  height: 40px !important;
+  width: 180px !important;
+  padding: 4px 5px !important;
+  border-radius: 25px !important;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border: 2px solid transparent;
+  transition: 0.2s ease;
 }

@@ -4,6 +4,7 @@ import { Navbar, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Image } from "react-bootstrap";
 import logo from "../../images/logo.png";
+import { Button } from "react-bootstrap";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -33,15 +34,20 @@ const Header = () => {
     e.preventDefault();
     navigate("/");
   };
-  
+
   const handleProfile = (e) => {
     e.preventDefault();
     navigate("/profile");
   };
-  
+
   const handleClubNavigation = (e) => {
     e.preventDefault();
     navigate("/club");
+  };
+
+  const handleRegisterNavigation = (e) => {
+    e.preventDefault();
+    navigate("/register");
   };
 
   return (
@@ -67,9 +73,16 @@ const Header = () => {
         <Nav.Item className="Nav-Seccion" onClick={handleLoginNavigation}>
           Iniciar sesión
         </Nav.Item>
-        <Nav.Item className="Nav-Seccion" onClick={handleLogout}>
-          Cerrar sesión
-        </Nav.Item>
+
+        <div className="ecomeMember-button">
+          <Button
+            variant="danger"
+            className="becomeMember-button"
+            onClick={handleRegisterNavigation}
+          >
+            ASOCIATE
+          </Button>
+          </div>
         <i className="fa-regular fa-circle-user" onClick={handleProfile}></i>
       </Nav>
     </Navbar>
