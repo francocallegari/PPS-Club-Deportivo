@@ -16,8 +16,12 @@ const ActivityCard = ({ title, date, time, description }) => {
   return (
     <div className="activity-card">
       <h3>{title}</h3>
-      <p><strong>Fecha:</strong> {date}</p>
-      <p><strong>Hora:</strong> {time}</p>
+      <p>
+        <strong>Fecha:</strong> {date}
+      </p>
+      <p>
+        <strong>Hora:</strong> {time}
+      </p>
       <p>{description}</p>
       <Button className="btn-sign-up" onClick={handleShow}>
         INSCRIBIRSE
@@ -28,7 +32,8 @@ const ActivityCard = ({ title, date, time, description }) => {
           <Modal.Title>Confirmar Inscripción</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Está seguro de que desea inscribirse en la actividad <strong>{title}</strong>?
+          ¿Está seguro de que desea inscribirse en la actividad{" "}
+          <strong>{title}</strong>?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

@@ -50,6 +50,10 @@ const Header = () => {
     navigate("/register");
   };
 
+  const handleAssociate = (e) => {
+    e.preventDefault();
+    navigate("/asociate");
+  };
   return (
     <Navbar className="navbar-container" expand="lg">
       <div className="Header-section ">
@@ -75,14 +79,10 @@ const Header = () => {
         </Nav.Item>
 
         <div className="ecomeMember-button">
-          <Button
-            variant="danger"
-            className="becomeMember-button"
-            onClick={handleRegisterNavigation}
-          >
+          <Nav.Item className="becomeMember-button" onClick={handleAssociate}>
             ASOCIATE
-          </Button>
-          </div>
+          </Nav.Item>
+        </div>
         <i className="fa-regular fa-circle-user" onClick={handleProfile}></i>
       </Nav>
     </Navbar>
