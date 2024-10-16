@@ -1,0 +1,41 @@
+.text-center {
+  text-align: center;
+  margin-top: 20px;
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  color: #003f7f;
+  font-size: 27px;
+
+  margin-bottom: 20px;
+}
+.asociate-form {
+  max-width: 1200px;
+  border-radius: 12px;
+  padding: 12px;
+  margin-left: 160px;
+  justify-content: center;
+}
+
+.asociate-input {
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 4px;
+
+  border: 1px solid #ced4da;
+}
+
+.asociate-button {
+  width: 24%;
+  padding: 12px;
+  background-color: #2c55d0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.asociate-button:hover {
+  background-color: #0056b3;
+}

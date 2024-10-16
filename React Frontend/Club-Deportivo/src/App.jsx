@@ -17,6 +17,7 @@ import Register from "./components/login/Register";
 import ClubInfo from "./components/club/Club";
 import PageNotFound from "./components/pageNotFound/PageNotFound";
 import CalendarEvents from "./components/calendarEvents/CalendarEvents";
+import AsociateForm from "./components/login/Asociate";
 
 function App() {
   const router = createBrowserRouter([
@@ -109,13 +110,21 @@ function App() {
       ),
     },
     {
+      path: "/asociate",
+      element: (
+        <MainLayout>
+          <AsociateForm />
+        </MainLayout>
+      ),
+    },
+    {
       path: "/director",
       element: (
         <MainLayout>
           <Director />
         </MainLayout>
-      )
-      },
+      ),
+    },
     {
       path: "/club",
       element: (
