@@ -6,7 +6,6 @@ import Sports from "./components/sports/Sports";
 import ProfilePage from "./components/profilePage/ProfilePage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login/Login";
-import NewsGrid from "./components/newsGrid/NewsGrid";
 import NewsDetail from "./components/newsDetail/NewsDetail";
 import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
@@ -58,14 +57,6 @@ function App() {
       element: (
         <MainLayout>
           <ResetPassword />
-        </MainLayout>
-      ),
-    },
-    {
-      path: "/news",
-      element: (
-        <MainLayout>
-          <NewsGrid />
         </MainLayout>
       ),
     },
