@@ -1,0 +1,26 @@
+.sport-detail-content img {
+    max-width: 100%;
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sport-detail-content span {
+    font-style: italic;
+    display: block;
+    margin: 10px 0 20px;
+    color: #555;
+}
+
+.sport-detail-content p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #333;
+    margin-top: 20px;
+}
+
+.sport-detail-content img {
+    width: 100%;
+    height: 290px;
+    object-fit: cover;
+    border-radius: 8px;
+}
