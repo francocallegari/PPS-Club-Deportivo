@@ -57,7 +57,7 @@ const ProfilePage = () => {
             Cancelar
           </Button>
           <Button
-            classname="boton-guardar"
+            className="boton-guardar"
             variant="primary"
             onClick={handleClose}
           >
