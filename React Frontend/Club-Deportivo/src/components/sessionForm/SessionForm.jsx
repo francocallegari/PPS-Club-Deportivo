@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button, Form, CloseButton } from 'react-bootstrap'
 
 {/* El Coach se va a mandar automaticamente sacando su ID de la autenticacion.
     A partir del ID del Coach, se va a obtener el deporte del cual se quiere crear la clase
@@ -58,10 +58,11 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
                     {selectedSession ? 'Editar Clase' : 'Nueva Clase'}
                 </Modal.Title>
+                <CloseButton variant='white' className='close-button-modal' onClick={props.onHide}></CloseButton>
             </Modal.Header>
             <Modal.Body>
                 {selectedSession && (
@@ -71,6 +72,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                     <Form.Group>
                         <Form.Label>Días</Form.Label>
                         <Form.Check
+                            name="Lunes"
                             type='checkbox'
                             label='Lunes'
                             value={1}
@@ -78,6 +80,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                             onChange={handleChange}>
                         </Form.Check>
                         <Form.Check
+                            name="Martes"
                             type='checkbox'
                             label='Martes'
                             value={2}
@@ -86,6 +89,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
 
                         </Form.Check>
                         <Form.Check
+                            name="Miercoles"
                             type='checkbox'
                             label='Miércoles'
                             value={3}
@@ -94,6 +98,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
 
                         </Form.Check>
                         <Form.Check
+                            name="Jueves"
                             type='checkbox'
                             label='Jueves'
                             value={4}
@@ -102,6 +107,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
 
                         </Form.Check>
                         <Form.Check
+                            name="Viernes"
                             type='checkbox'
                             label='Viernes'
                             value={5}

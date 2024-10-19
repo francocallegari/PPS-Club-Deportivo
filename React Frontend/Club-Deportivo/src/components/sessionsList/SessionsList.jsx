@@ -4,15 +4,14 @@ import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import './SessionsList.css'
 import SessionForm from '../sessionForm/SessionForm'
-import { Button } from 'react-bootstrap'
+import { Button, CloseButton, Modal } from 'react-bootstrap'
 import UsersList from '../usersList/UsersList'
 
 const SessionsList = () => {
-    const sessionRefs = useRef({})
-    const [highlightedSessionId, setHighlightedSessionId] = useState(null)
-    const [previousHighlightedSessionId, setPreviousHighlightedSessionId] = useState(null);
     const [showModal, setShowModal] = useState(false)
     const [selectedSession, setSelectedSession] = useState(null)
+    const [event, setEvent] = useState(null)
+    const [showSessionModal, setShowSessionModal] = useState(false)
 
     const SESSIONS = [
         {
@@ -53,34 +52,33 @@ const SessionsList = () => {
         }
     ]
 
-    useEffect(() => {
-        if (highlightedSessionId !== null) {
-            const highlightedSessionRef = sessionRefs.current[highlightedSessionId];
-            if (highlightedSessionRef) {
-                highlightedSessionRef.classList.add('highlighted');
-            }
-            // Desmarca el evento anterior
-            if (previousHighlightedSessionId !== null) {
-                const previousHighlightedSessionRef = sessionRefs.current[previousHighlightedSessionId];
-                if (previousHighlightedSessionRef) {
-                    previousHighlightedSessionRef.classList.remove('highlighted');
+    const convertSessionsToEvents = (sessions) => {
+        return sessions.map(session => {
+            return {
+                title: session.title,
+                daysOfWeek: session.daysOfWeek,
+                startTime: session.startTime,
+                endTime: session.endTime,
+                extendedProps: { // Propiedades adicionales 
+                    field: session.field,
+                    coach: session.coach
                 }
             }
-        }
-    }, [highlightedSessionId, previousHighlightedSessionId])
+        })
+    }
 
-    const handleEventClick = (clickInfo) => {
-        const sessionId = clickInfo.event.id;
-
-        // Desplaza hacia el evento elegido
-        if (sessionRefs.current[sessionId]) {
-            sessionRefs.current[sessionId].scrollIntoView({ behavior: 'smooth' });
-            if (sessionId === highlightedSessionId){
-                return
-            }
-            setPreviousHighlightedSessionId(highlightedSessionId) // Actualiza el id del evento anterior 
-            setHighlightedSessionId(sessionId); // Marca el evento como seleccionado
+    const handleEventClick = (info) => {
+        const { title, start, end, extendedProps, _def } = info.event
+        const days = _def.recurringDef.typeData.daysOfWeek
+        const eventInfo = {
+            title: title,
+            daysOfWeek: days,
+            startTime: start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            endTime: end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            extendedProps: extendedProps
         }
+        setEvent(eventInfo)
+        setShowSessionModal(true)
     }
 
     const handleEdit = (session) => {
@@ -91,12 +89,12 @@ const SessionsList = () => {
     return (
         <div>
             <h2 className="activities-title">CLASES</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', margin: '20px' }}>
+            <div className='sessions-container' style={{ display: 'flex', flexDirection: 'column'}}>
                 <Button variant="primary" className='modal-button mb-5 mt-5' onClick={() => {
                     setSelectedSession(null)
                     setShowModal(true)
                 }}>
-                    + Nueva Clase
+                    + Agregar Clase
                 </Button>
 
                 <SessionForm
@@ -104,47 +102,48 @@ const SessionsList = () => {
                     show={showModal}
                     onHide={() => setShowModal(false)}
                 />
-                <div className="calendar">
-                    <FullCalendar
-                        plugins={[timeGridPlugin]}
-                        initialView="timeGridWeek"
-                        headerToolbar={false} // Oculta el toolbar (prev, next, etc)
-                        allDaySlot={false} // Oculta la fila de "Todo el día"
-                        slotMinTime="08:00:00" // Hora de inicio
-                        slotMaxTime="22:00:00" // Hora de fin
-                        slotDuration="00:30:00" // Intervalos de 30 minutos
-                        slotLabelInterval="01:00:00" // Mostrar etiqueta cada hora
-                        dayHeaderFormat={{ weekday: 'long' }} // Mostrar solo el nombre del día
-                        locale='es'
-                        contentHeight="auto"
-                        events={SESSIONS}
-                        eventClick={handleEventClick}
-                    />
+                <div style={{ display: 'flex' }}>
+                    <div className="calendar-container">
+                        <FullCalendar
+                            plugins={[timeGridPlugin]}
+                            initialView="timeGridWeek"
+                            headerToolbar={false} // Oculta el toolbar (prev, next, etc)
+                            allDaySlot={false} // Oculta la fila de "Todo el día"
+                            slotMinTime="08:00:00" // Hora de inicio
+                            slotMaxTime="22:00:00" // Hora de fin
+                            slotDuration="00:30:00" // Intervalos de 30 minutos
+                            slotLabelInterval="01:00:00" // Mostrar etiqueta cada hora
+                            dayHeaderFormat={{ weekday: 'long' }} // Mostrar solo el nombre del día
+                            weekends={false}
+                            locale='es'
+                            contentHeight="auto"
+                            events={convertSessionsToEvents(SESSIONS)}
+                            eventClick={handleEventClick}
+                        />
+                    </div>
+                    <div>
+                        {event && (
+                            <Modal show={showSessionModal} onHide={() => setShowSessionModal(false)}>
+                                <Modal.Header className='modal-header'>
+                                    <CloseButton variant='white' className='close-button-modal' onClick={() => setShowSessionModal(false)}></CloseButton>
+                                </Modal.Header>
+                                <SessionCard
+                                    startTime={event.startTime}
+                                    endTime={event.endTime}
+                                    daysOfWeek={event.daysOfWeek}
+                                    field={event.extendedProps.field}
+                                    coach={event.extendedProps.coach}
+                                    sport={event.title}
+                                    onEdit={handleEdit}
+                                />
+                            </Modal>
+                        )}
+                    </div>
                 </div>
-                <div className="activities-grid">
-                    {SESSIONS.map((s) => (
-                        <div
-                            key={s.id}
-                            ref={el => sessionRefs.current[s.id] = el}
-                            className={s.id === highlightedSessionId ? 'highlighted' : ''}
-                        >
-                            <SessionCard
-                                id={s.id}
-                                startTime={s.startTime}
-                                endTime={s.endTime}
-                                daysOfWeek={s.daysOfWeek}
-                                field={s.field}
-                                coach={s.coach}
-                                sport={s.title}
-                                onEdit={handleEdit}
-                            />
-                        </div>
-                    ))}
-                </div>
-                <div className='mt-5'>
+                <div className='mt-5 mb-5'>
                     <h2 className='membersList-title'>SOCIOS ANOTADOS</h2>
                     <div className='users-list-container'>
-                        <UsersList></UsersList>
+                        <UsersList option="members"></UsersList>
                     </div>
                 </div>
 

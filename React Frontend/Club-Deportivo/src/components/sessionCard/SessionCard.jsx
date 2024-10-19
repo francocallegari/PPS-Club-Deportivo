@@ -2,7 +2,7 @@ import React from 'react'
 import './SessionCard.css'
 import { Button } from 'react-bootstrap'
 
-const SessionCard = ({ id, startTime, endTime, field, coach, sport, daysOfWeek, onEdit }) => {
+const SessionCard = ({ startTime, endTime, field, coach, sport, daysOfWeek, onEdit }) => {
 
     const days = [
         'Domingo',
@@ -25,7 +25,6 @@ const SessionCard = ({ id, startTime, endTime, field, coach, sport, daysOfWeek, 
         const duration = (end - start) / (1000 * 60); // duración en minutos
 
         const session = {
-            id: id,
             startTime: startTime,
             duration: duration,
             field: field,

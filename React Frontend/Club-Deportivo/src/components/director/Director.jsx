@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import "./Director.css";
+import UsersList from '../usersList/UsersList';
 
 const Director = () => {
     const initialEvents = [
@@ -33,40 +34,21 @@ const Director = () => {
         }
     };
 
-    const users = [
-        { id: 1, name: "Manuel De Macedo", type: "admin" },
-        { id: 2, name: "Franco Callegari", type: "admin" },
-        { id: 3, name: "Facundo Gomez", type: "coach" },
-        { id: 4, name: "Anabella Rustici", type: "coach" },
-        { id: 5, name: "Aylen Guy", type: "client" },
-        { id: 6, name: "Delfina Isaguirre", type: "client" },
-    ];
-
-    const admins = users.filter(user => user.type === "admin");
-    const coaches = users.filter(user => user.type === "coach");
-    const clients = users.filter(user => user.type === "client");
-
     return (
         <>
             <h3 className='evento-approve'>Usuarios</h3>
             <div className="user-container">
                 <div className="user-column">
                     <h3 className='user-title'>Administradores</h3>
-                    {admins.map(user => (
-                        <p className="user" key={user.id}><i className="fas fa-user"></i>{user.name}</p>
-                    ))}
+                    <UsersList option="admins"></UsersList>
                 </div>
                 <div className="user-column">
                     <h3 className='user-title'>Entrenadores</h3>
-                    {coaches.map(user => (
-                        <p className="user" key={user.id}><i className="fas fa-user"></i>{user.name}</p>
-                    ))}
+                    <UsersList option="coaches"></UsersList>
                 </div>
                 <div className="user-column">
-                    <h3 className='user-title'>Clientes</h3>
-                    {clients.map(user => (
-                        <p className="user" key={user.id}><i className="fas fa-user"></i>{user.name}</p>
-                    ))}
+                    <h3 className='user-title'>Socios</h3>
+                    <UsersList option="members"></UsersList>
                 </div>
             </div>
 
