@@ -33,7 +33,7 @@ const PaymentMethod = () => {
       const { id } = response.data;
       setPreferenceId(id);
     } catch (error) {
-      setError("Error al crear la preferencia");
+      setError("Error al inicializar MercadoPago");
       console.error(error);
     } finally {
       setLoading(false);

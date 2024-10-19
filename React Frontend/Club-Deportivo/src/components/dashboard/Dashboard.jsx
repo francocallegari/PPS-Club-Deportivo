@@ -9,10 +9,6 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
-  const handleRegisterNavigation = (e) => {
-    e.preventDefault();
-    navigate("/register")
-  }
 
   return (
     <div className="dashboard-container mb-5">
@@ -22,11 +18,7 @@ const Dashboard = () => {
       <div>
         <NewsCard/>
       </div>
-      <div className="div-button mt-5">
-        <Button variant="dark" className="becomeMember-button" onClick={handleRegisterNavigation}>
-          ASOCIARME AL CLUB
-        </Button>
-      </div>
+   
     </div>
   );
 };

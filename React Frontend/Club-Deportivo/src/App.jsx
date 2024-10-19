@@ -6,7 +6,6 @@ import Sports from "./components/sports/Sports";
 import ProfilePage from "./components/profilePage/ProfilePage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login/Login";
-import NewsGrid from "./components/newsGrid/NewsGrid";
 import NewsDetail from "./components/newsDetail/NewsDetail";
 import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
@@ -17,6 +16,7 @@ import Register from "./components/login/Register";
 import ClubInfo from "./components/club/Club";
 import PageNotFound from "./components/pageNotFound/PageNotFound";
 import CalendarEvents from "./components/calendarEvents/CalendarEvents";
+import AsociateForm from "./components/login/Asociate";
 
 function App() {
   const router = createBrowserRouter([
@@ -61,14 +61,6 @@ function App() {
       ),
     },
     {
-      path: "/news",
-      element: (
-        <MainLayout>
-          <NewsGrid />
-        </MainLayout>
-      ),
-    },
-    {
       path: "/noticia/:id",
       element: (
         <MainLayout>
@@ -109,13 +101,21 @@ function App() {
       ),
     },
     {
+      path: "/asociate",
+      element: (
+        <MainLayout>
+          <AsociateForm />
+        </MainLayout>
+      ),
+    },
+    {
       path: "/director",
       element: (
         <MainLayout>
           <Director />
         </MainLayout>
-      )
-      },
+      ),
+    },
     {
       path: "/club",
       element: (

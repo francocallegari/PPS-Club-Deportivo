@@ -3,6 +3,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import "./ProfilePage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faPencilAlt,
   faFutbol,
   faSwimmer,
   faVolleyballBall,
@@ -18,7 +19,7 @@ const ProfilePage = () => {
     <div className="socio-container">
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modificar mis datos</Modal.Title>
+          <Modal.Title>Modificar mis datos </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -79,7 +80,7 @@ const ProfilePage = () => {
           variant="primary"
           onClick={handleShow}
         >
-          Modificar mis datos
+          Modificar mis datos <FontAwesomeIcon icon={faPencilAlt} />
         </Button>
       </div>
 
@@ -136,6 +137,13 @@ const ProfilePage = () => {
         <FontAwesomeIcon icon={faFutbol} /> Fútbol
         <h1></h1>
         <FontAwesomeIcon icon={faSwimmer} /> Natación
+      </div>
+
+      <div className="suscripcion">
+        <h3 className="section-title">Cuotas pendientes</h3>
+        <Button className="boton-modificar" variant="primary">
+          Ver mis cuotas
+        </Button>
       </div>
     </div>
   );

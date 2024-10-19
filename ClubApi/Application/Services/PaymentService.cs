@@ -12,47 +12,47 @@ namespace Application.Services
 {
     
     
-        public class PaymentService : IPaymentService
-        {
-            private readonly IRepositoryPayment _paymentRepository;
+    //    public class PaymentService : IPaymentService
+    //{
+    //    private readonly IRepositoryPayment _paymentRepository;
 
-            public PaymentService(IRepositoryPayment paymentRepository)
-            {
-                _paymentRepository = paymentRepository;
-            }
+    //    public PaymentService(IRepositoryPayment paymentRepository)
+    //    {
+    //        _paymentRepository = paymentRepository;
+    //    }
 
-            
-            public void MakeFeePayment(int memberId, int feeId)
-            {
-                
-                var feePayment = _paymentRepository.GetAll()
-                                         .FirstOrDefault(mfp => mfp.MemberId == memberId && mfp.FeeId == feeId && mfp.Status == FeeStatus.Pending);
 
-                if (feePayment == null)
-                {
-                    throw new Exception("No se encontró una cuota pendiente para este miembro.");
-                }
+    //    public void MakeFeePayment(int memberId, int feeId)
+    //    {
 
-                
-                feePayment.Status = FeeStatus.Paid;
-                feePayment.PaymentDate = DateTime.Now;
+    //        var feePayment = _paymentRepository.GetAll()
+    //                                 .FirstOrDefault(mfp => mfp.MemberId == memberId && mfp.FeeId == feeId && mfp.Status == FeeStatus.Pending);
 
-                
-                _paymentRepository.Update(feePayment);
-            }
+    //        if (feePayment == null)
+    //        {
+    //            throw new Exception("No se encontró una cuota pendiente para este miembro.");
+    //        }
 
-            
-            public List<MembershipFeePayment> GetMemberFees(int memberId, FeeStatus? status = null)
-            {
-                var query = _paymentRepository.GetAll().Where(mfp => mfp.MemberId == memberId);
 
-                if (status.HasValue)
-                {
-                    query = query.Where(mfp => mfp.Status == status);
-                }
+    //        feePayment.Status = FeeStatus.Paid;
+    //        feePayment.PaymentDate = DateTime.Now;
 
-                return query.ToList();
-            }
-        }
-    }
+
+    //        _paymentRepository.Update(feePayment);
+    //    }
+
+
+    //    public List<MembershipFeePayment> GetMemberFees(int memberId, FeeStatus? status = null)
+    //    {
+    //        var query = _paymentRepository.GetAll().Where(mfp => mfp.MemberId == memberId);
+
+    //        if (status.HasValue)
+    //        {
+    //            query = query.Where(mfp => mfp.Status == status);
+    //        }
+
+    //        return query.ToList();
+    //    }
+    //}
+}
 
