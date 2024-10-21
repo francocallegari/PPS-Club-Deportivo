@@ -6,7 +6,7 @@ import { Card, Button, Carousel } from "react-bootstrap";
 const NewsCard = () => {
 
   const [selectedNews, setSelectedNews] = useState(null)
-
+  
   const noticias = [
     {
       title: "Campeonato de Fútbol",
@@ -65,7 +65,7 @@ const NewsCard = () => {
       detailedDescription: "El taller incluye sesiones de yoga, meditación guiada y técnicas de relajación. Ideal para principiantes y para quienes buscan una pausa en su rutina diaria. Ven y descubre el poder de la paz interior.",
     },
   ];
-
+  
   const chunkArray = (arr, chunkSize) => {
     const result = [];
     for (let i = 0; i < arr.length; i += chunkSize) {
