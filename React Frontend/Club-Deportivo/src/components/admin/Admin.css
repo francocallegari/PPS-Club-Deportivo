@@ -1,0 +1,28 @@
+.container{
+    display: flex;
+    justify-content: space-around;
+    gap: 50px;
+}
+
+.row{
+    width: 700px;
+}
+
+.title-admin{
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgba(13, 48, 118, 0.912);
+    margin-bottom: 10px;
+}
+
+.button{
+    margin-bottom: 15px;
+    background-color: rgba(13, 48, 118, 0.912);
+    border: rgba(13, 48, 118, 0.912);
+}
+
+.button:hover{
+    background-color: rgba(13, 48, 118, 0.912);
+    color: #fff;
+    transform: scale(1.05);
+}
