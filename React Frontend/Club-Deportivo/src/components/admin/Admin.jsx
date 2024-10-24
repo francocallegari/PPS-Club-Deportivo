@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col, Modal } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Modal, InputGroup } from 'react-bootstrap';
 import "./Admin.css";
 
 const Admin = ({ addNews }) => {
@@ -18,7 +18,7 @@ const Admin = ({ addNews }) => {
         const title = eventType === 'event' ? eventTitle : newsTitle;
         console.log(`${eventType === 'event' ? 'Evento' : 'Noticia'} agregado/a:`, title);
         handleClose();
-      };
+    };
 
     const handleEventSubmit = (e) => {
         e.preventDefault();
@@ -32,6 +32,22 @@ const Admin = ({ addNews }) => {
 
     return (
         <div>
+            <Col className="search">
+                <Form>
+                    <Form.Group controlId="formBasicSearch">
+                        <InputGroup>
+                            <Form.Control style={{ width: '20rem' }}
+                                type="text"
+                                placeholder="Buscar socio"
+                            />
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </InputGroup>
+                    </Form.Group>
+                </Form>
+            </Col>
+
+            <hr style={{ border: '1px solid #ccc', margin: '20px 0' }} />
+
             <Container className="mt-5 container">
                 <Row className="mb-4">
                     <Col>

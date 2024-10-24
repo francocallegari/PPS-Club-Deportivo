@@ -1,3 +1,17 @@
+.search{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.fa-magnifying-glass{
+    margin-top: 10px;
+    margin-left: 10px !important;
+    font-size: 20px;
+    color: rgba(13, 48, 118, 0.912);
+}
+
 .container{
     display: flex;
     justify-content: space-around;
