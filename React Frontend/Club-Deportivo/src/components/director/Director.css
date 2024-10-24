@@ -16,13 +16,13 @@
     font-size: 20px;
 }
 
-/*.user {
+.user {
     background-color: rgb(242, 245, 252) !important;
     color: rgba(13, 48, 118, 0.912) !important;
     margin: 20px 0px;
     padding: 15px;
     border-radius: 5px;
-}*/
+}
 
 .fa-user {
     margin-right: 5px;
