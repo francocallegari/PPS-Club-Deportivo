@@ -3,7 +3,7 @@
   justify-content: space-between;
   padding: 50px;
   background-color: #f9f9f9;
-  border-radius: 10px;
+  border-radius: 11px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   gap: 110px;
@@ -97,8 +97,8 @@
 }
 
 .icono-grande {
-  font-size: 50px; /* Tamaño grande del ícono */
-  color: #007bff; /* Cambia el color del ícono si es necesario */
+  font-size: 50px;
+  color: #007bff;
 }
 
 .paid .icono-grande {

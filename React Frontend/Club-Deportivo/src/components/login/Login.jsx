@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import "./Login.css";
 import RegisterForm from "./Register";
 import { useNavigate } from "react-router-dom";
@@ -9,12 +9,12 @@ function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [isRecoveringPassword, setIsRecoveringPassword] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("")
-  const emailRef = useRef(null)
-  const passwordRef = useRef(null)
-  const navigate = useNavigate()
+  const [password, setPassword] = useState("");
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const navigate = useNavigate();
 
-  const {handleLogin} = useContext(AuthenticationContext)
+  const { handleLogin } = useContext(AuthenticationContext);
 
   const toggleRegistering = () => {
     setIsRegistering(!isRegistering);
@@ -56,68 +56,75 @@ function Login() {
   };
 
   const handleUserLogin = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (email.length === 0){
-      emailRef.current.focus()
-      return
+    if (email.length === 0) {
+      emailRef.current.focus();
+      return;
     }
 
-    if (password.length === 0){
-      passwordRef.current.focus()
-      return
+    if (password.length === 0) {
+      passwordRef.current.focus();
+      return;
     }
 
     try {
-      const response = await fetch('https://localhost:7081/api/Autenticacion/authenticate', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        }),
-      });
+      const response = await fetch(
+        "https://localhost:7081/api/Autenticacion/authenticate",
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        }
+      );
 
       const token = await response.text();
 
       if (response.ok) {
-        console.log('Login successful');
+        console.log("Login successful");
 
-        const decodedToken = jwtDecode(token)
-        handleLogin(email, decodedToken.role, decodedToken.sub, token)
-        navigate('/')
+        const decodedToken = jwtDecode(token);
+        handleLogin(email, decodedToken.role, decodedToken.sub, token);
+        navigate("/");
       } else {
-        console.log('Usuario o contraseña inválido');
-        setEmail('')
-        setPassword('')
-        return
+        console.log("Usuario o contraseña inválido");
+        setEmail("");
+        setPassword("");
+        return;
       }
     } catch (error) {
-      console.error('Ocurrió un error inesperado', error)
-      return
+      console.error("Ocurrió un error inesperado", error);
+      return;
     }
 
-    setEmail('')
-    setPassword('')
-  }
+    setEmail("");
+    setPassword("");
+  };
 
   return (
     <div className="Login-form-container">
       <div
-        className={`Login-card ${isRegistering ? "register-card" : "login-card"
-          }`}>
-
+        className={`Login-card ${
+          isRegistering ? "register-card" : "login-card"
+        }`}
+      >
         {!isRegistering && (
           <h3 className="custom-title">
             {isRecoveringPassword ? "Recuperar Contraseña" : "Iniciar Sesión"}
           </h3>
         )}
 
-        <form onSubmit={isRecoveringPassword ? handleRecoverPasswordSubmit : handleUserLogin}>
-
+        <form
+          onSubmit={
+            isRecoveringPassword ? handleRecoverPasswordSubmit : handleUserLogin
+          }
+        >
           {isRegistering ? (
             <RegisterForm />
           ) : isRecoveringPassword ? (
