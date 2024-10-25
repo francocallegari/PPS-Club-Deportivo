@@ -24,10 +24,6 @@ const ProfilePage = () => {
 
         <Modal.Body>
           <Form>
-            <Form.Group controlId="formSocioNumber">
-              <Form.Label>Nº de socio</Form.Label>
-              <Form.Control type="text" defaultValue="53048" />
-            </Form.Group>
             <Form.Group controlId="formDocumentNumber">
               <Form.Label>Documento</Form.Label>
               <Form.Control type="text" defaultValue="36859884" />

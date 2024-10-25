@@ -16,7 +16,6 @@ import Register from "./components/login/Register";
 import ClubInfo from "./components/club/Club";
 import PageNotFound from "./components/pageNotFound/PageNotFound";
 import CalendarEvents from "./components/calendarEvents/CalendarEvents";
-import AsociateForm from "./components/login/Asociate";
 import Admin from "./components/admin/Admin";
 import Protected from "./components/protectedRoute/Protected";
 
@@ -99,14 +98,6 @@ function App() {
       element: (
         <MainLayout>
           <Register />
-        </MainLayout>
-      ),
-    },
-    {
-      path: "/asociate",
-      element: (
-        <MainLayout>
-          <AsociateForm />
         </MainLayout>
       ),
     },

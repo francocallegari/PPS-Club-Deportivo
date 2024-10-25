@@ -107,22 +107,17 @@ function Login() {
   return (
     <div className="Login-form-container">
       <div
-        className={`Login-card ${
-          isRegistering ? "register-card" : "login-card"
-        }`}
-      >
-        <h3 className="custom-title">
-          {isRegistering
-            ? "Registrarse"
-            : isRecoveringPassword
-            ? "Recuperar Contraseña"
-            : "Iniciar Sesión"}
-        </h3>
-        <form
-          onSubmit={
-            isRecoveringPassword ? handleRecoverPasswordSubmit : handleUserLogin
-          }
-        >
+        className={`Login-card ${isRegistering ? "register-card" : "login-card"
+          }`}>
+
+        {!isRegistering && (
+          <h3 className="custom-title">
+            {isRecoveringPassword ? "Recuperar Contraseña" : "Iniciar Sesión"}
+          </h3>
+        )}
+
+        <form onSubmit={isRecoveringPassword ? handleRecoverPasswordSubmit : handleUserLogin}>
+
           {isRegistering ? (
             <RegisterForm />
           ) : isRecoveringPassword ? (
@@ -172,25 +167,24 @@ function Login() {
               </button>
             </>
           )}
+          <div className="login-links">
+            {!isRecoveringPassword && (
+              <a href="#forgot-password" onClick={toggleRecoveringPassword}>
+                ¿No recuerdas tu contraseña?
+              </a>
+            )}
+            {!isRecoveringPassword && (
+              <a href="#register" onClick={toggleRegistering}>
+                {isRegistering ? "Iniciar Sesión" : "Registrarse"}
+              </a>
+            )}
+            {isRecoveringPassword && (
+              <a href="#login" onClick={toggleRecoveringPassword}>
+                Volver a Iniciar Sesión
+              </a>
+            )}
+          </div>
         </form>
-
-        <div className="login-links">
-          {!isRecoveringPassword && (
-            <a href="#forgot-password" onClick={toggleRecoveringPassword}>
-              ¿No recuerdas tu contraseña?
-            </a>
-          )}
-          {!isRecoveringPassword && (
-            <a href="#register" onClick={toggleRegistering}>
-              {isRegistering ? "Iniciar Sesión" : "Registrarse"}
-            </a>
-          )}
-          {isRecoveringPassword && (
-            <a href="#login" onClick={toggleRecoveringPassword}>
-              Volver a Iniciar Sesión
-            </a>
-          )}
-        </div>
       </div>
     </div>
   );
