@@ -18,6 +18,7 @@ import PageNotFound from "./components/pageNotFound/PageNotFound";
 import CalendarEvents from "./components/calendarEvents/CalendarEvents";
 import AsociateForm from "./components/login/Asociate";
 import Admin from "./components/admin/Admin";
+import Protected from "./components/protectedRoute/Protected";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,7 +26,7 @@ function App() {
       path: "/",
       element: (
         <MainLayout>
-          <Dashboard/>
+          <Dashboard />
         </MainLayout>
       ),
     },
@@ -137,7 +138,7 @@ function App() {
       path: "/admin",
       element: (
         <MainLayout>
-          <Admin/>
+          <Admin />
         </MainLayout>
       ),
     },

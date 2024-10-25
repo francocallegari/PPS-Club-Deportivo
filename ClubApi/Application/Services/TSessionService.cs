@@ -47,19 +47,11 @@ namespace Application.Services
             var field = _repositoryField.GetById(tsDto.FieldId)
                 ?? throw new Exception("No se encontró esa cancha");
 
-            DateTime endDate = tsDto.Date.Add(tsDto.Duration);
-
-            if (_repositoryTSession.IsCoachAvailable(tsDto.Date, endDate, tsDto.CoachId))
-                throw new Exception("Ya hay una clase en ese rango horario dictada por el entrenador: " + coach.Name);
-
-            if (_repositoryTSession.IsFieldAvailable(tsDto.Date, endDate, tsDto.FieldId))
-                throw new Exception($"La cancha: {field.Name} no está disponible en el horario establecido");
-
             if (sport.Id != field.SportId)
                 throw new Exception($"La cancha: {field.Name} no coincide con el deporte");
 
             var newSession = new TrainingSession();
-            newSession.Date = tsDto.Date;
+            newSession.Time = tsDto.Time;
             newSession.Duration = tsDto.Duration;
             newSession.CoachId = tsDto.CoachId;
             newSession.Coach = coach;
@@ -67,6 +59,10 @@ namespace Application.Services
             newSession.Sport = sport;
             newSession.SportsFieldId = tsDto.FieldId;
             newSession.Field = field;
+            newSession.DaysOfWeek = tsDto.DaysOfWeek;
+
+            if (_repositoryTSession.IsScheduleConflict(newSession)) 
+                throw new InvalidOperationException($"Ocurrió un error. Ya existe una clase en ese horario para el profesor: {coach.Name} o la cancha se encuentra ocupada");
 
             return TrainingSessionDto.Create(_repositoryTSession.Add(newSession));
         }
@@ -81,18 +77,10 @@ namespace Application.Services
             var field = _repositoryField.GetById(tsDto.FieldId)
                 ?? throw new Exception("No se encontró esa cancha");
 
-            DateTime endDate = tsDto.Date.Add(tsDto.Duration);
-
-            if (_repositoryTSession.IsCoachAvailable(tsDto.Date, endDate, tsDto.CoachId))
-                throw new Exception("Ya hay una clase en ese rango horario dictada por el entrenador: " + coach.Name);
-
-            if (_repositoryTSession.IsFieldAvailable(tsDto.Date, endDate, tsDto.FieldId))
-                throw new Exception($"La cancha: {field.Name} no está disponible en el horario establecido");
-
             if (sport.Id != field.SportId)
                 throw new Exception($"La cancha: {field.Name} no coincide con el deporte");
 
-            session.Date = tsDto.Date;
+            session.Time = tsDto.Time;
             session.Duration = tsDto.Duration;
             session.CoachId = tsDto.CoachId;
             session.Coach = coach;
@@ -100,6 +88,10 @@ namespace Application.Services
             session.Sport = sport;
             session.SportsFieldId = tsDto.FieldId;
             session.Field = field;
+            session.DaysOfWeek = tsDto.DaysOfWeek;
+
+            if (_repositoryTSession.IsScheduleConflict(session))
+                throw new InvalidOperationException($"Ocurrió un error. Ya existe una clase en ese horario para el profesor: {coach.Name} o la cancha se encuentra ocupada");
 
             _repositoryTSession.Update(session);
         }

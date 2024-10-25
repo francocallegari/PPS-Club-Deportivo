@@ -11,8 +11,7 @@ namespace Domain.Interfaces
     {
         List<TrainingSession> GetAllByCoachId(int id);
         List<TrainingSession> GetAllBySportId(int id);
-        bool IsCoachAvailable(DateTime initialDate, DateTime endDate, int coachId);
-        bool IsFieldAvailable(DateTime initialDate, DateTime endDate, int fieldId);
+        bool IsScheduleConflict(TrainingSession newSession);
         TrainingSession GetSessionById(int id);
     }
 }

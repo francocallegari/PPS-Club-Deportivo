@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import "./Login.css";
 import RegisterForm from "./Register";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 
 function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [isRecoveringPassword, setIsRecoveringPassword] = useState(false);
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("")
+  const emailRef = useRef(null)
+  const passwordRef = useRef(null)
+  const navigate = useNavigate()
+
+  const {handleLogin} = useContext(AuthenticationContext)
 
   const toggleRegistering = () => {
     setIsRegistering(!isRegistering);
@@ -47,6 +55,55 @@ function Login() {
     }
   };
 
+  const handleUserLogin = async (e) => {
+    e.preventDefault()
+
+    if (email.length === 0){
+      emailRef.current.focus()
+      return
+    }
+
+    if (password.length === 0){
+      passwordRef.current.focus()
+      return
+    }
+
+    try {
+      const response = await fetch('https://localhost:7081/api/Autenticacion/authenticate', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        }),
+      });
+
+      const token = await response.text();
+
+      if (response.ok) {
+        console.log('Login successful');
+
+        const decodedToken = jwtDecode(token)
+        handleLogin(email, decodedToken.role, decodedToken.sub, token)
+        navigate('/')
+      } else {
+        console.log('Usuario o contraseña inválido');
+        setEmail('')
+        setPassword('')
+        return
+      }
+    } catch (error) {
+      console.error('Ocurrió un error inesperado', error)
+      return
+    }
+
+    setEmail('')
+    setPassword('')
+  }
+
   return (
     <div className="Login-form-container">
       <div
@@ -63,7 +120,7 @@ function Login() {
         </h3>
         <form
           onSubmit={
-            isRecoveringPassword ? handleRecoverPasswordSubmit : undefined
+            isRecoveringPassword ? handleRecoverPasswordSubmit : handleUserLogin
           }
         >
           {isRegistering ? (
@@ -92,6 +149,9 @@ function Login() {
                 id="email"
                 placeholder="Ingresa tu correo"
                 className="login-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                ref={emailRef}
               />
 
               <label htmlFor="password" className="mt-3">
@@ -102,6 +162,9 @@ function Login() {
                 id="password"
                 placeholder="Ingresa tu contraseña"
                 className="login-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                ref={passwordRef}
               />
 
               <button type="submit" className="login-button">

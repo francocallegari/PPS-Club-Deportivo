@@ -40,21 +40,19 @@ namespace Infrastructure.Data
                 .Include(ts => ts.Field)
                 .Where(ts => ts.SportId == id).ToList();
         }
-        public bool IsCoachAvailable(DateTime initialDate, DateTime endDate, int coachId)
+        public bool IsScheduleConflict(TrainingSession newSession)
         {
-            return !_context.TrainingSessions
-                .Any(ts => ts.CoachId == coachId &&
-                ((initialDate >= ts.Date && initialDate < ts.Date.Add(ts.Duration)) || 
-                (endDate > ts.Date && endDate <= ts.Date.Add(ts.Duration)) ||
-                (initialDate <= ts.Date && endDate >= ts.Date.Add(ts.Duration))));
-        }
-        public bool IsFieldAvailable(DateTime initialDate, DateTime endDate, int fieldId)
-        {
-            return !_context.TrainingSessions
-                .Any(ts => ts.SportsFieldId == fieldId &&
-                ((initialDate >= ts.Date && initialDate < ts.Date.Add(ts.Duration)) ||
-                (endDate > ts.Date && endDate <= ts.Date.Add(ts.Duration)) ||
-                (initialDate <= ts.Date && endDate >= ts.Date.Add(ts.Duration))));
+            var conflictingSessions = _context.TrainingSessions
+                .Where(session =>
+                    session.CoachId == newSession.CoachId ||
+                    session.SportsFieldId == newSession.SportsFieldId)
+                .Where(session => session.DaysOfWeek.Any(day => newSession.DaysOfWeek.Contains(day))) 
+                .Where(session =>
+                    (newSession.Time >= session.Time && newSession.Time < session.Time.Add(session.Duration)) ||
+                    (session.Time >= newSession.Time && session.Time < newSession.Time.Add(newSession.Duration)))
+                .ToList();
+
+            return conflictingSessions.Any();
         }
     }
 }
