@@ -7,7 +7,6 @@ import ProfilePage from "./components/profilePage/ProfilePage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login/Login";
 import NewsDetail from "./components/newsDetail/NewsDetail";
-import ActivitiesGrid from "./components/activitiesGrid/ActivitiesGrid";
 import PaymentMethod from "./components/paymentMethod/PaymentMethod";
 import SessionsList from "./components/sessionsList/SessionsList";
 import ResetPassword from "./components/resetPassword/ResetPassword";
@@ -17,6 +16,7 @@ import ClubInfo from "./components/club/Club";
 import PageNotFound from "./components/pageNotFound/PageNotFound";
 import CalendarEvents from "./components/calendarEvents/CalendarEvents";
 import Admin from "./components/admin/Admin";
+import Cuotas from "./components/cuotas/Cuotas";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,7 +24,7 @@ function App() {
       path: "/",
       element: (
         <MainLayout>
-          <Dashboard/>
+          <Dashboard />
         </MainLayout>
       ),
     },
@@ -128,7 +128,15 @@ function App() {
       path: "/admin",
       element: (
         <MainLayout>
-          <Admin/>
+          <Admin />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/cuotas",
+      element: (
+        <MainLayout>
+          <Cuotas />
         </MainLayout>
       ),
     },
