@@ -4,12 +4,13 @@ import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import "./PaymentMethod.css";
 import { Button } from "react-bootstrap";
 
-const PaymentMethod = () => {
+const PaymentMethod = ({ monto }) => {
+  // Recibe el monto de la cuota a pagar
   const [preferenceId, setPreferenceId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY, { 
+  initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY, {
     locale: "es-AR",
   });
 
@@ -22,7 +23,7 @@ const PaymentMethod = () => {
         {
           title: "Pago membresía",
           quantity: 1,
-          price: 100,
+          price: parseFloat(monto.replace("$", "")), // Usamos el monto que recibimos
           currencyId: "ARS",
           successUrl: "http://google.com/",
           failureUrl: "http://google.com/",
@@ -55,7 +56,7 @@ const PaymentMethod = () => {
           {error && <p className="error">{error}</p>}
           {preferenceId && (
             <Wallet
-              initialization={{ preferenceId: preferenceId }} // Inicializa el Wallet con el ID de la preferencia
+              initialization={{ preferenceId: preferenceId }}
               customization={{ texts: { valueProp: "smart_option" } }}
             />
           )}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./ProfilePage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -137,9 +138,11 @@ const ProfilePage = () => {
 
       <div className="suscripcion">
         <h3 className="section-title">Cuotas pendientes</h3>
-        <Button className="boton-modificar" variant="primary">
-          Ver mis cuotas
-        </Button>
+        <Link to="/cuotas">
+          <Button className="boton-modificar" variant="primary">
+            Ver mis cuotas
+          </Button>
+        </Link>
       </div>
     </div>
   );
