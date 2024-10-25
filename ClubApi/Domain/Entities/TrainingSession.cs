@@ -8,7 +8,7 @@ namespace Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public DateTime Date { get; set; }
+        public TimeOnly Time { get; set; }
         public TimeSpan Duration { get; set; }
         public int SportsFieldId { get; set; }
         [ForeignKey("SportsFieldId")]
@@ -19,5 +19,6 @@ namespace Domain.Entities
         public int SportId { get; set; }
         [ForeignKey("SportId")]
         public Sport Sport { get; set; }
+        public List<int> DaysOfWeek { get; set; }
     }
 }

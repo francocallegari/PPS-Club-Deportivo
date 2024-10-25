@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Header.css";
 import { Navbar, Nav } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Image } from "react-bootstrap";
 import logo from "../../images/logo.png";
 import { Button } from "react-bootstrap";
+import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 
 const Header = () => {
   const navigate = useNavigate();
+
+  const {user, handleLogout} = useContext(AuthenticationContext)
 
   // Funciones de navegación
   const handleHomeNavigation = (e) => {
@@ -30,9 +33,9 @@ const Header = () => {
     navigate("/login");
   };
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    navigate("/");
+  const handleLogoutButton = (e) => {
+    handleLogout()
+    navigate("/")
   };
 
   const handleProfile = (e) => {
@@ -71,8 +74,8 @@ const Header = () => {
         <Nav.Item className="Nav-Seccion" onClick={handleActivitiesNavigation}>
           Actividades
         </Nav.Item>
-        <Nav.Item className="Nav-Seccion" onClick={handleLoginNavigation}>
-          Iniciar sesión
+        <Nav.Item className="Nav-Seccion" onClick={!user ? handleLoginNavigation : handleLogoutButton}>
+          {!user ? "Iniciar sesión" : "Cerrar Sesión"}
         </Nav.Item>
 
         <div className="ecomeMember-button">

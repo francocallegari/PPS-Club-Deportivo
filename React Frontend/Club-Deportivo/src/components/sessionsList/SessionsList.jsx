@@ -25,7 +25,7 @@ const SessionsList = () => {
         },
         {
             id: 2,
-            title: 'Fútbol',
+            title: 'Futbol',
             daysOfWeek: [2, 4],
             startTime: '09:00:00',
             endTime: '11:00:00',
@@ -119,6 +119,7 @@ const SessionsList = () => {
                             contentHeight="auto"
                             events={convertSessionsToEvents(SESSIONS)}
                             eventClick={handleEventClick}
+                            eventClassNames={(arg) => `event-${arg.event.title}`}
                         />
                     </div>
                     <div>

@@ -1,4 +1,3 @@
-
 .calendar-container {
     width: 90%;
     /*margin: 0 auto;*/
@@ -15,15 +14,6 @@
 .fc-col-header-cell-cushion {
     color: #000;
     text-transform: uppercase;
-}
-
-.fc-event:hover {
-    cursor: pointer;
-    background-color: rgb(58, 98, 179);
-}
-
-.fc-event {
-    background-color: rgb(41, 79, 155);
 }
 
 .modal-button {
@@ -58,16 +48,19 @@
 .users-list-container::-webkit-scrollbar {
     width: 20px;
 }
+
 .users-list-container::-webkit-scrollbar-thumb {
-    background: rgba(13, 48, 118, 0.912); 
+    background: rgba(13, 48, 118, 0.912);
     border-radius: 5px;
 }
+
 .users-list-container::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey; 
+    box-shadow: inset 0 0 5px grey;
     border-radius: 5px;
 }
+
 .users-list-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(27, 63, 136, 0.912); 
+    background: rgba(27, 63, 136, 0.912);
 }
 
 .modal-header {
@@ -76,4 +69,28 @@
 
 .close-button-modal:hover {
     background-color: transparent;
+}
+
+.event-Futbol {
+    background-color: #8f1e1e;
+}
+.event-Futbol:hover {
+    cursor: pointer;
+    background-color: #9e3737;
+}
+
+.event-Tenis {
+    background-color: #2d7ba8;
+}
+.event-Tenis:hover {
+    cursor: pointer;
+    background-color: #5896b8;
+}
+
+.event-Basquet {
+    background-color: rgb(41, 79, 155);
+}
+.event-Basquet:hover {
+    cursor: pointer;
+    background-color: rgb(58, 98, 179);
 }
