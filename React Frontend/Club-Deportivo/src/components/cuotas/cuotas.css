@@ -1,0 +1,167 @@
+.cuotas-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 50px;
+  background-color: #f9f9f9;
+  border-radius: 11px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  gap: 110px;
+}
+
+.cuota-card {
+  transition: background-color 0.3s ease;
+  margin: 20px 0;
+  flex-grow: 1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 650px;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cuota-card:hover {
+  transform: scale(1.03);
+}
+
+.title {
+  font-family: "Lato", sans-serif;
+  font-size: 26px;
+  color: rgba(13, 48, 118, 0.912) !important;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-family: "Lato", sans-serif;
+  font-size: 30px;
+  color: rgba(13, 48, 118, 0.912) !important;
+  margin-bottom: 20px;
+  font-weight: 600;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.paid {
+  border-left: 5px solid rgba(13, 48, 118, 0.912) !important;
+  background-color: #d4fdd4;
+}
+
+.pending {
+  border-left: 5px solid rgba(149, 16, 21, 0.912);
+  background-color: #ffdede;
+}
+
+.boton-pagar {
+  background-color: rgba(
+    13,
+    48,
+    118,
+    0.912
+  ) !important; /* Darker green on hover */
+  border-color: #2846a7;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  min-width: 50px;
+  padding: 5px 40px;
+}
+
+.boton-pagar:hover {
+  background-color: rgba(13, 48, 118, 0.912) !important;
+  transform: scale(1.05);
+}
+
+.cuota-card.paid {
+  background-color: rgb(242, 245, 252);
+  color: rgba(13, 48, 118, 0.912) !important;
+}
+
+.cuota-card.pending {
+  background-color: rgb(242, 245, 252);
+  color: rgba(13, 48, 118, 0.912) !important;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  margin-right: 30px;
+}
+
+.icono-grande {
+  font-size: 50px;
+  color: #007bff;
+}
+
+.paid .icono-grande {
+  color: rgba(
+    13,
+    48,
+    118,
+    0.912
+  ) !important; /* Color para las cuotas pagadas */
+}
+
+.pending .icono-grande {
+  color: rgba(149, 16, 21, 0.912);
+}
+
+.payment-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px 30px;
+}
+
+.modal-content {
+  background: rgb(242, 245, 252);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+}
+
+.modal-content button {
+  margin-top: 20px;
+}
+
+.title-modal {
+  font-family: "Lato", sans-serif;
+  font-size: 24px;
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgba(149, 16, 21, 0.912);
+}
+
+.boton-modal {
+  background-color: rgba(13, 48, 118, 0.912) !important;
+  padding: 8px 0px;
+  width: 100px;
+}
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
