@@ -47,3 +47,13 @@
   background-color: rgba(13, 48, 118, 0.912) !important;
   border: rgba(13, 48, 118, 0.912) !important;
 }
+
+.btn-Incribirme{
+  background-color: rgba(13, 48, 118, 0.912) !important;
+  border: rgba(13, 48, 118, 0.912) !important;
+}
+
+.btn-sport{
+  display: flex;
+  justify-content: space-around;
+}

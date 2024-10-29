@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Modal, Button, Table } from "react-bootstrap";
 import "./SportDetail.css";
+import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 
 const SportDetail = ({ sport, onClose }) => {
+
+  const { user } = useContext(AuthenticationContext);
+
   return (
     <Modal
       show={!!sport}
@@ -49,11 +53,22 @@ const SportDetail = ({ sport, onClose }) => {
         </div>
       </Modal.Body>
 
-      <Modal.Footer>
-        <Button className="btn-cerrar" onClick={onClose}>
-          Cerrar
-        </Button>
-      </Modal.Footer>
+      <div className="btn-sport">
+
+        {user && user.role === "Member" && (
+          <Modal.Footer>
+            <Button className="btn-Incribirme">
+              Incribirme
+            </Button>
+          </Modal.Footer>
+        )}
+
+        <Modal.Footer>
+          <Button className="btn-cerrar" onClick={onClose}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </div>
     </Modal>
   );
 };

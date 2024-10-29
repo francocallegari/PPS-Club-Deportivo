@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./ProfilePage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 import {
   faPencilAlt,
   faFutbol,
@@ -12,6 +13,7 @@ import {
 
 const ProfilePage = () => {
   const [show, setShow] = useState(false);
+  const { user } = useContext(AuthenticationContext);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -127,6 +129,7 @@ const ProfilePage = () => {
         </p>
       </div>
 
+      {user && user.role === "Member" && (
       <div className="deportes">
         <h3 className="section-title">Deportes y actividades</h3>
         <FontAwesomeIcon icon={faVolleyballBall} /> Voley
@@ -135,15 +138,19 @@ const ProfilePage = () => {
         <h1></h1>
         <FontAwesomeIcon icon={faSwimmer} /> Natación
       </div>
+      )}
 
-      <div className="suscripcion">
-        <h3 className="section-title">Cuotas pendientes</h3>
-        <Link to="/cuotas">
-          <Button className="boton-modificar" variant="primary">
-            Ver mis cuotas
-          </Button>
-        </Link>
-      </div>
+      {user && user.role === "Member" && (
+        <div className="suscripcion">
+          <h3 className="section-title">Cuotas pendientes</h3>
+          <Link to="/cuotas">
+            <Button className="boton-modificar" variant="primary">
+              Ver mis cuotas
+            </Button>
+          </Link>
+        </div>
+      )}
+
     </div>
   );
 };

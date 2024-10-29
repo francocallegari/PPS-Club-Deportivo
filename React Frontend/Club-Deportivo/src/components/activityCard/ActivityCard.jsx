@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./ActivityCard.css";
 import { Button, Modal } from "react-bootstrap";
+import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 
 const ActivityCard = ({ title, date, time, description }) => {
   const [showModal, setShowModal] = useState(false);
+  const { user } = useContext(AuthenticationContext);
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
@@ -23,9 +25,12 @@ const ActivityCard = ({ title, date, time, description }) => {
         <strong>Hora:</strong> {time}
       </p>
       <p>{description}</p>
-      <Button className="btn-sign-up" onClick={handleShow}>
-        INSCRIBIRSE
-      </Button>
+
+      {user && user.role === "Member" && (
+        <Button className="btn-sign-up" onClick={handleShow}>
+          INSCRIBIRSE
+        </Button>
+      )}
 
       <Modal show={showModal} onHide={handleClose} centered>
         <Modal.Header closeButton>
