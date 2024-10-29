@@ -1,4 +1,13 @@
-.calendar-container {
+.sessions-title {
+    text-align: center; 
+    font-size: 3.5rem;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: rgba(13, 48, 118, 0.912);
+}
+
+.calendarContainer {
     width: 90%;
     /*margin: 0 auto;*/
     margin-left: 80px;

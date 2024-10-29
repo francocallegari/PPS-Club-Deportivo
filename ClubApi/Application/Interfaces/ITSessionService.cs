@@ -14,5 +14,7 @@ namespace Application.Interfaces
         TrainingSessionDto CreateTS(TSessionRequest tsDto);
         void UpdateTS(int sessionID, TSessionRequest tsDto);
         void DeleteTS(int sessionID);
+        List<TrainingSessionDto> GetAllByMemberId(int id);
+        List<TrainingSessionDto> GetAllSessions();
     }
 }

@@ -88,7 +88,7 @@ const SessionsList = () => {
 
     return (
         <div>
-            <h2 className="activities-title">CLASES</h2>
+            <h2 className="sessions-title">CLASES</h2>
             <div className='sessions-container' style={{ display: 'flex', flexDirection: 'column'}}>
                 <Button variant="primary" className='modal-button mb-5 mt-5' onClick={() => {
                     setSelectedSession(null)
@@ -103,7 +103,7 @@ const SessionsList = () => {
                     onHide={() => setShowModal(false)}
                 />
                 <div style={{ display: 'flex' }}>
-                    <div className="calendar-container">
+                    <div className="calendarContainer">
                         <FullCalendar
                             plugins={[timeGridPlugin]}
                             initialView="timeGridWeek"

@@ -13,5 +13,6 @@ namespace Domain.Interfaces
         List<TrainingSession> GetAllBySportId(int id);
         bool IsScheduleConflict(TrainingSession newSession);
         TrainingSession GetSessionById(int id);
+        List<TrainingSession> GetAllSessions();
     }
 }

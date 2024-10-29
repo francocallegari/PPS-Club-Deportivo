@@ -16,11 +16,28 @@ namespace ClubApi.Controllers
             _sessionService = sessionService;
         }
         [HttpGet("Sessions")]
-        public IActionResult GetAll([FromQuery] int coachId) 
+        public IActionResult GetAll()
+        {
+            return Ok(_sessionService.GetAllSessions());
+        }
+        [HttpGet("SessionsByCoachId")]
+        public IActionResult GetAllByCoachId([FromQuery] int coachId) 
         {
             try
             {
                 return Ok(_sessionService.GetTSbyCoachId(coachId));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("SessionsByMemberId")]
+        public IActionResult GetAllByMemberId([FromQuery] int memberId)
+        {
+            try
+            {
+                return Ok(_sessionService.GetAllByMemberId(memberId));
             }
             catch (Exception ex)
             {
