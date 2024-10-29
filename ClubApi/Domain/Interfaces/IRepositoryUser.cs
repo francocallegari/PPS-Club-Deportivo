@@ -11,5 +11,6 @@ namespace Domain.Interfaces
         Task<User> GetByIdAsync(int id);
         Task<List<User>> ListAsync();
         Task UpdateAsync(User user);
+        Member GetMemberById(int id);
     }
 }

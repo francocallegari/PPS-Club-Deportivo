@@ -17,17 +17,20 @@ namespace Application.Services
         private readonly IRepositoryCoach _repositoryCoach;
         private readonly IRepositoryBase<SportsField> _repositoryField;
         private readonly IRepositorySport _repositorySport;
+        private readonly IRepositoryUser _repositoryUser;
         public TSessionService(
             IRepositoryTrainingSession repositoryTSession, 
             IRepositoryCoach repositoryCoach, 
             IRepositoryBase<SportsField> repositoryField, 
-            IRepositorySport repositorySport
+            IRepositorySport repositorySport,
+            IRepositoryUser repositoryUser
             )
         {
             _repositoryTSession = repositoryTSession;
             _repositoryCoach = repositoryCoach;
             _repositoryField = repositoryField;
             _repositorySport = repositorySport;
+            _repositoryUser = repositoryUser;
         }
 
         public List<TrainingSessionDto> GetTSbyCoachId(int id)
@@ -101,6 +104,30 @@ namespace Application.Services
                 ?? throw new Exception("No se encontró la clase");
 
             _repositoryTSession.Delete(session);
+        }
+
+        public List<TrainingSessionDto> GetAllByMemberId(int id)  // Método para traer todas las training sessions vinculadas a los deportes a los que está anotado el socio
+        {
+            var member = _repositoryUser.GetMemberById(id)
+                ?? throw new Exception("No se encontró al socio");
+
+            List<TrainingSession> sportsSessions = new List<TrainingSession>();
+
+            if (member.SportsAttended.Count > 0)
+            {
+                foreach (var sport in member.SportsAttended) 
+                {
+                    var trainingSessions = _repositoryTSession.GetAllBySportId(sport.Id);
+
+                    sportsSessions.AddRange(trainingSessions);
+                }
+            }
+
+            return TrainingSessionDto.CreateList(sportsSessions);
+        }
+        public List<TrainingSessionDto> GetAllSessions()
+        {
+            return TrainingSessionDto.CreateList(_repositoryTSession.GetAllSessions());
         }
     }
 }

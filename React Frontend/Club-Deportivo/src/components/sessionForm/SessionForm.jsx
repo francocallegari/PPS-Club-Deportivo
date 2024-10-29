@@ -44,10 +44,25 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
     }, [selectedSession])
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setSessionData({
-            ...sessionData,
-            [name]: value,
+        const { name, value, type, checked } = e.target
+
+        setSessionData((prevData) => {
+            if (type === 'checkbox') {
+                const dayValue = parseInt(value, 10);
+                const updatedDays = checked
+                    ? [...prevData.days, dayValue]  // Agregar si está marcado
+                    : prevData.days.filter(day => day !== dayValue);  // Eliminar si está desmarcado
+
+                return {
+                    ...prevData,
+                    days: updatedDays,
+                }
+            } else {
+                return {
+                    ...prevData,
+                    [name]: value
+                }
+            }
         })
     }
 
@@ -70,7 +85,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                 )}
                 <Form>
                     <Form.Group>
-                        <Form.Label>Días</Form.Label>
+                        <Form.Label><b>Días</b></Form.Label>
                         <Form.Check
                             name="Lunes"
                             type='checkbox'
@@ -115,7 +130,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                             onChange={handleChange}></Form.Check>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Hora de Inicio</Form.Label>
+                        <Form.Label><b>Hora de Inicio</b></Form.Label>
                         <Form.Control
                             type="time"
                             min="08:00"
@@ -127,16 +142,34 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                         </Form.Control>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Duración -en minutos-</Form.Label>
-                        <Form.Control
-                            type='number'
-                            name='duration'
-                            value={sessionData.duration}
+                        <Form.Label><b>Duración -En Horas-</b></Form.Label>
+                        <Form.Check
+                            name="duration"
+                            type='radio'
+                            label='1:00'
+                            value={60}  // 60 minutos
+                            checked={sessionData.duration == 60}
                             onChange={handleChange}>
-                        </Form.Control>
+                        </Form.Check>
+                        <Form.Check
+                            name="duration"
+                            type='radio'
+                            label='1:30'
+                            value={90}
+                            checked={sessionData.duration == 90}
+                            onChange={handleChange}>
+                        </Form.Check>
+                        <Form.Check
+                            name="duration"
+                            type='radio'
+                            label='2:00'
+                            value={120}
+                            checked={sessionData.duration == 120}
+                            onChange={handleChange}>
+                        </Form.Check>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Cancha</Form.Label>
+                        <Form.Label><b>Cancha</b></Form.Label>
                         <Form.Select name='field' value={sessionData.field} onChange={handleChange}>
                             <option disabled value="">Seleccione una Cancha</option>
                             {fields.map((f) => (

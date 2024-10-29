@@ -54,5 +54,12 @@ namespace Infrastructure.Data
             _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public Member GetMemberById(int id)
+        {
+            return _context.Members
+                .Include(m => m.SportsAttended)
+                .FirstOrDefault(m => m.Id == id);
+        }
     }
 }

@@ -54,5 +54,13 @@ namespace Infrastructure.Data
 
             return conflictingSessions.Any();
         }
+        public List<TrainingSession> GetAllSessions()
+        {
+            return _context.TrainingSessions
+                .Include(ts => ts.Sport)
+                .Include(ts => ts.Coach)
+                .Include(ts => ts.Field)
+                .ToList();
+        }
     }
 }
