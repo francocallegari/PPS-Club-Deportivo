@@ -9,7 +9,7 @@ namespace Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public TimeOnly Time { get; set; }
-        public TimeSpan Duration { get; set; }
+        public int Duration { get; set; }
         public int SportsFieldId { get; set; }
         [ForeignKey("SportsFieldId")]
         public SportsField Field { get; set; }

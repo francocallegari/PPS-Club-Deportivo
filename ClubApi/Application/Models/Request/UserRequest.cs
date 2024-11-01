@@ -20,6 +20,7 @@ namespace Application.Models.Request
 
         [Required]
         public string UserType { get; set; }
+        public string PhoneNumber { get; set; }
 
         public static User ToEntity(UserRequest dto)
         {
@@ -31,7 +32,8 @@ namespace Application.Models.Request
                 UserName = dto.UserName,
                 UserType = dto.UserType,
                 UserRegistrationDate = DateTime.Now,
-                UserDeletionDate = null
+                UserDeletionDate = null,
+                PhoneNumber = dto.PhoneNumber,
             };
         }
 

@@ -11,5 +11,7 @@ namespace Application.Interfaces
         SportDto CreateSport(SportDto sport);
         void UpdateSport(int id, SportDto sport);
         void DeleteSport(int id);
+        void SignUpSport(int sportId, int memberId);
+        void DropOutSport(int sportId, int memberId);
     }
 }

@@ -28,5 +28,6 @@ namespace Domain.Entities
 
         [Column(TypeName = "datetime")]
         public DateTime? UserDeletionDate { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

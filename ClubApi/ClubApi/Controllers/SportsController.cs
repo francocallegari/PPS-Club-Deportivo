@@ -46,7 +46,7 @@ namespace ClubApi.Controllers
             }
         }
 
-        [HttpGet("Members/{id}")]
+        [HttpGet("GetMembers/{id}")]
         public ActionResult<List<MemberDto>> GetAllMembers([FromRoute] int id)
         {
             try
@@ -106,6 +106,32 @@ namespace ClubApi.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
+            }
+        }
+        [HttpPost("SignUpSport")]
+        public IActionResult SignUpSport([FromQuery] int memberId, [FromQuery] int sportId)
+        {
+            try
+            {
+                _sportsService.SignUpSport(sportId, memberId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete("DropOutSport")]
+        public IActionResult DropOutSport([FromQuery] int memberId, [FromQuery] int sportId)
+        {
+            try
+            {
+                _sportsService.DropOutSport(sportId, memberId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

@@ -9,6 +9,9 @@ namespace Application.Models
         public string Email { get; set; }
         public string UserName { get; set; }
         public List<SportDto> SportsAttended { get; set; }
+        public DateOnly DateOfBirth { get; set; }
+        public string DNI { get; set; }
+        public string Address { get; set; }
 
         public static MemberDto Create(Member member)
         {
@@ -21,6 +24,9 @@ namespace Application.Models
             {
                 dto.SportsAttended = SportDto.CreateList(member.SportsAttended);
             } else { dto.SportsAttended = null; }
+            dto.Address = member.Address;
+            dto.DateOfBirth = member.DateOfBirth;
+            dto.DNI = member.DNI;
             
 
             return dto;

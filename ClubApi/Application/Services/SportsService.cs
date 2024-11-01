@@ -9,11 +9,13 @@ namespace Application.Services
     {
         private readonly IRepositoryBase<Sport> _baseRepository;
         private readonly IRepositorySport _sportRepository;
+        private readonly IRepositoryUser _userRepository;
 
-        public SportsService(IRepositoryBase<Sport> baseRepository, IRepositorySport sportRepository)
+        public SportsService(IRepositoryBase<Sport> baseRepository, IRepositorySport sportRepository, IRepositoryUser userRepository)
         {
             _baseRepository = baseRepository;
             _sportRepository = sportRepository;
+            _userRepository = userRepository;
         }
 
         public ICollection<SportDto> GetAllSports()
@@ -54,6 +56,54 @@ namespace Application.Services
         {
             var sport = _baseRepository.GetById(id) ?? throw new KeyNotFoundException("No se encontró el deporte");
             _baseRepository.Delete(sport);
+        }
+        public void SignUpSport(int sportId, int memberId)
+        {
+            var sport = _sportRepository.GetById(sportId)
+                ?? throw new KeyNotFoundException("No se encontró el deporte");
+
+            var member = _userRepository.GetMemberById(memberId)
+                ?? throw new KeyNotFoundException("No se encontró al socio");
+
+            if(sport.Members.Count >= sport.Capacity)
+            {
+                throw new InvalidOperationException("Ya se alcanzó la cantidad máxima de inscriptos en el deporte");
+            }
+
+
+            if (!member.SportsAttended.Contains(sport))
+            {
+                sport.Members.Add(member);
+                member.SportsAttended.Add(sport);
+                _userRepository.Update(member);
+                _sportRepository.Update(sport); 
+            }
+            else
+            {
+                throw new InvalidOperationException($"El socio ya está inscripto en {sport.Name}");
+            }
+        }
+
+        public void DropOutSport(int sportId, int memberId) 
+        {
+            var sport = _sportRepository.GetById(sportId)
+                ?? throw new KeyNotFoundException("No se encontró el deporte");
+
+            var member = _userRepository.GetMemberById(memberId)
+                ?? throw new KeyNotFoundException("No se encontró al socio");
+
+
+            if (member.SportsAttended.Contains(sport))
+            {
+                sport.Members.Remove(member);
+                member.SportsAttended.Remove(sport);
+                _userRepository.Update(member);
+                _sportRepository.Update(sport);
+            }
+            else
+            {
+                throw new InvalidOperationException($"El socio no se pudo desinscribir porque no está inscripto en el deporte");
+            }
         }
     }
 }

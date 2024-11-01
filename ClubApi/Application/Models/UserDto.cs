@@ -13,6 +13,7 @@ namespace Application.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
+        public string PhoneNumber { get; set; }
 
         public static UserDto Create(User user)
         {
@@ -21,6 +22,7 @@ namespace Application.Models
             dto.UserName = user.UserName;
             dto.Name = user.Name;
             dto.Email = user.Email;
+            dto.PhoneNumber = user.PhoneNumber;
 
             return dto;
 
