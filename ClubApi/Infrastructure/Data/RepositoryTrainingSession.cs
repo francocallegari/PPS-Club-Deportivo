@@ -48,8 +48,8 @@ namespace Infrastructure.Data
                     session.SportsFieldId == newSession.SportsFieldId)
                 .Where(session => session.DaysOfWeek.Any(day => newSession.DaysOfWeek.Contains(day))) 
                 .Where(session =>
-                    (newSession.Time >= session.Time && newSession.Time < session.Time.Add(session.Duration)) ||
-                    (session.Time >= newSession.Time && session.Time < newSession.Time.Add(newSession.Duration)))
+                    (newSession.Time >= session.Time && newSession.Time < session.Time.AddMinutes(session.Duration)) ||
+                    (session.Time >= newSession.Time && session.Time < newSession.Time.AddMinutes(newSession.Duration)))
                 .ToList();
 
             return conflictingSessions.Any();

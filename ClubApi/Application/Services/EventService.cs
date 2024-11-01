@@ -121,5 +121,21 @@ namespace Application.Services
             existingEvent.ApprovedBy = director.Name;
             _eventRepository.Update(existingEvent);
         }
+        public void DropOutEvent(int memberId, int eventId)
+        {
+            var response = _userRepository.GetById(memberId);
+            if (response == null || response.UserType != "Member")
+                throw new InvalidOperationException("No se encontró al miembro.");
+
+            var eventEntity = _eventRepository.GetEventById(eventId);
+            if (eventEntity == null)
+                throw new InvalidOperationException("No se encontró el evento.");
+
+            if (!eventEntity.Members.Any(m => m.Id == memberId))
+                throw new InvalidOperationException("El miembro no está inscripto en este evento.");
+
+            eventEntity.Members.Remove((Member)response);
+            _eventRepository.Update(eventEntity);
+        }
     }
 }

@@ -120,5 +120,31 @@ namespace ClubApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpDelete("DropOutEvent")]
+        public IActionResult DropOutEvent(int memberId, int eventId)
+        {
+            try
+            {
+                _eventService.DropOutEvent(memberId, eventId);
+                return Ok("El miembro se desinscribió correctamente");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("ApproveEvent")]
+        public IActionResult ApproveEvent(int directorId, int eventId)
+        {
+            try
+            {
+                _eventService.ApproveEvent(directorId, eventId);
+                return Ok("El evento fue aprobado correctamente");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -70,6 +70,7 @@ namespace Application.Services
             existingUser.Password = dto.Password;
             existingUser.UserName = dto.UserName;
             existingUser.UserType = dto.UserType;
+            existingUser.PhoneNumber = dto.PhoneNumber;
 
             _userRepository.UpdateAsync(existingUser).Wait();
         }

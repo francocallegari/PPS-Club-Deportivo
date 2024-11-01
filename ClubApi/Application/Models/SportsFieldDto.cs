@@ -11,7 +11,6 @@ namespace Application.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool Available { get; set; }
         public SportDto Sport { get; set; }
 
         public static SportsFieldDto Create(SportsField field)
@@ -19,7 +18,6 @@ namespace Application.Models
             var dto = new SportsFieldDto();
             dto.Id = field.Id;
             dto.Name = field.Name;
-            dto.Available = field.Available;
             dto.Sport = SportDto.Create(field.Sport);
 
             return dto;

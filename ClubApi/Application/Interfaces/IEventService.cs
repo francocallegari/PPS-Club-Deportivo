@@ -20,5 +20,7 @@ namespace Application.Interfaces
         void DeleteEvent(int id);
         ICollection<Event> GetEventsByIds(List<int> eventIds);
         void SignUpEvent(int memberId, int eventId);
+        void DropOutEvent(int memberId, int eventId);
+        void ApproveEvent(int directorId, int eventId);
     }
 }

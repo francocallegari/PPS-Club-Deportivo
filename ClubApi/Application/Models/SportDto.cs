@@ -7,6 +7,7 @@ namespace Application.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int Capacity { get; set; }
+        public string ImageURL { get; set; }
 
         public static SportDto Create(Sport sport)
         {
@@ -14,6 +15,7 @@ namespace Application.Models
             dto.Id = sport.Id;
             dto.Name = sport.Name;
             dto.Capacity = sport.Capacity;
+            dto.ImageURL = sport.ImageURL;
 
             return dto;
         }

@@ -11,7 +11,7 @@ namespace Application.Models
     {
         public int Id { get; set; }
         public TimeOnly Time { get; set; }
-        public TimeSpan Duration { get; set; }
+        public int Duration { get; set; }
         public SportsFieldDto Field { get; set; }
         public CoachDto Coach { get; set; }
         public List<int> DaysOfWeek { get; set; }
