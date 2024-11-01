@@ -3,6 +3,15 @@ import "./NewsDetail.css";
 import { Modal, Button } from "react-bootstrap";
 
 const NewsDetail = ({ news, onClose }) => {
+    // Formatear la fecha en un formato legible si existe una fecha
+    const formattedDate = news?.publicationDate 
+        ? new Date(news.publicationDate).toLocaleDateString("es-ES", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+          }) 
+        : "";
+
     return (
         <div>
             <Modal
@@ -16,10 +25,9 @@ const NewsDetail = ({ news, onClose }) => {
 
                 <Modal.Body>
                     <div className="sport-detail-content">
-                        <img src={news?.image} alt={news?.title} className="img-fluid mb-3" />
+                        <img src={news?.imageUrl} alt={news?.title} className="img-fluid mb-3" />
                         <span>"{news?.description}"</span>
-                        <p>{news?.detailedDescription}</p>
-                        <p><strong>Fecha del evento:</strong> {news?.eventDate}</p>
+                        <p><strong>Fecha del evento:</strong> {formattedDate}</p>
                     </div>
                 </Modal.Body>
 
@@ -30,7 +38,7 @@ const NewsDetail = ({ news, onClose }) => {
                 </Modal.Footer>
             </Modal>
         </div>
-    )
+    );
 }
 
-export default NewsDetail
+export default NewsDetail;
