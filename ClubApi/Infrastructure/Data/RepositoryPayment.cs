@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    //public class RepositoryPayment : RepositoryBase<MembershipFeePayment>, IRepositoryPayment
-    //{
-    //    public RepositoryPayment(DbContext context) : base(context)
-    //    {
-    //    }
-    //}
+    public class RepositoryPayment : RepositoryBase<MembershipFeePayment>, IRepositoryPayment
+    {
+        public RepositoryPayment(DbContext context) : base(context)
+        {
+       }
+    }
 }
