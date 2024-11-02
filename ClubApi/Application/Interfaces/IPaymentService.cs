@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Models;
+using Domain.Entities;
 using Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,10 @@ namespace Application.Interfaces
     public interface IPaymentService
     {
         void MakeFeePayment(int memberId, int feeId);
-        List<MembershipFeePayment> GetMemberFees(int memberId, FeeStatus? status = null);
+        List<MemberShipFeePaymentDto> GetMemberFees(int memberId, FeeStatus? status = null);
+        float GetCurrentRatePrice();
+
+        
 
     }
 }
