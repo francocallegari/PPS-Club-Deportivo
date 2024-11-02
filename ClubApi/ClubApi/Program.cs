@@ -84,7 +84,9 @@ builder.Services.AddScoped<IRepositoryCoach, RepositoryCoach>();
 builder.Services.AddScoped<IRepositoryBase<SportsField>, EfRepository<SportsField>>();
 builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
 
-//builder.Services.AddScoped<IRepositoryPayment, RepositoryPayment>();
+builder.Services.AddScoped<IRepositoryPayment, RepositoryPayment>();
+builder.Services.AddScoped<IRepositoryBase<MembershipFee>, EfRepository<MembershipFee>>();  
+
 
 builder.Services.AddScoped<IRepositoryStatistics, RepositoryStatistics>();
 
@@ -100,6 +102,7 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<MercadoPagoService>();
 builder.Services.AddScoped<INewsService, NewsService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 //builder.Services.AddScoped<IPaymentService, PaymentService>();
 
