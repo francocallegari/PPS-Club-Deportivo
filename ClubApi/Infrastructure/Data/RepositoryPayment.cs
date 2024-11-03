@@ -11,8 +11,11 @@ namespace Infrastructure.Data
 {
     public class RepositoryPayment : RepositoryBase<MembershipFeePayment>, IRepositoryPayment
     {
-        public RepositoryPayment(DbContext context) : base(context)
+        private readonly ApplicationContext _context; // Cambia ApplicationContext al nombre específico de tu contexto
+
+        public RepositoryPayment(ApplicationContext context) : base(context) // Usa el tipo específico de tu contexto aquí
         {
-       }
+            _context = context;
+        }
     }
 }
