@@ -1,15 +1,26 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
 .footer {
   display: flex;
-
+  justify-content: space-around;
+  align-items: flex-start;
   width: 100%;
   padding: 2em 0;
-  background-color: #9aa2a9;
-  align-items: flex-start;
+  background-color: #7b95c9;
   color: white;
   font-size: 0.9rem;
-
   font-weight: bold;
-  line-height: 250%;
+  line-height: 1.5;
   text-align: center;
 }
 
@@ -63,4 +74,8 @@
 .footer-section h5 {
   margin: 3px 10;
   text-decoration: underline;
+}
+
+.footer-socios ul li {
+  cursor: pointer;
 }
