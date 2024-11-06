@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import "./Director.css";
 import UsersList from '../usersList/UsersList';
+import StatisticsGraph from '../statisticsGraph/StatisticsGraph';
 
 const Director = () => {
     const initialEvents = [
@@ -82,6 +83,10 @@ const Director = () => {
                     ))}
                 </div>
             </div>
+
+            <h3 className='evento-approve'>Estadisticas</h3>
+            <StatisticsGraph/>
+            <br />
 
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
