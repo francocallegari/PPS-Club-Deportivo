@@ -1,28 +1,68 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Modal, Button, Form, CloseButton } from 'react-bootstrap'
+import { AuthenticationContext } from '../../services/authentication/AuthenticationContext'
 
 {/* El Coach se va a mandar automaticamente sacando su ID de la autenticacion.
     A partir del ID del Coach, se va a obtener el deporte del cual se quiere crear la clase
 */}
 
 const SessionForm = ({ selectedSession, onSave, ...props }) => {
-    const fields = [
-        { id: 1, name: 'Cancha de Basquet 1', sport: 'Basquet' },
-        { id: 2, name: 'Cancha de Basquet 2', sport: 'Basquet' },
-        { id: 3, name: 'Cancha de Tenis 1', sport: 'Tenis' },
-        { id: 4, name: 'Cancha de Tenis 2', sport: 'Tenis' },
-        { id: 5, name: 'Cancha de Voley 1', sport: 'Voley' },
-        { id: 6, name: 'Cancha de Voley 2', sport: 'Voley' },
-        { id: 7, name: 'Cancha de Futbol 1', sport: 'Fútbol' },
-        { id: 8, name: 'Cancha de Futbol 2', sport: 'Fútbol' }
-    ]
-
+    const {user} = useContext(AuthenticationContext)
+    const [fields, setFields] = useState([])
     const [sessionData, setSessionData] = useState({
         days: [],
         startTime: '',
         duration: '',
         field: ''
     })
+
+    const fetchCoachSport = async () => {
+        try {
+            const response = await fetch(`https://localhost:7081/api/Sports/SportByCoachId/${user.id}`, {
+                method: "GET",
+                headers: {
+                    accept: "*/*",
+                    "Content-Type": "application/json",
+                },
+            })
+            if (response.ok) {
+                const data = await response.json()
+
+                await fetchFields(data.id)
+            } else {
+                throw new Error("Error al obtener el deporte del entrenador");
+            }
+        } catch (error) {
+            console.error("Error:", error)
+        }
+    }
+
+    const fetchFields = async (sportId) => {
+        try {
+            const response = await fetch(`https://localhost:7081/api/Field/FieldsBySportId?sportId=${sportId}`, {
+                method: "GET",
+                headers: {
+                    accept: "*/*",
+                    "Content-Type": "application/json",
+                },
+            })
+            if (response.ok) {
+                const data = await response.json();
+                setFields(data);
+            } else {
+                throw new Error("Error al obtener las canchas");
+            }
+        } catch (error) {
+            console.error("Error:", error)
+        }
+    }
+
+    useEffect(() => {
+        if(user !== null && user.role === "Coach"){
+            fetchCoachSport()
+        }
+        
+    }, [])
 
     useEffect(() => {
         if (selectedSession) {
@@ -32,7 +72,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                 duration: selectedSession.duration,
                 field: selectedSession.field
             })
-            console.log(selectedSession)
+            console.log(selectedSession) 
         } else {
             setSessionData({
                 days: [],
@@ -42,6 +82,40 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
             })
         }
     }, [selectedSession])
+
+    const POSTsessions = async () => {
+        const timeWithSeconds = sessionData.startTime + ":00"
+
+        const sessionDto = {
+            time: timeWithSeconds,
+            duration: sessionData.duration,
+            fieldId: sessionData.field,
+            coachId: user.id,
+            daysOfWeek: sessionData.days
+        }
+
+        try {
+            const response = await fetch('https://localhost:7081/api/TrainingSession', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sessionDto),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log(data)
+            } else {
+                console.log('Ocurrió un error')
+                return
+            }
+        } catch (error) {
+            console.error('Ocurrió un error inesperado', error)
+        }
+    }
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target
@@ -64,6 +138,34 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                 }
             }
         })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        if(sessionData.days.length === 0 ||
+            sessionData.startTime === "" ||
+            sessionData.duration === "" ||
+            sessionData.field === ""
+        ) {
+            return
+        }
+
+        POSTsessions()
+
+        setSessionData({
+            days: [],
+            startTime: '',
+            duration: '',
+            field: ''
+        })
+
+        return
+    }
+
+    const handleEdit = (e) => {
+        e.preventDefault()
+        // lógica para el edit
     }
 
     return (
@@ -173,7 +275,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                         <Form.Select name='field' value={sessionData.field} onChange={handleChange}>
                             <option disabled value="">Seleccione una Cancha</option>
                             {fields.map((f) => (
-                                <option key={f.id} value={f.name}>{f.name}</option>
+                                <option key={f.id} value={f.id}>{f.name}</option>
                             ))}
                         </Form.Select>
                     </Form.Group>
@@ -181,7 +283,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={props.onHide} variant='dark'>Cerrar</Button>
-                <Button variant='success'>{selectedSession ? 'Guardar Cambios' : 'Agregar Clase'}</Button>
+                <Button variant='success' onClick={() => (selectedSession ? handleSubmit() : handleEdit())}>{selectedSession ? 'Guardar Cambios' : 'Agregar Clase'}</Button>
             </Modal.Footer>
         </Modal>
     )
