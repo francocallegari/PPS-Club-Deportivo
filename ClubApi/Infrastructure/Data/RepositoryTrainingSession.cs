@@ -53,7 +53,7 @@ namespace Infrastructure.Data
                     (session.Time >= newSession.Time && session.Time < newSession.Time.AddMinutes(newSession.Duration)))
                 .ToList();
 
-            return conflictingSessions.Any();
+            return conflictingSessions.Where(s => s.Id != newSession.Id).Any(); // Para que no tire error cuando se quiera editar una session
         }
         public List<TrainingSession> GetAllSessions()
         {
