@@ -68,6 +68,11 @@ const Header = () => {
     navigate("/director");
   }
 
+  const handleSessionsNavigation = (e) => {
+    e.preventDefault();
+    navigate("/sessions");
+  }
+
   return (
     <Navbar className="navbar-container" expand="lg">
       <div className="Header-section ">
@@ -83,7 +88,7 @@ const Header = () => {
         <Nav.Item className="Nav-Seccion" onClick={handleClubNavigation}>
           El club
         </Nav.Item>
-       
+
         {(user?.role === "Member" || !user) && (
           <>
             <Nav.Item className="Nav-Seccion" onClick={handleSportsNavigation}>
@@ -94,6 +99,12 @@ const Header = () => {
               Actividades
             </Nav.Item>
           </>
+        )}
+
+        {user && (
+          <Nav.Item className="Nav-Seccion" onClick={handleSessionsNavigation}>
+            Clases
+          </Nav.Item>
         )}
 
         {user && user.role === "Admin" && (

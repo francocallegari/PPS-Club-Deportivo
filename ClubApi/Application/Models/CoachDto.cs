@@ -13,6 +13,7 @@ namespace Application.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
+        public SportDto Sport { get; set; }
 
         public static CoachDto Create(Coach coach)
         {
@@ -21,6 +22,7 @@ namespace Application.Models
             dto.UserName = coach.UserName;
             dto.Name = coach.Name;
             dto.Email = coach.Email;
+            dto.Sport = SportDto.Create(coach.SportAssigned);
 
             return dto;
 

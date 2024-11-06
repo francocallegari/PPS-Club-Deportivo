@@ -129,5 +129,10 @@ namespace Application.Services
         {
             return TrainingSessionDto.CreateList(_repositoryTSession.GetAllSessions());
         }
+
+        public List<TrainingSessionDto> GetAllBySportId(int id)
+        {
+            return TrainingSessionDto.CreateList(_repositoryTSession.GetAllBySportId(id));
+        }
     }
 }

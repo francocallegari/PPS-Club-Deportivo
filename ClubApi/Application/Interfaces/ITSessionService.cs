@@ -16,5 +16,6 @@ namespace Application.Interfaces
         void DeleteTS(int sessionID);
         List<TrainingSessionDto> GetAllByMemberId(int id);
         List<TrainingSessionDto> GetAllSessions();
+        List<TrainingSessionDto> GetAllBySportId(int id);
     }
 }

@@ -103,3 +103,11 @@
     cursor: pointer;
     background-color: rgb(58, 98, 179);
 }
+
+.event-Voley {
+    background-color: rgb(230, 200, 67);
+}
+.event-Voley:hover {
+    cursor: pointer;
+    background-color: rgb(228, 207, 114);
+}

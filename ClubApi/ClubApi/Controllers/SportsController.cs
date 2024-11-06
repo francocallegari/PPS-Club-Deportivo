@@ -59,6 +59,19 @@ namespace ClubApi.Controllers
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
+        [HttpGet("SportByCoachId/{id}")]
+        public IActionResult GetByCoachId([FromRoute] int id)
+        {
+            try
+            {
+                return Ok(_sportsService.GetByCoachId(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ha ocurrido un error inesperado. Error: " + ex.Message);
+            }
+        }
 
         [HttpPost]
         public ActionResult<SportDto> CreateSport([FromBody] SportDto sport)

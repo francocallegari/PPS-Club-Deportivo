@@ -1,8 +1,37 @@
-import React from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import './SessionCard.css'
 import { Button } from 'react-bootstrap'
+import { AuthenticationContext } from '../../services/authentication/AuthenticationContext'
 
 const SessionCard = ({ startTime, endTime, field, coach, sport, daysOfWeek, onEdit }) => {
+    const { user } = useContext(AuthenticationContext)
+    const [coachSport, setCoachSport] = useState(null)
+
+    const fetchCoachSport = async () => {
+        try {
+            const response = await fetch(`https://localhost:7081/api/Sports/SportByCoachId/${user.id}`, {
+                method: "GET",
+                headers: {
+                    accept: "*/*",
+                    "Content-Type": "application/json",
+                },
+            })
+            if (response.ok) {
+                const data = await response.json();
+                setCoachSport(data)
+            } else {
+                throw new Error("Error al obtener el deporte del entrenador");
+            }
+        } catch (error) {
+            console.error("Error:", error)
+        }
+    }
+
+    useEffect(() => {
+        if(user !== null && user.role === "Coach"){
+            fetchCoachSport()
+        }
+    }, [user])
 
     const days = [
         'Domingo',
@@ -45,10 +74,12 @@ const SessionCard = ({ startTime, endTime, field, coach, sport, daysOfWeek, onEd
             <p className='card-info'><strong>Hora de Finalización:</strong> {endTime}</p>
             <p className='card-info'><strong>Cancha:</strong> {field}</p>
             <p className='card-info'><strong>Entrenador:</strong> {coach}</p>
-            <div className='buttons-div'>  {/*Estos botones se mostrarian solo para los entrenadores */}
-                <Button variant='danger'>Eliminar</Button>
-                <Button variant='warning' onClick={sessionToEdit}>Editar</Button>
-            </div>
+            {user.role === "Coach" && coachSport && coachSport.name == sport && (
+                <div className='buttons-div'>  {/*Estos botones se mostrarian solo para los entrenadores */}
+                    <Button variant='danger'>Eliminar</Button>
+                    <Button variant='warning' onClick={sessionToEdit}>Editar</Button>
+                </div>
+            )}
         </div>
     )
 }

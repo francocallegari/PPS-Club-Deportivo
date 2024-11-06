@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Modal, Button, Table } from "react-bootstrap";
 import "./SportDetail.css";
 import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
@@ -6,6 +6,46 @@ import { AuthenticationContext } from "../../services/authentication/Authenticat
 const SportDetail = ({ sport, onClose }) => {
   const { user } = useContext(AuthenticationContext);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [sportSessions, setSportSessions] = useState([])
+
+  const days = [
+    'Domingo',
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sábado'
+  ]
+
+  const convertToDays = (daysOfWeek) => {
+    const daysConverted = daysOfWeek.map(day => days[day])
+    return daysConverted
+  }
+
+  const fetchSessionsBySport = async () => {
+    try {
+      const response = await fetch(`https://localhost:7081/api/TrainingSession/SessionsBySportId/${sport.id}`, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          "Content-Type": "application/json",
+        },
+      })
+      if (response.ok) {
+        const data = await response.json();
+        setSportSessions(data);
+      } else {
+        throw new Error("Error al obtener las clases de entrenamiento");
+      }
+    } catch (error) {
+      console.error("Error:", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchSessionsBySport()
+  }, [])
 
   const handleInscripcion = async () => {
     try {
@@ -55,21 +95,40 @@ const SportDetail = ({ sport, onClose }) => {
               className="sport-detail-image"
             />
 
-            <h4>Horarios de Entrenamiento</h4>
-            <Table striped bordered hover className="sport-schedule">
-              <thead>
-                <tr>
-                  <th>Día</th>
-                  <th>Horario</th>
-                </tr>
-              </thead>
+            {sportSessions.length !== 0 ? (
+              <>
+                <h4>Horarios de Entrenamiento</h4>
+                <Table striped bordered hover className="sport-schedule">
+                  <thead>
+                    <tr>
+                      <th>Días</th>
+                      <th>Horario</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sportSessions.map((session, index) => (
+                      convertToDays(session.daysOfWeek).map((day, dayIndex) => (
+                        <tr key={`${index}-${dayIndex}`}>
+                          <td>{day}</td>
+                          <td>{session.time}</td> {/* Horario compartido por todos los días */}
+                        </tr>
+                      ))
+                    ))}
+                  </tbody>
+                </Table>
 
-            </Table>
-
-            <h4>Descripción</h4>
-            <ul className="sport-detail-list">
-
-            </ul>
+                <h4>Descripción</h4>
+                <ul className="sport-detail-list">
+                  {sportSessions.map((session, index) => (
+                    <li key={index}>
+                      <b>Profesor:</b> {session.coach.name} - <b>Cancha:</b> {session.field.name}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p>Aún no hay horarios disponibles para este deporte</p>
+            )}
           </div>
         </Modal.Body>
 

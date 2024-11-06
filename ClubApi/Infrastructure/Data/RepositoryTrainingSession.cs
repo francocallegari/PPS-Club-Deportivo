@@ -46,7 +46,8 @@ namespace Infrastructure.Data
                 .Where(session =>
                     session.CoachId == newSession.CoachId ||
                     session.SportsFieldId == newSession.SportsFieldId)
-                .Where(session => session.DaysOfWeek.Any(day => newSession.DaysOfWeek.Contains(day))) 
+                .Where(session => session.DaysOfWeek.Any(day => newSession.DaysOfWeek.Contains(day)))
+                .ToList()
                 .Where(session =>
                     (newSession.Time >= session.Time && newSession.Time < session.Time.AddMinutes(session.Duration)) ||
                     (session.Time >= newSession.Time && session.Time < newSession.Time.AddMinutes(newSession.Duration)))

@@ -1,0 +1,17 @@
+/* Asegura que el contenedor ocupe toda la altura de la pantalla */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+.content {
+    flex: 1; /* Hace que el contenido principal ocupe el espacio disponible */
+}
+
+

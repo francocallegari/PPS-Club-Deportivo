@@ -44,6 +44,18 @@ namespace ClubApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("SessionsBySportId/{id}")]
+        public IActionResult GetAllBySportId([FromRoute] int id)
+        {
+            try
+            {
+                return Ok(_sessionService.GetAllBySportId(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpPost]
         public IActionResult CreateSession([FromBody] TSessionRequest session)
         {
@@ -82,5 +94,6 @@ namespace ClubApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
     }
 }

@@ -10,12 +10,14 @@ namespace Application.Services
         private readonly IRepositoryBase<Sport> _baseRepository;
         private readonly IRepositorySport _sportRepository;
         private readonly IRepositoryUser _userRepository;
+        private readonly IRepositoryCoach _repositoryCoach;
 
-        public SportsService(IRepositoryBase<Sport> baseRepository, IRepositorySport sportRepository, IRepositoryUser userRepository)
+        public SportsService(IRepositoryBase<Sport> baseRepository, IRepositorySport sportRepository, IRepositoryUser userRepository, IRepositoryCoach repositoryCoach)
         {
             _baseRepository = baseRepository;
             _sportRepository = sportRepository;
             _userRepository = userRepository;
+            _repositoryCoach = repositoryCoach;
         }
 
         public ICollection<SportDto> GetAllSports()
@@ -104,6 +106,16 @@ namespace Application.Services
             {
                 throw new InvalidOperationException($"El socio no se pudo desinscribir porque no está inscripto en el deporte");
             }
+        }
+        public SportDto GetByCoachId(int coachId)
+        {
+            var coach = _repositoryCoach.GetCoachById(coachId)
+                ?? throw new KeyNotFoundException("No se encontró al profesor");
+
+            var sport = _sportRepository.GetById(coach.SportId)
+                ?? throw new KeyNotFoundException("No se encontró el deporte");
+
+            return SportDto.Create(sport);
         }
     }
 }
