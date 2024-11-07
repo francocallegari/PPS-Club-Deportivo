@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Modal, Button, Form, CloseButton } from 'react-bootstrap'
+import { Modal, Button, Form, CloseButton, Alert } from 'react-bootstrap'
 import { AuthenticationContext } from '../../services/authentication/AuthenticationContext'
 
 {/* El Coach se va a mandar automaticamente sacando su ID de la autenticacion.
     A partir del ID del Coach, se va a obtener el deporte del cual se quiere crear la clase
 */}
 
-const SessionForm = ({ selectedSession, onSave, ...props }) => {
+const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
     const {user} = useContext(AuthenticationContext)
     const [fields, setFields] = useState([])
     const [sessionData, setSessionData] = useState({
         days: [],
         startTime: '',
         duration: '',
-        field: ''
+        fieldId: ''
     })
+    const [alert, setAlert] = useState(false)
 
     const fetchCoachSport = async () => {
         try {
@@ -70,7 +71,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                 days: selectedSession.daysOfWeek,
                 startTime: selectedSession.startTime,
                 duration: selectedSession.duration,
-                field: selectedSession.field
+                fieldId: selectedSession.field.id
             })
             console.log(selectedSession) 
         } else {
@@ -78,44 +79,10 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                 days: [],
                 startTime: "",
                 duration: "",
-                field: ""
+                fieldId: ""
             })
         }
     }, [selectedSession])
-
-    const POSTsessions = async () => {
-        const timeWithSeconds = sessionData.startTime + ":00"
-
-        const sessionDto = {
-            time: timeWithSeconds,
-            duration: sessionData.duration,
-            fieldId: sessionData.field,
-            coachId: user.id,
-            daysOfWeek: sessionData.days
-        }
-
-        try {
-            const response = await fetch('https://localhost:7081/api/TrainingSession', {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(sessionDto),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                console.log(data)
-            } else {
-                console.log('Ocurrió un error')
-                return
-            }
-        } catch (error) {
-            console.error('Ocurrió un error inesperado', error)
-        }
-    }
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target
@@ -146,26 +113,34 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
         if(sessionData.days.length === 0 ||
             sessionData.startTime === "" ||
             sessionData.duration === "" ||
-            sessionData.field === ""
+            sessionData.fieldId === ""
         ) {
+            setAlert(true)
             return
         }
 
-        POSTsessions()
+        const timeWithSeconds = sessionData.startTime + ":00"
+        const sessionDto = {
+            time: timeWithSeconds,
+            duration: sessionData.duration,
+            fieldId: sessionData.fieldId,
+            coachId: user.id,
+            daysOfWeek: sessionData.days
+        }
+        if (selectedSession) {
+            onEdit(selectedSession.sessionId, sessionDto)
+        } else {
+            onSave(sessionDto)
+        }
 
         setSessionData({
             days: [],
             startTime: '',
             duration: '',
-            field: ''
+            fieldId: ''
         })
 
-        return
-    }
-
-    const handleEdit = (e) => {
-        e.preventDefault()
-        // lógica para el edit
+        props.onHide()
     }
 
     return (
@@ -272,7 +247,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label><b>Cancha</b></Form.Label>
-                        <Form.Select name='field' value={sessionData.field} onChange={handleChange}>
+                        <Form.Select name='fieldId' value={sessionData.fieldId} onChange={handleChange}>
                             <option disabled value="">Seleccione una Cancha</option>
                             {fields.map((f) => (
                                 <option key={f.id} value={f.id}>{f.name}</option>
@@ -283,7 +258,7 @@ const SessionForm = ({ selectedSession, onSave, ...props }) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={props.onHide} variant='dark'>Cerrar</Button>
-                <Button variant='success' onClick={() => (selectedSession ? handleSubmit() : handleEdit())}>{selectedSession ? 'Guardar Cambios' : 'Agregar Clase'}</Button>
+                <Button variant='success' onClick={handleSubmit}>{selectedSession ? 'Guardar Cambios' : 'Agregar Clase'}</Button>
             </Modal.Footer>
         </Modal>
     )
