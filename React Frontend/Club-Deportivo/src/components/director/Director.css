@@ -1,27 +1,41 @@
 .user-container {
     display: flex;
     justify-content: space-around;
+    gap: 20px;
+    width: 100%;
+    margin: 0 auto;
 }
 
-.user-column {
-    flex: 1;
-    padding: 10px;
-    margin: 0 10px;
+.user-role-section {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .user-title {
-    color: rgba(13, 48, 118, 0.912) !important;
-    border-bottom: 0.5px solid rgba(13, 48, 118, 0.912);
+    color: rgba(13, 48, 118, 0.912);
+    border-bottom: 1px solid rgba(13, 48, 118, 0.5);
     padding-bottom: 5px;
     font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .user {
-    background-color: rgb(242, 245, 252) !important;
-    color: rgba(13, 48, 118, 0.912) !important;
-    margin: 20px 0px;
-    padding: 15px;
+    background-color: rgb(242, 245, 252);
+    color: rgba(13, 48, 118, 0.912);
+    padding: 10px;
     border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 5px 0;
+}
+
+.user-column{
+    width: 300px;
 }
 
 .fa-user {
@@ -31,9 +45,12 @@
 .evento-approve{
     font-size: 2rem;
     margin-top: 20px;
+    margin-bottom: 20px;
     font-weight: bold;
     color: rgba(13, 48, 118, 0.912);
     margin-left: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 .container-events{
@@ -61,4 +78,8 @@ button.user:hover {
 button.user:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+.fa-x{
+    cursor: pointer;
 }

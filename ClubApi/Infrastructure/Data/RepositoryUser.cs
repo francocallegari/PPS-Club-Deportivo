@@ -14,15 +14,15 @@ namespace Infrastructure.Data
 
         public User GetUserByName(string username)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserName == username)
-                ?? throw new Exception("Usuario no encontrado");
+            var user = _context.Users.FirstOrDefault(u => u.UserName == username);
+
             return user;
         }
 
         public User GetUserByEmail(string email)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Email == email)
-                ?? throw new Exception("Usuario no encontrado");
+            var user = _context.Users.FirstOrDefault(x => x.Email == email);
+
             return user;
         }
 

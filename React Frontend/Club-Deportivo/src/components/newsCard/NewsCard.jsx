@@ -19,7 +19,7 @@ const NewsCard = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        setNoticias(data); // Actualiza el estado de noticias con los datos obtenidos
+        setNoticias(data);
       } else {
         throw new Error("Error al obtener las noticias");
       }
@@ -29,7 +29,7 @@ const NewsCard = () => {
   };
 
   useEffect(() => {
-    fetchNews(); // Llama a la función cuando el componente se monta
+    fetchNews();
   }, []);
 
   // Función para agrupar las noticias en lotes de 4 (si quieres mostrar 4 por slide)
