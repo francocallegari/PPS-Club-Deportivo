@@ -12,5 +12,6 @@ namespace Application.Interfaces
         void UpdateUser(int id, UserRequest customer);
         void DeleteUser(int id);
         UserResponse CreateUser(UserRequest user);
+        UserResponse RegisterUser(UserRequest user);
     }
 }
