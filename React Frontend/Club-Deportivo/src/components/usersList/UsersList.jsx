@@ -1,56 +1,82 @@
 import React, { useEffect, useState } from 'react'
 import './UsersList.css'
 
-const UsersList = ({ option }) => {
+const UsersList = ({ option, sportId }) => {
   const [response, setResponse] = useState([])
 
   useEffect(() => {
-    const USERS = [
-      { id: 1, name: "Manuel De Macedo", usertype: "admin" },
-      { id: 2, name: "Franco Callegari", usertype: "admin" },
-      { id: 3, name: "Facundo Gomez", usertype: "coach" },
-      { id: 4, name: "Anabella Rustici", usertype: "coach" },
-      { id: 5, name: "Aylen Guy", usertype: "director" },
-      { id: 6, name: "Delfina Isaguirre", usertype: "director" },
-      { id: 7, name: 'pepe', usertype: 'member' },
-      { id: 8, name: 'pepe', usertype: 'member' },
-      { id: 9, name: 'pepe', usertype: 'member' },
-      { id: 10, name: 'pepe', usertype: 'member' },
-      { id: 11, name: 'pepe', usertype: 'member' },
-      { id: 12, name: 'pepe', usertype: 'member' }
-
-    ];
-
-    switch (option) {
-      case "admins":
-        const admins = USERS.filter((u) => u.usertype == "admin")
-        setResponse(admins)
-        break;
-      case "members":
-        const members = USERS.filter((u) => u.usertype == "member")
-        setResponse(members)
-        break;
-      case "directors":
-        const directors = USERS.filter((u) => u.usertype == "director")
-        setResponse(directors)
-        break;
-      case "coaches":
-        const coaches = USERS.filter((u) => u.usertype == "coach")
-        setResponse(coaches)
-        break;
-      case "sportMembers":
-        const sportMembers = USERS.filter((u) => u.usertype == "member")
-        setResponse(sportMembers)
-        break;
-      default:
-        setResponse(USERS)
+    if (option !== "sportMembers") {
+      const fetchUsers = async () => {
+        try {
+          const response = await fetch("https://localhost:7081/api/User", {
+            method: "GET",
+            headers: {
+              accept: "*/*",
+              "Content-Type": "application/json",
+            },
+          })
+          if (response.ok) {
+            const data = await response.json()
+            filterUsers(data, option)
+          } else {
+            throw new Error("Error al obtener los usuarios")
+          }
+        } catch (error) {
+          console.error("Error:", error)
+        }
+      };
+      fetchUsers()
     }
   }, [option])
+
+  const filterUsers = (usersList, option) => {
+    switch (option) {
+      case "admins":
+        setResponse(usersList.filter((u) => u.userType === "Admin"))
+        break
+      case "members":
+        setResponse(usersList.filter((u) => u.userType === "Member"))
+        break
+      case "directors":
+        setResponse(usersList.filter((u) => u.userType === "Director"))
+        break
+      case "coaches":
+        setResponse(usersList.filter((u) => u.userType === "Coach"))
+        break
+      default:
+        setResponse(usersList)
+    }
+  }
+
+  useEffect(() => {
+    if (option === "sportMembers" && sportId) {
+      const fetchMembersBySport = async () => {
+        try {
+          const response = await fetch(`https://localhost:7081/api/Sports/GetMembers/${sportId}`, {
+            method: "GET",
+            headers: {
+              accept: "*/*",
+              "Content-Type": "application/json",
+            },
+          });
+          if (response.ok) {
+            const data = await response.json()
+            setResponse(data)
+          } else {
+            throw new Error("Error al obtener los miembros por deporte")
+          }
+        } catch (error) {
+          console.error("Error:", error)
+        }
+      }
+      fetchMembersBySport()
+    }
+  }, [option, sportId])
 
   return (
     <div className='users-list'>
       {response.map((u) => (
-        <p key={u.id} className='list-item'><i className="fas fa-user"></i>Nombre: {u.name}</p>
+        <p key={u.id} className='list-item'><i className="fas fa-user"></i>DNI: {u.dni} -- Nombre: {u.name} -- Email: {u.email}</p>
       ))}
     </div>
   )

@@ -223,24 +223,7 @@ const Director = () => {
       <h3 className="evento-approve">Estadisticas</h3>
       <StatisticsGraph />
       <br />
-
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmación</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          ¿Estás seguro de que quieres aprobar el evento "
-          <strong>{selectedEvent?.title}</strong>"?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={approveEvent}>
-            Aprobar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        
     </>
   );
 };
