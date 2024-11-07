@@ -1,84 +1,101 @@
 ﻿using Application.Interfaces;
+using Application.Models;
 using Application.Models.Request;
 using Application.Models.Response;
 using Domain.Entities;
 using Domain.Interfaces;
+using System.Collections.Generic;
 
 namespace Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly IRepositoryUser _userRepository;
-        private readonly IEmailService _emailService;
+        private readonly IRepositoryUser _repositoryUser;
 
-        public UserService(IRepositoryUser userRepository, IEmailService emailService)
+        public UserService(IRepositoryUser repositoryUser)
         {
-            _userRepository = userRepository;
-            _emailService = emailService;
+            _repositoryUser = repositoryUser;
         }
 
-        public ICollection<UserResponse> GetAllUsers()
+        public UserDto CreateUser(UserRequest request)
         {
-            //Test Mail Send
+            var user = new User
+            {
+                Name = request.Name,
+                LastName = request.LastName,
+                Email = request.Email,
+                Password = request.Password,
+                UserName = request.UserName,
+                UserType = request.UserType,
+                DNI = request.DNI,
+                BirthDate = request.BirthDate,
+                PhoneNumber = request.PhoneNumber,
+                Direction = request.Direction,
+                UserRegistrationDate = DateTime.Now
+            };
 
-            /*
-            string subject = "Bienvenido a All Stars Club";
-            string body = _emailService.GetTemplateByName("WelcomeEmail");
-            string nombre = "Juan Pérez";
-            string fechaRegistro = DateTime.Now.ToString("dd/MM/yyyy");
-
-            string emailBody = String.Format(body, nombre, fechaRegistro);
-
-            _emailService.SendEmail("xxxxxxx@hotmail.com", subject, emailBody);
-            */
-
-            var users = UserResponse.ToDtoList(_userRepository.ListAsync().Result ?? throw new KeyNotFoundException("No se encontraron usuarios"));
-            return users;
+            _repositoryUser.AddAsync(user);
+            return UserDto.Create(user);
         }
 
-        public UserResponse GetUserById(int id)
+        public List<UserDto> GetAllUsers()
         {
-            UserResponse userDto = UserResponse.ToDto(_userRepository.GetByIdAsync(id).Result ?? throw new KeyNotFoundException("No se encontró el usuario"));
-            return userDto;
+            var users = _repositoryUser.ListAsync().Result;
+            return users.ConvertAll(UserDto.Create);
         }
 
-        public User? GetUserByUserName(string userName)
+        public UserDto GetUserById(int id)
         {
-            return _userRepository.GetUserByName(userName);
+            var user = _repositoryUser.GetByIdAsync(id).Result;
+            if (user == null) throw new KeyNotFoundException("Usuario no encontrado.");
+            return UserDto.Create(user);
         }
 
-        public UserResponse CreateUser(UserRequest dto)
+        public void UpdateUser(int id, UserRequest request)
         {
-            var user=UserResponse.ToDto(_userRepository.AddAsync(UserRequest.ToEntity(dto)).Result);
+            var user = _repositoryUser.GetByIdAsync(id).Result;
+            if (user == null) throw new KeyNotFoundException("Usuario no encontrado.");
 
-            if (user != null)
-                _emailService.SendWelcomeEmail(user);
+            user.Name = request.Name;
+            user.LastName = request.LastName;
+            user.Email = request.Email;
+            user.Password = request.Password;
+            user.UserName = request.UserName;
+            user.UserType = request.UserType;
+            user.DNI = request.DNI;
+            user.BirthDate = request.BirthDate;
+            user.PhoneNumber = request.PhoneNumber;
+            user.Direction= request.Direction;
 
-            return user;
-        }
-
-        public void UpdateUser(int id, UserRequest dto)
-        {
-
-            var existingUser = _userRepository.GetByIdAsync(id).Result ?? throw new KeyNotFoundException("No se encontró el usuario");
-
-            if (_userRepository.GetUserByName(dto.UserName) != null)
-                throw new InvalidOperationException("El nombre de usuario ya está en uso.");
-
-            existingUser.Name = dto.Name;
-            existingUser.Email = dto.Email;
-            existingUser.Password = dto.Password;
-            existingUser.UserName = dto.UserName;
-            existingUser.UserType = dto.UserType;
-            existingUser.PhoneNumber = dto.PhoneNumber;
-
-            _userRepository.UpdateAsync(existingUser).Wait();
+            _repositoryUser.UpdateAsync(user);
         }
 
         public void DeleteUser(int id)
         {
-            var userDto = _userRepository.GetByIdAsync(id).Result ?? throw new KeyNotFoundException("No se encontró el usuario");
-            _userRepository.DeleteAsync(userDto);
+            var user = _repositoryUser.GetByIdAsync(id).Result;
+            if (user == null) throw new KeyNotFoundException("Usuario no encontrado.");
+
+            _repositoryUser.DeleteAsync(user);
+        }
+
+        ICollection<UserResponse> IUserService.GetAllUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        UserResponse IUserService.GetUserById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetUserByUserName(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        UserResponse IUserService.CreateUser(UserRequest user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

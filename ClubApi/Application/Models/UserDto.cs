@@ -1,9 +1,5 @@
 ﻿using Domain.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Models
 {
@@ -11,32 +7,34 @@ namespace Application.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string LastName { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
+        public string UserType { get; set; }
+        public string DNI { get; set; }
+        public DateTime BirthDate { get; set; }
         public string PhoneNumber { get; set; }
+        public string Direction { get; set; }
+        public DateTime UserRegistrationDate { get; set; }
+        public DateTime? UserDeletionDate { get; set; }
 
         public static UserDto Create(User user)
         {
-            var dto = new UserDto();
-            dto.Id = user.Id;
-            dto.UserName = user.UserName;
-            dto.Name = user.Name;
-            dto.Email = user.Email;
-            dto.PhoneNumber = user.PhoneNumber;
-
-            return dto;
-
-        }
-
-        public static List<UserDto> CreateList(List<User> users)
-        {
-            List<UserDto> listDto = [];
-            foreach (var u in users)
+            return new UserDto
             {
-                listDto.Add(Create(u));
-            }
-
-            return listDto;
+                Id = user.Id,
+                Name = user.Name,
+                LastName = user.LastName,
+                Email = user.Email,
+                UserName = user.UserName,
+                UserType = user.UserType,
+                DNI = user.DNI,
+                BirthDate = user.BirthDate,
+                PhoneNumber = user.PhoneNumber,
+                Direction = user.Direction,
+                UserRegistrationDate = user.UserRegistrationDate,
+                UserDeletionDate = user.UserDeletionDate
+            };
         }
     }
 }

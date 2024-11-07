@@ -25,9 +25,9 @@ const PaymentMethod = ({ monto }) => {
           quantity: 1,
           price: parseFloat(monto.replace("$", "")), // Usamos el monto que recibimos
           currencyId: "ARS",
-          successUrl: "http://google.com/",
-          failureUrl: "http://google.com/",
-          pendingUrl: "http://google.com/",
+          successUrl: "http://localhost:5173/club",
+          failureUrl: "http://localhost:5173/club",
+          pendingUrl: "http://localhost:5173/club",
         }
       );
 

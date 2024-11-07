@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Models.Request
@@ -7,6 +7,9 @@ namespace Application.Models.Request
     {
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
 
         [Required]
         [EmailAddress]
@@ -20,32 +23,32 @@ namespace Application.Models.Request
 
         [Required]
         public string UserType { get; set; }
+
+        [Required]
+        public string DNI { get; set; }
+
+        [Required]
+        public DateTime BirthDate { get; set; }
+
+        [Required]
         public string PhoneNumber { get; set; }
 
-        public static User ToEntity(UserRequest dto)
+        [Required]
+        public string Direction { get; set; }
+
+        public static bool ValidateDto(UserRequest dto)
         {
-            return new User
-            {
-                Name = dto.Name,
-                Email = dto.Email,
-                Password = dto.Password,
-                UserName = dto.UserName,
-                UserType = dto.UserType,
-                UserRegistrationDate = DateTime.Now,
-                UserDeletionDate = null,
-                PhoneNumber = dto.PhoneNumber,
-            };
+            return !string.IsNullOrEmpty(dto.Name) &&
+                   !string.IsNullOrEmpty(dto.LastName) &&
+                   !string.IsNullOrEmpty(dto.Email) &&
+                   !string.IsNullOrEmpty(dto.Password) &&
+                   !string.IsNullOrEmpty(dto.UserName) &&
+                   !string.IsNullOrEmpty(dto.UserType) &&
+                   !string.IsNullOrEmpty(dto.DNI) &&
+                   dto.BirthDate != default &&
+                   !string.IsNullOrEmpty(dto.PhoneNumber) &&
+                   !string.IsNullOrEmpty(dto.Direction);
         }
 
-        public static bool validateDto(UserRequest dto)
-        {
-            if (dto.Name == default ||
-                dto.Email == default ||
-                dto.Password == default ||
-                dto.UserName == default)
-                return false;
-
-            return true;
-        }
     }
 }

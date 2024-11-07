@@ -65,21 +65,20 @@ namespace ClubApi.Controllers
         {
             try
             {
-                if (!UserRequest.validateDto(user))
-                    return BadRequest("La solicitud no es válida." +
-                        " Verifica que todos los campos requeridos estén presentes y contengan valores adecuados.");
+                if (!UserRequest.ValidateDto(user))
+                    return BadRequest("La solicitud no es válida. Verifica que todos los campos requeridos estén presentes y contengan valores adecuados.");
 
                 var existingUser = _userService.GetUserByUserName(user.UserName);
 
                 if (existingUser != null)
                     return BadRequest("El usuario ya existe.");
 
-                return Ok(_userService.CreateUser(user));
+                var createdUser = _userService.CreateUser(user);
+                return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Ha ocurrido un error inesperado. Error: " + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
 
@@ -88,9 +87,8 @@ namespace ClubApi.Controllers
         {
             try
             {
-                if (!UserRequest.validateDto(user))
-                    return BadRequest("La solicitud no es válida." +
-                        " Verifica que todos los campos requeridos estén presentes y contengan valores adecuados.");
+                if (!UserRequest.ValidateDto(user))
+                    return BadRequest("La solicitud no es válida. Verifica que todos los campos requeridos estén presentes y contengan valores adecuados.");
 
                 _userService.UpdateUser(id, user);
                 return NoContent();
@@ -99,16 +97,12 @@ namespace ClubApi.Controllers
             {
                 return NotFound(ex.Message);
             }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Ha ocurrido un error inesperado. Error: " + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
+
 
         [HttpDelete("{id}")]
         public IActionResult DeleteUser([FromRoute] int id)
