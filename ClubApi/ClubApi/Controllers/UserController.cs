@@ -127,5 +127,23 @@ namespace ClubApi.Controllers
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
+
+        [HttpPost("registerUser")]
+        public ActionResult<UserResponse> RegisterUser([FromBody] UserRequest user)
+        {
+            try
+            {
+                if (!UserRequest.validateDto(user))
+                    return BadRequest("La solicitud no es válida." +
+                        " Verifica que todos los campos requeridos estén presentes y contengan valores adecuados.");
+
+                return Ok(_userService.CreateUser(user));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ha ocurrido un error inesperado. Error: " + ex.Message);
+            }
+        }
     }
 }
