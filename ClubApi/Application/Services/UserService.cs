@@ -49,7 +49,15 @@ namespace Application.Services
 
         public UserResponse CreateUser(UserRequest dto)
         {
-            var user=UserResponse.ToDto(_userRepository.AddAsync(UserRequest.ToEntity(dto)).Result);
+            var existingUser = _userRepository.GetUserByName(dto.UserName);
+
+            if (existingUser != null)
+            {
+                throw new InvalidOperationException("El nombre de usuario ya está en uso.");
+            }
+
+            var user = UserResponse.ToDto(_userRepository.AddAsync(UserRequest.ToEntity(dto)).Result);
+
 
             if (user != null)
                 _emailService.SendWelcomeEmail(user);
