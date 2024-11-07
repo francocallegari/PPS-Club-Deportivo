@@ -60,7 +60,7 @@ namespace ClubApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("newUser")]
         public ActionResult<UserResponse> CreateUser([FromBody] UserRequest user)
         {
             try
@@ -68,11 +68,6 @@ namespace ClubApi.Controllers
                 if (!UserRequest.validateDto(user))
                     return BadRequest("La solicitud no es válida." +
                         " Verifica que todos los campos requeridos estén presentes y contengan valores adecuados.");
-
-                var existingUser = _userService.GetUserByUserName(user.UserName);
-
-                if (existingUser != null)
-                    return BadRequest("El usuario ya existe.");
 
                 return Ok(_userService.CreateUser(user));
             }
