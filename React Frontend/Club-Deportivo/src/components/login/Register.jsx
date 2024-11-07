@@ -13,7 +13,9 @@ function RegisterForm() {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [dni, setDni] = useState("");
-  const [sex, setSex] = useState("Femenino");
+  const [userName, setUserName] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [address, setAddress] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [errors, setErrors] = useState({});
@@ -43,31 +45,82 @@ function RegisterForm() {
     if (!phone) newErrors.phone = "El número celular es obligatorio.";
     if (!birthDate) newErrors.birthDate = "La fecha de nacimiento es obligatoria.";
     if (!dni) newErrors.dni = "El DNI es obligatorio.";
-    
+    if (!userName) newErrors.userName = "El nombre de usuario es obligatorio.";
+    if (!fullName) newErrors.fullName = "El nombre completo es obligatorio.";
+    if (!address) newErrors.address = "La dirección es obligatoria.";
+
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     const newErrors = validateForm();
-
+  
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      return; 
+      console.log(errors)
+      return;
     }
-
-    setShowSuccessModal(true);
+  
+    fetchNewUser();
   };
 
-  const handleRegisterClick = () => {
-    handleSubmit();
-  };
+  const currentDate = new Date().toISOString().split("T")[0]; // Limita la fecha a la fecha de hoy
 
-  const currentDate = new Date().toISOString().split("T")[0]; //para que te muestre hasta la fecha de hoy
+  const fetchNewUser = async () => {
+    const newUserData = {
+      userName,
+      name: fullName,
+      email,
+      password,
+      userType: "Member",
+      phoneNumber: phone,
+      dateOfBirth: birthDate,
+      dni,
+      address
+    };
+  
+    console.log("Datos enviados al backend:", newUserData);
+  
+    try {
+      const response = await fetch("https://localhost:7081/api/User/newUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUserData),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Usuario creado con éxito:", data);
+        setShowSuccessModal(true);
+      } else {
+        let errorData = {};
+        try {
+          errorData = await response.json();
+        } catch (e) {
+          console.error("Error al parsear el JSON de la respuesta", e);
+        }
+  
+        console.error("Error al registrar usuario:", errorData);
+  
+        setErrors({
+          server: errorData?.message || "Error desconocido. Por favor, intente nuevamente.",
+        });
+      }
+    } catch (error) {
+      console.error("Error de red o en la conexión:", error);
+      setErrors({
+        server: "Hubo un error al registrar el usuario. Intenta nuevamente.",
+      });
+    }
+  };
 
   return (
-    <Form className="register-form-container" onSubmit={handleSubmit}>
+    <Form className="register-form-container">
       <h3 className="custom-title">Registrarse</h3>
+
       <Row className="mb-3 spacing-bottom">
         <Form.Group as={Col} controlId="formGridEmail">
           <Form.Label>Email</Form.Label>
@@ -129,30 +182,51 @@ function RegisterForm() {
           {errors.dni && <small className="text-danger">{errors.dni}</small>}
         </Form.Group>
 
-        <Form.Group as={Col} controlId="formGridSex">
-          <Form.Label>Sexo</Form.Label>
-          <Form.Select
-            value={sex}
-            onChange={(e) => setSex(e.target.value)}
+        <Form.Group as={Col} controlId="formGridUserName">
+          <Form.Label>Nombre de usuario</Form.Label>
+          <Form.Control
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
             className="register-input"
-          >
-            <option>Femenino</option>
-            <option>Masculino</option>
-            <option>Otro</option>
-          </Form.Select>
+          />
+          {errors.userName && <small className="text-danger">{errors.userName}</small>}
         </Form.Group>
       </Row>
+
+      <Form.Group className="mb-3" controlId="formGridFullName">
+        <Form.Label>Nombre Completo</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Nombre Completo"
+          className="register-input"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+        />
+        {errors.fullName && <small className="text-danger">{errors.fullName}</small>}
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formGridAddress">
+        <Form.Label>Dirección</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Dirección"
+          className="register-input"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        {errors.address && <small className="text-danger">{errors.address}</small>}
+      </Form.Group>
 
       <Form.Group className="mb-3" id="formGridCheckbox">
         <Form.Check
           type="checkbox"
-          label={
-            <>Acepto los <a href="/" onClick={handleLinkClick} style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}><strong>Términos y condiciones</strong></a></>
-          }
+          label={<>Acepto los <a href="/" onClick={handleLinkClick} style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}><strong>Términos y condiciones</strong></a></>}
           checked={termsAccepted}
           onChange={(e) => setTermsAccepted(e.target.checked)}
         />
       </Form.Group>
+
+      {errors.server && <div className="text-danger mb-3">{errors.server}</div>}
 
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
@@ -160,19 +234,19 @@ function RegisterForm() {
         </Modal.Header>
         <Modal.Body>
           <p>
-            <strong style={{ color: 'blue'}}>1. Aceptación: </strong>
+            <strong style={{ color: 'blue' }}>1. Aceptación: </strong>
             Al usar nuestro sitio o aplicación, aceptas estos términos. Si no estás de acuerdo, no utilices el servicio.
-            <br/>
-            <strong style={{ color: 'blue'}}>2. Uso del Servicio: </strong>
+            <br />
+            <strong style={{ color: 'blue' }}>2. Uso del Servicio: </strong>
             El contenido de este sitio es solo para tu uso personal. No puedes reproducir ni distribuir ningún material sin permiso.
-            <br/>
-            <strong style={{ color: 'blue'}}>3. Privacidad: </strong>
+            <br />
+            <strong style={{ color: 'blue' }}>3. Privacidad: </strong>
             Cuidamos tu información personal conforme a nuestra Política de Privacidad. No compartiremos tus datos sin tu consentimiento, salvo cuando lo exija la ley.
-            <br/>
-            <strong style={{ color: 'blue'}}>4. Propiedad Intelectual: </strong>
+            <br />
+            <strong style={{ color: 'blue' }}>4. Propiedad Intelectual: </strong>
             Todo el contenido, incluidos textos e imágenes, es propiedad de All Stars. No puedes usar nuestro contenido sin autorización.
-            <br/>
-            <strong style={{ color: 'blue'}}>5. Responsabilidad del Usuario: </strong>
+            <br />
+            <strong style={{ color: 'blue' }}>5. Responsabilidad del Usuario: </strong>
             Debes usar el servicio de forma legal y apropiada, proporcionando información veraz.
           </p>
         </Modal.Body>
@@ -185,24 +259,17 @@ function RegisterForm() {
 
       <Modal show={showSuccessModal} onHide={handleCloseSuccessModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Registro Exitoso</Modal.Title>
+          <Modal.Title>Éxito</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <p>Te has registrado con éxito. Puedes iniciar sesión ahora.</p>
-        </Modal.Body>
+        <Modal.Body>¡Te has registrado correctamente!</Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleCloseSuccessModal}>
-            Aceptar
+            Iniciar sesión
           </Button>
         </Modal.Footer>
       </Modal>
 
-      <Button 
-        variant="primary" 
-        onClick={handleRegisterClick}
-        className="register-button" 
-        disabled={!termsAccepted}
-      >
+      <Button variant="primary" type="submit" className="register-button" disabled={!termsAccepted} onClick={handleSubmit}>
         Registrarse
       </Button>
     </Form>
