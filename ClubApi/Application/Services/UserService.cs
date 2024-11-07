@@ -88,5 +88,18 @@ namespace Application.Services
             var userDto = _userRepository.GetByIdAsync(id).Result ?? throw new KeyNotFoundException("No se encontró el usuario");
             _userRepository.DeleteAsync(userDto);
         }
+
+        public UserResponse RegisterUser(UserRequest dto)
+        {
+            var existingUser = _userRepository.GetUserByName(dto.UserName);
+
+            if (existingUser != null)
+            {
+                throw new InvalidOperationException("El usuario ya está registrado.");
+            }
+
+            var user = UserResponse.ToDto(_userRepository.AddAsync(UserRequest.ToEntity(dto)).Result);
+            return user;
+        }
     }
 }
