@@ -101,7 +101,7 @@ const Header = () => {
           </>
         )}
 
-        {user && (
+        {user && user.role == "Member" && (
           <Nav.Item className="Nav-Seccion" onClick={handleSessionsNavigation}>
             Clases
           </Nav.Item>
