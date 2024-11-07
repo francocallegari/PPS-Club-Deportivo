@@ -34,7 +34,7 @@ function RegisterForm() {
 
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
-    navigate("/login");
+    navigate("/");
   };
 
   const validateForm = () => {

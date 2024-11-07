@@ -22,6 +22,12 @@ namespace Application.Models.Request
         public string UserType { get; set; }
         public string PhoneNumber { get; set; }
 
+        public DateOnly DateOfBirth { get; set; }
+
+        public string Dni { get; set; }
+
+        public string Address { get; set; }
+
         public static User ToEntity(UserRequest dto)
         {
             return new User
@@ -34,6 +40,9 @@ namespace Application.Models.Request
                 UserRegistrationDate = DateTime.Now,
                 UserDeletionDate = null,
                 PhoneNumber = dto.PhoneNumber,
+                DateOfBirth = dto.DateOfBirth,
+                Dni = dto.Dni,
+                Address = dto.Address,
             };
         }
 
