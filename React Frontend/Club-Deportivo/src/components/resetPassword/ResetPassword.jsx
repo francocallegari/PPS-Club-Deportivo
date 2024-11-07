@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function ResetPassword() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,56 +29,62 @@ function ResetPassword() {
     });
 
     alert("Su contraseña fue cambiada exitosamente.");
+    navigate('/')
 
     if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Error en la respuesta del servidor:", errorData);
-        throw new Error("Error en la solicitud");
+      const errorData = await response.json();
+      console.error("Error en la respuesta del servidor:", errorData);
+      throw new Error("Error en la solicitud");
     }
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <div
-        className="card p-4"
-        style={{ width: "400px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
-      >
-        <h3 className="text-center mb-4">Cambiar Contraseña</h3>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formEmail" className="mt-3">
-            <Form.Label>Correo Electrónico</Form.Label>
-            <Form.Control
+    <div className="Login-form-container">
+      <div className={`Login-card login-card`}>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <h3 className="custom-title">Cambiar Contraseña
+            </h3>
+
+            <label htmlFor="email">Correo Electrónico</label>
+            <input
               type="email"
+              id="email"
               placeholder="Ingresa tu correo"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="login-input"
               required
             />
-          </Form.Group>
-          <Form.Group controlId="formPassword" className="mt-3">
-            <Form.Label>Nueva Contraseña</Form.Label>
-            <Form.Control
+
+            <label htmlFor="password" className="mt-3">Nueva Contraseña</label>
+            <input
               type="password"
+              id="password"
               placeholder="Ingresa tu nueva contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="login-input"
               required
             />
-          </Form.Group>
-          <Form.Group controlId="formConfirmPassword" className="mt-3">
-            <Form.Label>Confirmar Nueva Contraseña</Form.Label>
-            <Form.Control
+
+            <label htmlFor="password" className="mt-3">Confirmar Nueva Contraseña</label>
+            <input
               type="password"
+              id="password2"
               placeholder="Confirma tu nueva contraseña"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
+              className="login-input"
               required
             />
-          </Form.Group>
-          <Button variant="primary" type="submit" className="w-100 mt-4">
-            Cambiar Contraseña
-          </Button>
-        </Form>
+
+            <button type="submit" className="login-button">
+              Cambiar Contraseña
+            </button>
+
+          </div>
+        </form>
       </div>
     </div>
   );

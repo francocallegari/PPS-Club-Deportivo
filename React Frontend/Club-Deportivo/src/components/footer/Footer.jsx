@@ -1,7 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Footer.css";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <footer className="footer">
@@ -24,14 +27,14 @@ const Footer = () => {
           <div className="footer-socios">
             <h5>SOCIOS</h5>
             <ul>
-              <li>
-                <i className="bi bi-person"></i> Atención al socio
+              <li onClick={() => navigate("/register")}>
+                <i className="bi bi-person-plus-fill"></i> Asociarte
               </li>
-              <li>
-                <i className="bi bi-x"></i> Solicitud de baja
+              <li onClick={() => navigate("/club")}>
+                <i className="bi bi-building"></i> El club
               </li>
-              <li>
-                <i className="bi bi-gift"></i> Beneficios del club
+              <li onClick={() => navigate("/sports")}>
+                <i className="bi bi-trophy"></i> Nuestros deportes
               </li>
             </ul>
           </div>
