@@ -26,7 +26,7 @@ namespace Application.Models
             } else { dto.SportsAttended = null; }
             dto.Address = member.Address;
             dto.DateOfBirth = member.DateOfBirth;
-            dto.DNI = member.DNI;
+            dto.DNI = member.Dni;
             
 
             return dto;

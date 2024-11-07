@@ -220,10 +220,11 @@ const Director = () => {
         </Modal.Footer>
       </Modal>
 
+      <br /><br /><br /><br /><br /><br />      
       <h3 className="evento-approve">Estadisticas</h3>
       <StatisticsGraph />
-      <br />
-        
+      <br /><br />
+
     </>
   );
 };

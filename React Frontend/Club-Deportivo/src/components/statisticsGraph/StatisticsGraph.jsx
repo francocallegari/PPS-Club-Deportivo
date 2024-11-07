@@ -1,6 +1,7 @@
 import { React, useEffect, useRef, useState } from 'react';
 import { Bar, Line, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
+import "./StatisticsGraph.css";
 
 const StatisticsGraph = () => {
     const barChartRef = useRef();
@@ -143,18 +144,18 @@ const StatisticsGraph = () => {
 
     return (
         <div>
-            <div className='container-events'>
-                <div className='user-column'>
+            <div className='container-statistics'>
+                <div className='statistics-column'>
                     <h3 className='user-title'>Deporte más practicado</h3>
                     <Bar ref={barChartRef} data={barData} />
                 </div>
 
-                <div className='user-column'>
+                <div className='statistics-column'>
                     <h3 className='user-title'>Nuevos Usuarios</h3>
                     <Line ref={lineChartRef} data={lineData} />
                 </div>
 
-                <div className="user-column" style={{ width: '300px', height: '300px' }}>
+                <div className="statistics-column" style={{ width: '300px', height: '300px' }}>
                     <h3 className="user-title">Usuarios con cuota al día</h3>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                         <Pie ref={pieChartRef} data={pieData} />

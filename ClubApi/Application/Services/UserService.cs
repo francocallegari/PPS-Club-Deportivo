@@ -19,19 +19,6 @@ namespace Application.Services
 
         public ICollection<UserResponse> GetAllUsers()
         {
-            //Test Mail Send
-
-            /*
-            string subject = "Bienvenido a All Stars Club";
-            string body = _emailService.GetTemplateByName("WelcomeEmail");
-            string nombre = "Juan Pérez";
-            string fechaRegistro = DateTime.Now.ToString("dd/MM/yyyy");
-
-            string emailBody = String.Format(body, nombre, fechaRegistro);
-
-            _emailService.SendEmail("xxxxxxx@hotmail.com", subject, emailBody);
-            */
-
             var users = UserResponse.ToDtoList(_userRepository.ListAsync().Result ?? throw new KeyNotFoundException("No se encontraron usuarios"));
             return users;
         }
