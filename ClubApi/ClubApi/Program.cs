@@ -59,11 +59,12 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
         builder =>
         {
-            builder.WithOrigins("http://localhost:5173", "https://localhost:7062")
+            builder.WithOrigins("http://localhost:5174", "http://localhost:5173", "https://localhost:7062")
                    .AllowAnyHeader()
-            .AllowAnyMethod();
+                   .AllowAnyMethod();
         });
 });
+
 
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:ClubDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
@@ -129,8 +130,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowSpecificOrigin");
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
+
 
 app.MapControllers();
 
