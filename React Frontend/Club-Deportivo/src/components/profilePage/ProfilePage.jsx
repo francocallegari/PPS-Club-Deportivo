@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import React, { useState, useContext, useEffect } from "react";
+import { Button, Modal, Form, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./ProfilePage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,13 +13,72 @@ import {
 
 const ProfilePage = () => {
   const [show, setShow] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [error, setError] = useState(null);
   const { user } = useContext(AuthenticationContext);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`https://localhost:7081/api/User/MemberById/${user.id}`);
+        if (!response.ok) throw new Error("Error al obtener los datos del usuario");
+        const data = await response.json();
+        setUserData(data);
+        console.log("Datos obtenidos del usuario:", data);
+      } catch (error) {
+        setError("Hubo un problema al cargar los datos del usuario.");
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUser();
+  }, [user.id]);
+
+  const handleModify = async () => {
+    try {
+      const formattedDate = new Date(userData.dateOfBirth).toISOString().split('T')[0];
+  
+      const updatedData = {
+        Name: userData.name || "",  
+        UserName: userData.userName || "",  
+        dni: userData.dni,
+        email: userData.email,
+        phoneNumber: userData.phoneNumber,
+        Address: userData.address,
+        dateOfBirth: formattedDate,
+        SportsAttended: userData.sportsAttended || [],
+      };
+  
+      const response = await fetch(`https://localhost:7081/api/User/MemberUpDate/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Error al actualizar los datos del usuario");
+      }
+  
+      const data = response.status !== 204 ? await response.json() : updatedData;
+      if (data) {
+        setUserData(data);
+      }
+      setShow(false);
+    } catch (error) {
+      setError("Hubo un problema al actualizar los datos del usuario.");
+      console.error("Error updating user:", error);
+    }
+  };
+
   return (
     <div className="socio-container">
+      {error && <Alert variant="danger">{error}</Alert>}
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Modificar mis datos </Modal.Title>
@@ -29,26 +88,43 @@ const ProfilePage = () => {
           <Form>
             <Form.Group controlId="formDocumentNumber">
               <Form.Label>Documento</Form.Label>
-              <Form.Control type="text" defaultValue="36859884" />
+              <Form.Control
+                type="text"
+                value={userData.dni || ""}
+                onChange={(e) => setUserData({ ...userData, dni: e.target.value })}
+              />
             </Form.Group>
             <Form.Group controlId="formEmail">
               <Form.Label>Dirección de correo electrónico</Form.Label>
-              <Form.Control type="email" defaultValue="alexa@example.com" />
+              <Form.Control
+                type="email"
+                value={userData.email || ""}
+                onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+              />
             </Form.Group>
             <Form.Group controlId="formPhone">
               <Form.Label>Teléfono de contacto</Form.Label>
-              <Form.Control type="text" defaultValue="341 3225849" />
+              <Form.Control
+                type="text"
+                value={userData.phoneNumber || ""}
+                onChange={(e) => setUserData({ ...userData, phoneNumber: e.target.value })}
+              />
             </Form.Group>
             <Form.Group controlId="formAddress">
               <Form.Label>Dirección</Form.Label>
               <Form.Control
                 type="text"
-                defaultValue="Zeballos 1059, Rosario, Santa Fe"
+                value={userData.address || ""}
+                onChange={(e) => setUserData({ ...userData, address: e.target.value })}
               />
             </Form.Group>
             <Form.Group controlId="formBirthdate">
               <Form.Label>Fecha de nacimiento</Form.Label>
-              <Form.Control type="date" defaultValue="1986-10-14" />
+              <Form.Control
+                type="date"
+                value={userData.dateOfBirth || ""}
+                onChange={(e) => setUserData({ ...userData, dateOfBirth: e.target.value })}
+              />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -59,85 +135,50 @@ const ProfilePage = () => {
           <Button
             className="boton-guardar"
             variant="primary"
-            onClick={handleClose}
+            onClick={handleModify}
           >
             Guardar cambios
           </Button>
         </Modal.Footer>
       </Modal>
 
-      <div className="perfil">
-        <img
-          src="https://cdn-icons-png.freepik.com/512/10015/10015419.png"
-          alt="Foto de perfil"
-          className="foto-perfil"
-        />
-        <h2 className="nombre-usuario">Alexa Rodríguez</h2>
+      {userData && (
+        <>
+          <div className="perfil">
+            <img
+              src="https://cdn-icons-png.freepik.com/512/10015/10015419.png"
+              alt="Foto de perfil"
+              className="foto-perfil"
+            />
+            <h2 className="nombre-usuario">{userData.name}</h2>
 
-        <Button
-          className="boton-modificar"
-          variant="primary"
-          onClick={handleShow}
-        >
-          Modificar mis datos <FontAwesomeIcon icon={faPencilAlt} />
-        </Button>
-      </div>
+            <Button className="boton-modificar" variant="primary" onClick={handleShow}>
+              Modificar mis datos <FontAwesomeIcon icon={faPencilAlt} />
+            </Button>
+          </div>
 
-      <div className="info-personal">
-        <h3 className="section-title">Mis datos personales</h3>
-        <div className="datos-grid">
-          <p>
-            <label>Nº de socio:</label>
-            53048
-          </p>
-          <p>
-            <label>Documento:</label>
-            36859884
-          </p>
-          <p>
-            <label>Dirección de correo electrónico:</label>
-            alexa@example.com
-          </p>
-          <p>
-            <label>Teléfono de contacto:</label>
-            341 3225849
-          </p>
-          <p>
-            <label>Dirección:</label>
-            Zeballos 1059, Rosario, Santa Fe
-          </p>
-          <p>
-            <label>Fecha de nacimiento:</label>
-            14 de octubre de 1986
-          </p>
-        </div>
-      </div>
-
-      <div className="suscripcion">
-        <h3 className="section-title">Mi suscripción</h3>
-        <p>
-          <label>
-            <b>Estado:</b>
-          </label>
-          Socio Activo
-        </p>
-        <p>
-          <label>
-            <b>Datos de facturación:</b>
-          </label>
-          XXXX XXXX XXXX 3096
-        </p>
-      </div>
+          <div className="info-personal">
+            <h3 className="section-title">Mis datos personales</h3>
+            <div className="datos-grid">
+              <p><label>Documento:</label> {userData.dni}</p>
+              <p><label>Dirección de correo electrónico:</label> {userData.email}</p>
+              <p><label>Teléfono de contacto:</label> {userData.phoneNumber}</p>
+              <p><label>Dirección:</label> {userData.address}</p>
+              <p><label>Fecha de nacimiento:</label> {userData.dateOfBirth}</p>
+            </div>
+          </div>
+        </>
+      )}
 
       {user && user.role === "Member" && (
       <div className="deportes">
-        <h3 className="section-title">Deportes y actividades</h3>
-        <FontAwesomeIcon icon={faVolleyballBall} /> Voley
-        <h1></h1>
-        <FontAwesomeIcon icon={faFutbol} /> Fútbol
-        <h1></h1>
-        <FontAwesomeIcon icon={faSwimmer} /> Natación
-      </div>
+      <h3 className="section-title">Deportes y actividades</h3>
+      {userData.sportsAttended && userData.sportsAttended.map((sport) => (
+        <div key={sport.id} className="deporte-item">
+          <p>{sport.name}</p>
+        </div>
+      ))}
+    </div>
       )}
 
       {user && user.role === "Member" && (
