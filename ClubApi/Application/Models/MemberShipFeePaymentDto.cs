@@ -26,7 +26,7 @@ namespace Application.Models
             dto.FeeId = fee.FeeId;
             dto.Status = fee.Status;
             dto.PaymentDate = fee.PaymentDate;
-            //dto.FeePrice = fee.Price;
+            dto.FeePrice = fee.Price;
 
             return dto;
 

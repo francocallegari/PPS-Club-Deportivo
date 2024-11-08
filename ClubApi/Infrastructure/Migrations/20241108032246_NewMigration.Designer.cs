@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240926221049_SecondMigration")]
-    partial class SecondMigration
+    [Migration("20241108032246_NewMigration")]
+    partial class NewMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,8 +84,11 @@ namespace Infrastructure.Migrations
                     b.Property<int>("MemberId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("PaymentDate")
+                    b.Property<DateTime?>("PaymentDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("REAL");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
@@ -134,6 +137,10 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ImageURL")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -147,24 +154,28 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1,
                             Capacity = 60,
+                            ImageURL = "http://webipedia.es/wp-content/uploads/2020/11/06_PelotaEntrandoACanasta.jpg",
                             Name = "Basquet"
                         },
                         new
                         {
                             Id = 2,
                             Capacity = 100,
+                            ImageURL = "https://www.timbo.sc.gov.br/wp-content/uploads/2018/11/futsal-divulgacao.jpg",
                             Name = "Futbol"
                         },
                         new
                         {
                             Id = 3,
                             Capacity = 60,
+                            ImageURL = "https://1.bp.blogspot.com/-F0PamBjTPXY/UZtg4uUZG3I/AAAAAAAACRI/6QIdNWnUeuA/s1600/Annerys-Victoria-Vargas-Valdez-Volleyball-London-2012-Olympics.jpg",
                             Name = "Voley"
                         },
                         new
                         {
                             Id = 4,
                             Capacity = 40,
+                            ImageURL = "https://deportivoromeral.cl/images/ramas/tenis2.jpg",
                             Name = "Tenis"
                         });
                 });
@@ -173,9 +184,6 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Available")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -195,70 +203,60 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Available = false,
                             Name = "Cancha de Basquet 1",
                             SportId = 1
                         },
                         new
                         {
                             Id = 2,
-                            Available = false,
                             Name = "Cancha de Basquet 2",
                             SportId = 1
                         },
                         new
                         {
                             Id = 3,
-                            Available = false,
                             Name = "Cancha de Tenis 1",
                             SportId = 4
                         },
                         new
                         {
                             Id = 4,
-                            Available = false,
                             Name = "Cancha de Tenis 2",
                             SportId = 4
                         },
                         new
                         {
                             Id = 5,
-                            Available = false,
                             Name = "Cancha de Tenis 3",
                             SportId = 4
                         },
                         new
                         {
                             Id = 6,
-                            Available = false,
                             Name = "Cancha de Tenis 4",
                             SportId = 4
                         },
                         new
                         {
                             Id = 7,
-                            Available = false,
                             Name = "Cancha de Futbol 1",
                             SportId = 2
                         },
                         new
                         {
                             Id = 8,
-                            Available = false,
                             Name = "Cancha de Futbol 2",
                             SportId = 2
                         },
                         new
                         {
                             Id = 9,
-                            Available = false,
                             Name = "Cancha de Voley 1",
                             SportId = 3
                         },
                         new
                         {
                             Id = 10,
-                            Available = false,
                             Name = "Cancha de Voley 2",
                             SportId = 3
                         });
@@ -273,17 +271,21 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CoachId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<string>("DaysOfWeek")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Duration")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("SportId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("SportsFieldId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<TimeOnly>("Time")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -302,6 +304,17 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Dni")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
@@ -313,6 +326,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("UserDeletionDate")
                         .HasColumnType("datetime");
@@ -351,6 +368,28 @@ namespace Infrastructure.Migrations
                     b.HasIndex("SportsAttendedId");
 
                     b.ToTable("MembersSportsAttended", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            MembersId = 4,
+                            SportsAttendedId = 1
+                        },
+                        new
+                        {
+                            MembersId = 5,
+                            SportsAttendedId = 1
+                        },
+                        new
+                        {
+                            MembersId = 6,
+                            SportsAttendedId = 1
+                        },
+                        new
+                        {
+                            MembersId = 6,
+                            SportsAttendedId = 2
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Admin", b =>
@@ -363,27 +402,39 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 7,
+                            Address = "Calle Principal 123, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "david.king@club.com",
                             Name = "David King",
                             Password = "password123",
+                            PhoneNumber = "341-789-0123",
                             UserName = "admin_david",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 8,
+                            Address = "Av. Libertador 456, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "laura.hill@club.com",
                             Name = "Laura Hill",
                             Password = "password123",
+                            PhoneNumber = "341-890-1234",
                             UserName = "admin_laura",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 9,
+                            Address = "Calle San Martin 789, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "chris.baker@club.com",
                             Name = "Chris Baker",
                             Password = "password123",
+                            PhoneNumber = "341-901-2345",
                             UserName = "admin_chris",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -404,9 +455,13 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            Address = "Calle Principal 123, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "john.smith@club.com",
                             Name = "John Smith",
                             Password = "password123",
+                            PhoneNumber = "341-123-4567",
                             UserName = "coach_john",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SportId = 1
@@ -414,9 +469,13 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 2,
+                            Address = "Calle Principal 123, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "susan.green@club.com",
                             Name = "Susan Green",
                             Password = "password123",
+                            PhoneNumber = "341-234-5678",
                             UserName = "coach_susan",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SportId = 2
@@ -424,9 +483,13 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 3,
+                            Address = "Calle Principal 123, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "mike.johnson@club.com",
                             Name = "Mike Johnson",
                             Password = "password123",
+                            PhoneNumber = "341-345-6789",
                             UserName = "coach_mike",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SportId = 3
@@ -443,54 +506,78 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 10,
+                            Address = "Calle Principal 123, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "facundolgomez87@gmail.com",
                             Name = "Facundo Gomez",
                             Password = "password123",
+                            PhoneNumber = "341-012-3456",
                             UserName = "facu_gomez",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 11,
+                            Address = "Calle Principal 123, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "manueldema6@gmail.com",
                             Name = "Manuel de Macedo",
                             Password = "password123",
+                            PhoneNumber = "341-135-2468",
                             UserName = "manu_demacedo",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 12,
+                            Address = "Calle Principal 123, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "ayluguy@gmail.com",
                             Name = "Aylen Guy",
                             Password = "password123",
+                            PhoneNumber = "341-246-3579",
                             UserName = "aylu_guy",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 13,
+                            Address = "Calle Principal 123, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "francocallegari12@gmail.com",
                             Name = "Franco Callegari",
                             Password = "password123",
+                            PhoneNumber = "341-357-4680",
                             UserName = "fran_callegari",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 14,
+                            Address = "Calle Principal 123, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "delfiisaguirre26@gmail.com",
                             Name = "Delfina Isaguirre",
                             Password = "password123",
+                            PhoneNumber = "341-468-5791",
                             UserName = "delfi_isaguirre",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 15,
+                            Address = "Calle Principal 123, Ciudad",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "22345678",
                             Email = "anabellarustici@gmail.com",
                             Name = "Anabella Rustici",
                             Password = "password123",
+                            PhoneNumber = "341-579-6802",
                             UserName = "ana_rustici",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
@@ -511,27 +598,39 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 4,
+                            Address = "Av. Pellegrini 1234, Rosario, Santa Fe, Argentina",
+                            DateOfBirth = new DateOnly(1990, 5, 15),
+                            Dni = "20123456",
                             Email = "emily.davis@club.com",
                             Name = "Emily Davis",
                             Password = "password123",
+                            PhoneNumber = "341-456-7890",
                             UserName = "member_emily",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 5,
+                            Address = "Calle Santa Fe 5678, Rosario, Santa Fe, Argentina",
+                            DateOfBirth = new DateOnly(1985, 3, 22),
+                            Dni = "21234567",
                             Email = "tom.brown@club.com",
                             Name = "Tom Brown",
                             Password = "password123",
+                            PhoneNumber = "341-567-8901",
                             UserName = "member_tom",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 6,
+                            Address = "Av. Rivadavia 91011, Rosario, Santa Fe, Argentina",
+                            DateOfBirth = new DateOnly(1992, 11, 30),
+                            Dni = "22345678",
                             Email = "anna.white@club.com",
                             Name = "Anna White",
                             Password = "password123",
+                            PhoneNumber = "341-678-9012",
                             UserName = "member_anna",
                             UserRegistrationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
