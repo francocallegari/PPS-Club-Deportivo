@@ -81,8 +81,11 @@ namespace Infrastructure.Migrations
                     b.Property<int>("MemberId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("PaymentDate")
+                    b.Property<DateTime?>("PaymentDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("REAL");
 
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");

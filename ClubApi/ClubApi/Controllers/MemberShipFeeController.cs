@@ -10,8 +10,10 @@ namespace ClubApi.Controllers
     public class MemberShipFeeController : ControllerBase
     {
         private readonly IPaymentService _paymentService; 
-        public MemberShipFeeController(IPaymentService paymentService) {
+        private readonly IMembershipFeeService _membershipFeeService;
+        public MemberShipFeeController(IPaymentService paymentService, IMembershipFeeService membershipFeeService) {
             _paymentService = paymentService;
+            _membershipFeeService = membershipFeeService;
         }
 
         [HttpGet("CurrentRatePrice")] //valor de la cuota actual
@@ -35,6 +37,19 @@ namespace ClubApi.Controllers
             {
                 var feePaymentsDto = _paymentService.GetMemberFees(memberId, status);
                 return Ok(feePaymentsDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("UpdatePrice")]
+        public IActionResult UpdatePrice([FromQuery] float feePrice)
+        {
+            try
+            {
+                _membershipFeeService.UpdateFeesPrice(feePrice);
+                return Ok();
             }
             catch (Exception ex)
             {

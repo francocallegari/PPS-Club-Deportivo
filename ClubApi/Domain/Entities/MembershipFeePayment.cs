@@ -22,5 +22,6 @@ namespace Domain.Entities
         public MembershipFee Fee { get; set; }
         public FeeStatus Status { get; set; }
         public DateTime PaymentDate { get; set; }
+        //public float Price { get; set; }
     }
 }
