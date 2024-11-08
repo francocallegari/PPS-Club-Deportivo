@@ -1,6 +1,8 @@
 ﻿using Application.Interfaces;
+using Application.Models;
 using Application.Models.Request;
 using Application.Models.Response;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClubApi.Controllers
@@ -10,10 +12,12 @@ namespace ClubApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IMemberService _memberService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IMemberService memberService)
         {
             _userService = userService;
+            _memberService = memberService;
         }
 
         [HttpGet]
@@ -72,7 +76,29 @@ namespace ClubApi.Controllers
             }
         }
 
-        /*[HttpPost("newUser")]
+        [HttpGet("MemberById/{id}")]
+        public ActionResult<UserResponse> GetMemberById([FromRoute] int id)
+        {
+            try
+            {
+                return Ok(_memberService.GetMemberById(id));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid("Acceso denegado. No tiene los permisos necesarios.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ha ocurrido un error inesperado. Error: " + ex.Message);
+            }
+        }
+
+        /* [HttpPost("newUser")]
         public ActionResult<UserResponse> CreateUser([FromBody] UserRequest user)
         {
             try
@@ -100,6 +126,29 @@ namespace ClubApi.Controllers
                         " Verifica que todos los campos requeridos estén presentes y contengan valores adecuados.");
 
                 _userService.UpdateUser(id, user);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ha ocurrido un error inesperado. Error: " + ex.Message);
+            }
+        }
+
+        [HttpPut("MemberUpDate/{id}")]
+        public IActionResult UpdateMember([FromRoute] int id, [FromBody] MemberDto memberDto)
+        {
+            try
+            {
+                _memberService.UpDateMember(id, memberDto);
                 return NoContent();
             }
             catch (KeyNotFoundException ex)

@@ -19,17 +19,27 @@ const PaymentMethod = ({ monto }) => {
   const createPreference = async () => {
     setLoading(true);
     setError(null);
+    
+    // Verificamos si 'monto' está definido y es una cadena
+    const price = monto && typeof monto === "string" ? parseFloat(monto.replace("$", "")) : 0;
+
+    if (price === 0) {
+      setError("Error. Monto no válido");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.post(
         "https://localhost:7081/Payment/create-preference",
         {
           title: "Pago membresía",
           quantity: 1,
-          price: parseFloat(monto.replace("$", "")), // Usamos el monto que recibimos
+          price: 1000,
           currencyId: "ARS",
-          successUrl: "http://google.com/",
-          failureUrl: "http://google.com/",
-          pendingUrl: "http://google.com/",
+          successUrl: "http://localhost:5174/",
+          failureUrl: "http://localhost:5174/",
+          pendingUrl: "http://localhost:5174/",
         }
       );
 
@@ -69,3 +79,4 @@ const PaymentMethod = ({ monto }) => {
 };
 
 export default PaymentMethod;
+

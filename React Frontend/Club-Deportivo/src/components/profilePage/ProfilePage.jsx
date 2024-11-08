@@ -23,8 +23,14 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`https://localhost:7081/api/User/MemberById/${user.id}`);
+        const url = user.userType === "Member"
+          ? `https://localhost:7081/api/User/MemberById/${user.id}`
+          : `https://localhost:7081/api/User/${user.id}`;
+
+        const response = await fetch(url);
+
         if (!response.ok) throw new Error("Error al obtener los datos del usuario");
+        
         const data = await response.json();
         setUserData(data);
         console.log("Datos obtenidos del usuario:", data);
@@ -35,7 +41,7 @@ const ProfilePage = () => {
     };
 
     fetchUser();
-  }, [user.id]);
+  }, [user.id, user.userType]);
 
   const handleModify = async () => {
     try {
@@ -171,14 +177,18 @@ const ProfilePage = () => {
       )}
 
       {user && user.role === "Member" && (
-      <div className="deportes">
-      <h3 className="section-title">Deportes y actividades</h3>
-      {userData.sportsAttended && userData.sportsAttended.map((sport) => (
-        <div key={sport.id} className="deporte-item">
-          <p>{sport.name}</p>
+        <div className="deportes">
+          <h3 className="section-title">Deportes y actividades</h3>
+          {userData.sportsAttended && userData.sportsAttended.length > 0 ? (
+            userData.sportsAttended.map((sport) => (
+              <div key={sport.id} className="deporte-item">
+                <p>{sport.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>No tienes deportes asignados.</p>
+          )}
         </div>
-      ))}
-    </div>
       )}
 
       {user && user.role === "Member" && (
