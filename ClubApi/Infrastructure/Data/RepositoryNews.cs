@@ -34,5 +34,15 @@ namespace Infrastructure.Data
             
             return newsByTitle;
         }
+
+        public News GetNewsById(int id)
+        {
+            var news = _context.News.Find(id);
+            if (news == null)
+            {
+                throw new Exception($"No se encontró una noticia con Id {id}.");
+            }
+            return news;
+        }
     }
 }

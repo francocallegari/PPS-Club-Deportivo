@@ -89,5 +89,19 @@ namespace ClubApi.Controllers
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetNewsById(int id)
+        {
+            try
+            {
+                var newsDto = _newsService.GetNewsById(id);
+                return Ok(newsDto);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }
