@@ -42,7 +42,7 @@ const NewsCard = () => {
   const groupedNoticias = chunkArray(noticias, 4);
 
   const handleShowDetail = (news) => {
-    navigate(`/noticia/${news.id}`); // Navegar a la URL con el ID de la noticia
+    navigate(`/noticia/${news.id}`); // Navega a la URL con el ID de la noticia
   };
 
   return (

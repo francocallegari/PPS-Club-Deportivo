@@ -25,3 +25,7 @@ dist-ssr
 
 # Environment variables
 .env
+
+
+ClubApi/ClubApi/SportsClub.db-shm
+ClubApi/ClubApi/SportsClub.db-wal
