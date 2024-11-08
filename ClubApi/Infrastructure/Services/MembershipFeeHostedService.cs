@@ -70,9 +70,9 @@ namespace Infrastructure.Services
                             Member = member,
                             FeeId = newFee.Id,
                             Fee = newFee,
-                            //Price = feePrice,
+                            Price = feePrice,
                             Status = FeeStatus.Pending,
-                            //PaymentDate = null
+                            PaymentDate = null
                         };
                         dbContext.MembershipFeePayments.Add(payment);
                     }

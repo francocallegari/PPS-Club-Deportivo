@@ -21,7 +21,7 @@ namespace Domain.Entities
         [ForeignKey("FeeId")]
         public MembershipFee Fee { get; set; }
         public FeeStatus Status { get; set; }
-        public DateTime PaymentDate { get; set; }
-        //public float Price { get; set; }
+        public DateTime? PaymentDate { get; set; }
+        public float Price { get; set; }
     }
 }

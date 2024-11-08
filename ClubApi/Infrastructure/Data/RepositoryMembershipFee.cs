@@ -45,9 +45,9 @@ namespace Infrastructure.Data
                     Member = member,
                     FeeId = newFee.Id,
                     Fee = newFee,
-                    //Price = feePrice,
+                    Price = feePrice,
                     Status = FeeStatus.Pending,
-                    //PaymentDate = null
+                    PaymentDate = null
                 };
                 _context.MembershipFeePayments.Add(payment);
             }
