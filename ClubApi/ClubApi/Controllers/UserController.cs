@@ -59,8 +59,20 @@ namespace ClubApi.Controllers
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
+        [HttpGet("ValidateExistingUser")]
+        public IActionResult GetByUserName([FromQuery] string userName)
+        {
+            var existingUser = _userService.GetUserByUserName(userName);
+            if (existingUser == null)
+            {
+                return Ok();
+            } else
+            {
+                return BadRequest("El usuario ya existe");
+            }
+        }
 
-        [HttpPost("newUser")]
+        /*[HttpPost("newUser")]
         public ActionResult<UserResponse> CreateUser([FromBody] UserRequest user)
         {
             try
@@ -76,7 +88,7 @@ namespace ClubApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
-        }
+        }*/
 
         [HttpPut("{id}")]
         public IActionResult UpdateUser([FromRoute] int id, [FromBody] UserRequest user)
@@ -137,7 +149,7 @@ namespace ClubApi.Controllers
                     return BadRequest("La solicitud no es válida." +
                         " Verifica que todos los campos requeridos estén presentes y contengan valores adecuados.");
 
-                return Ok(_userService.CreateUser(user));
+                return Ok(_userService.RegisterUser(user));
             }
             catch (Exception ex)
             {

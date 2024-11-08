@@ -10,5 +10,6 @@ namespace Domain.Interfaces
     public interface IRepositoryMembershipFee : IRepositoryBase<MembershipFee>
     {
         void UpdateFeesPrice(float newPrice);
+        void GenerateFeeForNewMember(Member user);
     }
 }

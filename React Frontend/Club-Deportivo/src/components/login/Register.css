@@ -1,14 +1,19 @@
+.registerDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .register-form-container {
   border-radius: 12px;
-    width: 1200px;
+    width: 1000px;
     transition: transform 0.3s ease;
     padding: 5px;
-    margin-left: 160px;
 }
 
 .register-card {
   border-radius: 12px;
-  width: 1200px;
+  width: 1000px;
   transition: transform 0.3s ease;
   padding: 5px;
 }
@@ -34,7 +39,10 @@
 }
 
 .register-button {
-  width: 24%;
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 12px;
   background-color: #2c55d0;
   color: white;
@@ -43,6 +51,7 @@
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
+  height: 40px;
 }
 
 .register-button:hover {

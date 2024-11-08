@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import "./PaymentMethod.css";
@@ -10,9 +10,11 @@ const PaymentMethod = ({ monto }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY, {
-    locale: "es-AR",
-  });
+  useEffect(() => {
+    initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY, {
+      locale: "es-AR",
+    });
+  }, []);
 
   const createPreference = async () => {
     setLoading(true);
