@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./NewsCard.css";
-import NewsDetail from "../newsDetail/NewsDetail";
 import { Card, Button, Carousel } from "react-bootstrap";
+import { useNavigate } from "react-router-dom"; // Importar useNavigate
 
 const NewsCard = () => {
   const [noticias, setNoticias] = useState([]);
-  const [selectedNews, setSelectedNews] = useState(null);
+  const navigate = useNavigate(); // Inicializar useNavigate
 
-  // Función para obtener noticias del backend
   const fetchNews = async () => {
     try {
       const response = await fetch("https://localhost:7081/api/News/News", {
@@ -32,7 +31,6 @@ const NewsCard = () => {
     fetchNews();
   }, []);
 
-  // Función para agrupar las noticias en lotes de 4 (si quieres mostrar 4 por slide)
   const chunkArray = (arr, chunkSize) => {
     const result = [];
     for (let i = 0; i < arr.length; i += chunkSize) {
@@ -43,12 +41,8 @@ const NewsCard = () => {
 
   const groupedNoticias = chunkArray(noticias, 4);
 
-  const handleShowDetail = (newItem) => {
-    setSelectedNews(newItem);
-  };
-
-  const handleCloseDetail = () => {
-    setSelectedNews(null);
+  const handleShowDetail = (news) => {
+    navigate(`/noticia/${news.id}`); // Navega a la URL con el ID de la noticia
   };
 
   return (
@@ -84,8 +78,6 @@ const NewsCard = () => {
           </Carousel.Item>
         ))}
       </Carousel>
-
-      {selectedNews && <NewsDetail news={selectedNews} onClose={handleCloseDetail} />}
     </div>
   );
 };
