@@ -10,11 +10,13 @@ namespace Application.Services
     {
         private readonly IRepositoryUser _userRepository;
         private readonly IEmailService _emailService;
+        private readonly IRepositoryMembershipFee _repositoryMembershipFee;
 
-        public UserService(IRepositoryUser userRepository, IEmailService emailService)
+        public UserService(IRepositoryUser userRepository, IEmailService emailService, IRepositoryMembershipFee repositoryMembershipFee)
         {
             _userRepository = userRepository;
             _emailService = emailService;
+            _repositoryMembershipFee = repositoryMembershipFee;
         }
 
         public ICollection<UserResponse> GetAllUsers()
@@ -76,16 +78,50 @@ namespace Application.Services
             _userRepository.DeleteAsync(userDto);
         }
 
-        public UserResponse RegisterUser(UserRequest dto)
+        public User RegisterUser(UserRequest dto)
         {
             var existingUser = _userRepository.GetUserByName(dto.UserName);
+            var user = new User();
 
             if (existingUser != null)
             {
                 throw new InvalidOperationException("El usuario ya está registrado.");
             }
 
-            var user = UserResponse.ToDto(_userRepository.AddAsync(UserRequest.ToEntity(dto)).Result);
+            if (dto.UserType == "Member")
+            {
+                var member = new Member();
+                member.UserName = dto.UserName;
+                member.Email = dto.Email;
+                member.Password = dto.Password;
+                member.UserType = dto.UserType;
+                member.PhoneNumber = dto.PhoneNumber;
+                member.Name = dto.Name;
+                member.UserRegistrationDate = DateTime.Now;
+                member.DateOfBirth = dto.DateOfBirth;
+                member.Dni = dto.Dni;
+                member.Address = dto.Address;
+
+                user = _userRepository.Add(member);
+
+                _repositoryMembershipFee.GenerateFeeForNewMember(member);
+            } else
+            {
+                var newUser = new User();
+                newUser.UserName = dto.UserName;
+                newUser.Email = dto.Email;
+                newUser.Password = dto.Password;
+                newUser.UserType = dto.UserType;
+                newUser.PhoneNumber = dto.PhoneNumber;
+                newUser.Name = dto.Name;
+                newUser.UserRegistrationDate = DateTime.Now;
+                newUser.DateOfBirth = dto.DateOfBirth;
+                newUser.Dni = dto.Dni;
+                newUser.Address = dto.Address;
+
+                user = _userRepository.Add(user);
+            }
+
             return user;
         }
     }

@@ -18,6 +18,7 @@ import CalendarEvents from "./components/calendarEvents/CalendarEvents";
 import Admin from "./components/admin/Admin";
 import Protected from "./components/protectedRoute/Protected";
 import Cuotas from "./components/cuotas/Cuotas";
+import RegisterPage from "./components/registerPage/RegisterPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -97,7 +98,7 @@ function App() {
       path: "/register",
       element: (
         <MainLayout>
-          <Register />
+          <RegisterPage></RegisterPage>
         </MainLayout>
       ),
     },

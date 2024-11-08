@@ -54,5 +54,27 @@ namespace Infrastructure.Data
 
             _context.SaveChanges();
         }
+
+        public void GenerateFeeForNewMember(Member user)
+        {
+            var latestFee = _context.MembershipFees.OrderByDescending(f => f.ExpirationDate).FirstOrDefault();
+            if (latestFee == null)
+            {
+                throw new InvalidOperationException("No existe una cuota de membresía disponible.");
+            }
+
+            var payment = new MembershipFeePayment
+            {
+                MemberId = user.Id,
+                Member = user,
+                FeeId = latestFee.Id,
+                Fee = latestFee,
+                Price = latestFee.Price,
+                Status = FeeStatus.Paid,
+                PaymentDate = DateTime.Now
+            };
+            _context.MembershipFeePayments.Add(payment);
+            _context.SaveChanges();
+        }
     }
 }
