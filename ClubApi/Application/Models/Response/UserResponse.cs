@@ -12,6 +12,9 @@ namespace Application.Models.Response
         public DateTime UserRegistrationDate { get; set; }
         public DateTime? UserDeletionDate { get; set; }
         public string PhoneNumber { get; set; }
+        public DateOnly DateOfBirth { get; set; }
+        public string Dni { get; set; }
+        public string Address { get; set; }
 
         public static UserResponse ToDto(User user)
         {
@@ -24,7 +27,10 @@ namespace Application.Models.Response
                 UserType = user.UserType,
                 UserRegistrationDate = user.UserRegistrationDate,
                 UserDeletionDate = user.UserDeletionDate,
-                PhoneNumber = user.PhoneNumber
+                PhoneNumber = user.PhoneNumber,
+                DateOfBirth = user.DateOfBirth,
+                Dni = user.Dni,
+                Address = user.Address
             };
         }
 
