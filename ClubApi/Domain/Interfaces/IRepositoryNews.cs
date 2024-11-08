@@ -11,5 +11,7 @@ namespace Domain.Interfaces
     {
         ICollection<News> GetNewsByDate(DateTime date);
         ICollection<News> GetNewsByTitle(string title);
+
+        News GetNewsById(int id);
     }
 }
