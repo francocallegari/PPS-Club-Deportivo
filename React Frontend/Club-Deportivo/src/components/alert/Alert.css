@@ -1,0 +1,33 @@
+.alert-container {
+  padding: 1em;
+  margin: 1em 0;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.alert-container.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-container.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-container.info {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.alert-icon {
+  margin-right: 0.5em;
+  font-size: 1.2em;
+}

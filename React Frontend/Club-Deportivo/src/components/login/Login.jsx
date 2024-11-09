@@ -4,17 +4,22 @@ import RegisterForm from "./Register";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
+import Alert from "../alert/Alert";
 
 function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [isRecoveringPassword, setIsRecoveringPassword] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("")
-  const emailRef = useRef(null)
-  const passwordRef = useRef(null)
-  const navigate = useNavigate()
+  const [password, setPassword] = useState("");
 
-  const {handleLogin} = useContext(AuthenticationContext)
+  const [errorType, setErrorType] = useState("error");
+  const [error, setError] = useState(null);
+  
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const navigate = useNavigate();
+
+  const { handleLogin } = useContext(AuthenticationContext)
 
   const toggleRegistering = () => {
     setIsRegistering(!isRegistering);
@@ -47,24 +52,25 @@ function Login() {
         throw new Error("Error al recuperar la contraseña");
       }
 
-      alert("Se ha enviado un correo para recuperar la contraseña.");
+      setEmail('');
+      setErrorType("success");
+      setError("Se ha enviado un correo para recuperar la contraseña.");
     } catch (error) {
+      setError("Hubo un problema al recuperar la contraseña. Inténtalo de nuevo más tarde.");
       console.error("Error:", error);
-      alert(
-        "Hubo un problema al recuperar la contraseña. Inténtalo de nuevo más tarde."
-      );
+      setEmail('');
     }
   };
 
   const handleUserLogin = async (e) => {
     e.preventDefault()
 
-    if (email.length === 0){
+    if (email.length === 0) {
       emailRef.current.focus()
       return
     }
 
-    if (password.length === 0){
+    if (password.length === 0) {
       passwordRef.current.focus()
       return
     }
@@ -92,13 +98,14 @@ function Login() {
         navigate('/')
       } else {
         console.log('Usuario o contraseña inválido');
-        setEmail('')
-        setPassword('')
-        return
+        setEmail('');
+        setPassword('');
+        setError('Credenciales inválidas');
       }
     } catch (error) {
-      console.error('Ocurrió un error inesperado', error)
-      return
+      setError(error.message);
+      console.error('Ocurrió un error inesperado', error);
+      return;
     }
 
     setEmail('')
@@ -118,6 +125,14 @@ function Login() {
         )}
 
         <form onSubmit={isRecoveringPassword ? handleRecoverPasswordSubmit : handleUserLogin}>
+
+          {error && (
+            <Alert
+              type={errorType}
+              message={error}
+              onClose={() => { setErrorType("error"); setError(null); }}
+            />
+          )}
 
           {isRegistering ? (
             <RegisterForm />
