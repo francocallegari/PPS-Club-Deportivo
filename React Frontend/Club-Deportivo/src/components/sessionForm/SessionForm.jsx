@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Modal, Button, Form, CloseButton, Alert } from 'react-bootstrap'
 import { AuthenticationContext } from '../../services/authentication/AuthenticationContext'
+import './SessionForm.css'
 
 {/* El Coach se va a mandar automaticamente sacando su ID de la autenticacion.
     A partir del ID del Coach, se va a obtener el deporte del cual se quiere crear la clase
@@ -147,11 +148,10 @@ const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
         <Modal
             {...props}
             size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
             centered
         >
             <Modal.Header>
-                <Modal.Title id="contained-modal-title-vcenter">
+                <Modal.Title>
                     {selectedSession ? 'Editar Clase' : 'Nueva Clase'}
                 </Modal.Title>
                 <CloseButton variant='white' className='close-button-modal' onClick={props.onHide}></CloseButton>

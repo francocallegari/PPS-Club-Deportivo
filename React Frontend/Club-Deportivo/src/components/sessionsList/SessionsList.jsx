@@ -66,7 +66,7 @@ const SessionsList = () => {
             if (user.role == "Member") {
                 const url = `https://localhost:7081/api/TrainingSession/SessionsByMemberId?memberId=${user.id}`
                 fetchSessions(url)
-            } else if (user.role == "Coach"){
+            } else if (user.role == "Coach") {
                 fetchCoachSport()
             }
         } else {
@@ -213,6 +213,7 @@ const SessionsList = () => {
                         onSave={addNewSession}
                         onEdit={editSession}
                     />
+
                     <div style={{ display: 'flex', marginBottom: "30px" }}>
                         <div className="calendarContainer">
                             <FullCalendar
