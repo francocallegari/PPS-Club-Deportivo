@@ -19,6 +19,7 @@ function Login() {
   const toggleRegistering = () => {
     setIsRegistering(!isRegistering);
     setIsRecoveringPassword(false);
+    navigate("/register");
   };
 
   const toggleRecoveringPassword = () => {
