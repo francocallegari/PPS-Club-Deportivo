@@ -3,12 +3,17 @@ import axios from "axios";
 import "./Director.css";
 import React, { useEffect, useState } from "react";
 import StatisticsGraph from "../statisticsGraph/StatisticsGraph";
+import Alert from "../alert/Alert";
 
 const Director = () => {
   const [events, setEvents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [users, setUsers] = useState([]);
+  const [errorType, setErrorType] = useState("error");
+  const [error, setError] = useState(null);
+  const [errorEventoType, setErrorEventoType] = useState("error");
+  const [errorEvento, setEventoError] = useState(null);
 
   // Método para obtener los eventos del backend
   const fetchData = async () => {
@@ -44,9 +49,12 @@ const Director = () => {
         await axios.put("https://localhost:7081/api/Event/ApproveEvent", null, {
           params: { directorId: 1, eventId: selectedEvent.id }, // Ajusta el directorId si es necesario
         });
+        setErrorEventoType("success");
+        setEventoError("Se ha aprobado el evento exitosamente.");
         fetchData(); // Llama a fetchData después de aprobar para actualizar los datos en pantalla
         handleCloseModal();
       } catch (error) {
+        setEventoError("Hubo un problema al aprobar el evento. Inténtalo de nuevo más tarde.");
         console.error("Error al aprobar el evento:", error);
       }
     }
@@ -62,12 +70,16 @@ const Director = () => {
       );
 
       if (!response.ok) {
+        setError("Error al eliminar el usuario.");
         throw new Error("Error al eliminar el usuario");
       }
+      setErrorType("success");
+      setError("Se ha eliminado el usuario exitosamente.");
 
       setUsers(users.filter((user) => user.id !== userId));
     } catch (error) {
       console.error("Error deleting user:", error);
+      setError("Hubo un problema al eliminar el usuario. Inténtalo de nuevo más tarde.");
     }
   };
 
@@ -89,6 +101,15 @@ const Director = () => {
   return (
     <>
       <h3 className="evento-approve">Usuarios</h3>
+      <div>
+        {error && (
+          <Alert
+            type={errorType}
+            message={error}
+            onClose={() => { setErrorType("error"); setError(null); }}
+          />
+        )}
+      </div>
       <div className="user-container">
         <div className="user-column">
           <h3 className="user-title">Socios</h3>
@@ -164,6 +185,15 @@ const Director = () => {
       </div>
 
       <h3 className="evento-approve">Eventos a aprobar</h3>
+      <div>
+        {errorEvento && (
+          <Alert
+            type={errorEventoType}
+            message={errorEvento}
+            onClose={() => { setErrorEventoType("error"); setEventoError(null); }}
+          />
+        )}
+      </div>
       <div className="container-events">
         <div className="user-column">
           <h3 className="user-title">Eventos</h3>
@@ -220,7 +250,7 @@ const Director = () => {
         </Modal.Footer>
       </Modal>
 
-      <br /><br /><br /><br /><br /><br />      
+      <br /><br /><br /><br /><br /><br />
       <h3 className="evento-approve">Estadisticas</h3>
       <StatisticsGraph />
       <br /><br />

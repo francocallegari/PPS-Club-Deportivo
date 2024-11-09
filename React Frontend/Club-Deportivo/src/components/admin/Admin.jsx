@@ -9,6 +9,7 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import "./Admin.css";
+import Alert from "../alert/Alert";
 
 const Admin = () => {
   const [showModal, setShowModal] = useState(false);
@@ -23,6 +24,8 @@ const Admin = () => {
   const [newsImage, setNewsImage] = useState("");
   const [newsDetailedDescription, setNewsDetailedDescription] = useState("");
   const [newsEventDate, setNewsEventDate] = useState("");
+  const [errorType, setErrorType] = useState("error");
+  const [error, setError] = useState(null);
 
   const handleShow = (type) => {
     setEventType(type);
@@ -73,11 +76,15 @@ const Admin = () => {
       );
 
       if (response.ok) {
+        setErrorType("success");
+        setError("Evento agregado con éxito.");
         console.log("Evento agregado con éxito.");
       } else {
+        setError("Error al agregar el evento.");
         console.error("Error al agregar el evento.");
       }
     } catch (error) {
+      setError("Hubo un problema al crear el evento. Inténtalo de nuevo más tarde.");
       console.error("Error en la solicitud:", error);
     }
   };
@@ -102,11 +109,15 @@ const Admin = () => {
       });
 
       if (response.ok) {
+        setErrorType("success");
+        setError("Noticia agregada con éxito.");
         console.log("Noticia agregada con éxito.");
       } else {
+        setError("Error al agregar la noticia.");
         console.error("Error al agregar la noticia.");
       }
     } catch (error) {
+      setError("Hubo un problema al crear la noticia. Inténtalo de nuevo más tarde.");
       console.error("Error en la solicitud:", error);
     }
   };
@@ -149,6 +160,16 @@ const Admin = () => {
       </Col>
 
       <hr style={{ border: "1px solid #ccc", margin: "20px 0" }} />
+
+      <div>
+        {error && (
+          <Alert
+            type={errorType}
+            message={error}
+            onClose={() => { setErrorType("error"); setError(null); }}
+          />
+        )}
+      </div>
 
       <Container className="mt-5 container">
         <Row className="mb-4">
