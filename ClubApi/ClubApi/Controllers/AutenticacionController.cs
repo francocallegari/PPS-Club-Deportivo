@@ -22,9 +22,17 @@ namespace Web.Controllers
         [HttpPost("authenticate")]
         public ActionResult<string> Autenticar(AuthenticationRequest authenticationRequest)
         {
-            string token = _customAuthenticationService.Autenticar(authenticationRequest);
+            try
+            {
+                string token = _customAuthenticationService.Autenticar(authenticationRequest);
 
-            return Ok(token);
+                return Ok(token);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+            
         }
 
         [HttpPost("ForgotPassword")]

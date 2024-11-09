@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Application.Interfaces;
 using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ClubApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MemberShipFeeController : ControllerBase
     {
         private readonly IPaymentService _paymentService; 
@@ -16,6 +19,7 @@ namespace ClubApi.Controllers
             _membershipFeeService = membershipFeeService;
         }
 
+        [AllowAnonymous]
         [HttpGet("CurrentRatePrice")] //valor de la cuota actual
         public IActionResult GetCurrentRatePrice()
         {
@@ -35,6 +39,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin" && userRole != "Member")
+                    return Forbid();
+
                 var feePaymentsDto = _paymentService.GetMemberFees(memberId, status);
                 return Ok(feePaymentsDto);
             }
@@ -48,6 +56,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin")
+                    return Forbid();
+
                 _membershipFeeService.UpdateFeesPrice(feePrice);
                 return Ok();
             }

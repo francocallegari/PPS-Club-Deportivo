@@ -1,9 +1,10 @@
 import { Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import "./Director.css";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import StatisticsGraph from "../statisticsGraph/StatisticsGraph";
 import Alert from "../alert/Alert";
+import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 
 const Director = () => {
   const [events, setEvents] = useState([]);
@@ -14,6 +15,7 @@ const Director = () => {
   const [error, setError] = useState(null);
   const [errorEventoType, setErrorEventoType] = useState("error");
   const [errorEvento, setEventoError] = useState(null);
+  const {token} = useContext(AuthenticationContext)
 
   // Método para obtener los eventos del backend
   const fetchData = async () => {
@@ -48,6 +50,9 @@ const Director = () => {
       try {
         await axios.put("https://localhost:7081/api/Event/ApproveEvent", null, {
           params: { directorId: 1, eventId: selectedEvent.id }, // Ajusta el directorId si es necesario
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
         setErrorEventoType("success");
         setEventoError("Se ha aprobado el evento exitosamente.");
@@ -66,6 +71,9 @@ const Director = () => {
         `https://localhost:7081/api/User/${userId}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       );
 
@@ -86,7 +94,11 @@ const Director = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("https://localhost:7081/api/User");
+        const response = await fetch("https://localhost:7081/api/User", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         if (!response.ok) throw new Error("Error al obtener los usuarios");
         const data = await response.json();
         setUsers(data);

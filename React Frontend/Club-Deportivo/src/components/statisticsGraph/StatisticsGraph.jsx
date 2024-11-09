@@ -1,7 +1,8 @@
-import { React, useEffect, useRef, useState } from 'react';
+import { React, useContext, useEffect, useRef, useState } from 'react';
 import { Bar, Line, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
 import "./StatisticsGraph.css";
+import { AuthenticationContext } from '../../services/authentication/AuthenticationContext';
 
 const StatisticsGraph = () => {
     const barChartRef = useRef();
@@ -11,6 +12,7 @@ const StatisticsGraph = () => {
     const [deportes, setDeportes] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
     const [cuotas, setCuotas] = useState([]);
+    const {token} = useContext(AuthenticationContext)
 
     const labelsDeportes = deportes.map(item => item.sportName);
     const dataDeportes = deportes.map(item => item.memberCount);
@@ -78,6 +80,7 @@ const StatisticsGraph = () => {
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
             });
             if (response.ok) {
@@ -98,6 +101,7 @@ const StatisticsGraph = () => {
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
             });
             if (response.ok) {
@@ -118,6 +122,7 @@ const StatisticsGraph = () => {
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
             });
             if (response.ok) {

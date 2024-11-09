@@ -7,7 +7,7 @@ import { AuthenticationContext } from '../../services/authentication/Authenticat
 */}
 
 const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
-    const {user} = useContext(AuthenticationContext)
+    const {user, token} = useContext(AuthenticationContext)
     const [fields, setFields] = useState([])
     const [sessionData, setSessionData] = useState({
         days: [],
@@ -24,6 +24,7 @@ const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
                 headers: {
                     accept: "*/*",
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
                 },
             })
             if (response.ok) {

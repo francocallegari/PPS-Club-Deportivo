@@ -16,7 +16,7 @@ const SessionsList = () => {
     const [showSessionModal, setShowSessionModal] = useState(false)
     const [showAlert, setShowAlert] = useState(false)
     const [sessions, setSessions] = useState([])
-    const { user } = useContext(AuthenticationContext)
+    const { user, token } = useContext(AuthenticationContext)
     const [coachSport, setCoachSport] = useState({})
 
     const fetchCoachSport = async () => {
@@ -26,6 +26,7 @@ const SessionsList = () => {
                 headers: {
                     accept: "*/*",
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
                 },
             })
             if (response.ok) {
@@ -47,6 +48,7 @@ const SessionsList = () => {
                 headers: {
                     accept: "*/*",
                     "Content-Type": "application/json",
+                    Authorization: token ? `Bearer ${token}` : ""
                 },
             })
             if (response.ok) {
@@ -131,6 +133,7 @@ const SessionsList = () => {
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(newSession),
             });
@@ -152,6 +155,7 @@ const SessionsList = () => {
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(sessionDto),
             });
@@ -175,6 +179,7 @@ const SessionsList = () => {
                 headers: {
                     accept: "*/*",
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
                 },
             })
             if (response.ok) {

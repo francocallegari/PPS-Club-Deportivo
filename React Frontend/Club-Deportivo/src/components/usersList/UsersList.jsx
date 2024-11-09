@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './UsersList.css'
+import { AuthenticationContext } from '../../services/authentication/AuthenticationContext'
 
 const UsersList = ({ option, sportId }) => {
   const [response, setResponse] = useState([])
+  const {token} = useContext(AuthenticationContext)
 
   useEffect(() => {
     if (option !== "sportMembers") {
@@ -13,6 +15,7 @@ const UsersList = ({ option, sportId }) => {
             headers: {
               accept: "*/*",
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
             },
           })
           if (response.ok) {
@@ -57,6 +60,7 @@ const UsersList = ({ option, sportId }) => {
             headers: {
               accept: "*/*",
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
             },
           });
           if (response.ok) {

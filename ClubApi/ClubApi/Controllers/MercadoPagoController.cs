@@ -5,7 +5,7 @@ using Application.Models;
 
 namespace ClubApi.Controllers
 {
-   [ApiController]
+    [ApiController]
     [Route("[controller]")]
     public class PaymentController : ControllerBase
     {

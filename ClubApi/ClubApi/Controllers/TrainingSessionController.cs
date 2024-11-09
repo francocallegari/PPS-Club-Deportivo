@@ -1,13 +1,16 @@
 ﻿using Application.Interfaces;
 using Application.Models.Request;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ClubApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TrainingSessionController : ControllerBase
     {
         private readonly ITSessionService _sessionService;
@@ -15,6 +18,8 @@ namespace ClubApi.Controllers
         {
             _sessionService = sessionService;
         }
+
+        [AllowAnonymous]
         [HttpGet("Sessions")]
         public IActionResult GetAll()
         {
@@ -25,6 +30,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Coach")
+                    return Forbid();
+
                 return Ok(_sessionService.GetTSbyCoachId(coachId));
             }
             catch (Exception ex)
@@ -37,6 +46,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Member")
+                    return Forbid();
+
                 return Ok(_sessionService.GetAllByMemberId(memberId));
             }
             catch (Exception ex)
@@ -44,6 +57,8 @@ namespace ClubApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [AllowAnonymous]
         [HttpGet("SessionsBySportId/{id}")]
         public IActionResult GetAllBySportId([FromRoute] int id)
         {
@@ -61,6 +76,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Coach")
+                    return Forbid();
+
                 return Ok(_sessionService.CreateTS(session));
             }
             catch (Exception ex)
@@ -73,6 +92,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Coach")
+                    return Forbid();
+
                 _sessionService.UpdateTS(id, session);
                 return Ok();
             }
@@ -86,6 +109,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Coach")
+                    return Forbid();
+
                 _sessionService.DeleteTS(id);
                 return Ok();
             }
