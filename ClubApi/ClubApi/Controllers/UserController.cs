@@ -3,12 +3,15 @@ using Application.Models;
 using Application.Models.Request;
 using Application.Models.Response;
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ClubApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -25,6 +28,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin" && userRole != "Director")
+                    return Forbid();
+
                 return Ok(_userService.GetAllUsers());
             }
             catch (KeyNotFoundException ex)
@@ -47,6 +54,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole == null)
+                    return Forbid();
+
                 return Ok(_userService.GetUserById(id));
             }
             catch (KeyNotFoundException ex)
@@ -63,6 +74,8 @@ namespace ClubApi.Controllers
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
+
+        [AllowAnonymous]
         [HttpGet("ValidateExistingUser")]
         public IActionResult GetByUserName([FromQuery] string userName)
         {
@@ -81,6 +94,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole == null)
+                    return Forbid();
+
                 return Ok(_memberService.GetMemberById(id));
             }
             catch (KeyNotFoundException ex)
@@ -121,6 +138,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole == null)
+                    return Forbid();
+
                 if (!UserRequest.validateDto(user))
                     return BadRequest("La solicitud no es válida." +
                         " Verifica que todos los campos requeridos estén presentes y contengan valores adecuados.");
@@ -148,6 +169,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Member")
+                    return Forbid();
+
                 _memberService.UpDateMember(id, memberDto);
                 return NoContent();
             }
@@ -171,6 +196,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin" && userRole != "Director")
+                    return Forbid();
+
                 _userService.DeleteUser(id);
                 return NoContent();
             }
@@ -189,6 +218,7 @@ namespace ClubApi.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("registerUser")]
         public ActionResult<UserResponse> RegisterUser([FromBody] UserRequest user)
         {

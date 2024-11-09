@@ -1,11 +1,14 @@
 ﻿using Application.Interfaces;
 using Application.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ClubApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StatisticsController : ControllerBase
     {
         private readonly IStatisticsService _statisticsService;
@@ -20,6 +23,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Director")
+                    return Forbid();
+
                 return Ok(_statisticsService.GetPopularSports());
             }
             catch (Exception ex)
@@ -34,6 +41,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Director")
+                    return Forbid();
+
                 return Ok(_statisticsService.GetNewUsers());
             }
             catch (Exception ex)
@@ -48,6 +59,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Director")
+                    return Forbid();
+
                 return Ok(_statisticsService.GetPaymentStatus());
             }
             catch (Exception ex)

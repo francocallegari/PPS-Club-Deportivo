@@ -2,13 +2,16 @@
 using Application.Models;
 using Application.Services;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ClubApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NewsController : ControllerBase
     {
         private readonly INewsService _newsService;
@@ -18,6 +21,7 @@ namespace ClubApi.Controllers
             _newsService = newsService;
         }
 
+        [AllowAnonymous]
         [HttpGet("News")]
         public ActionResult<ICollection<NewsDto>> GetAllNews()
         {
@@ -37,6 +41,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin")
+                    return Forbid();
+
                 var existingNews = _newsService.GetNewsByTitle(newsDto.Title);
 
                 if (existingNews != null)
@@ -65,6 +73,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin")
+                    return Forbid();
+
                 _newsService.UpDateNews(id, newsDto);
                 return NoContent();
             }
@@ -80,6 +92,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin")
+                    return Forbid();
+
                 _newsService.DeleteNews(id);
                 return Ok();
             }
@@ -90,6 +106,7 @@ namespace ClubApi.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public IActionResult GetNewsById(int id)
         {

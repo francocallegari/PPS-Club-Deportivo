@@ -15,7 +15,7 @@ const ProfilePage = () => {
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState({});
   const [error, setError] = useState(null);
-  const { user } = useContext(AuthenticationContext);
+  const { user, token } = useContext(AuthenticationContext);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -27,7 +27,11 @@ const ProfilePage = () => {
           ? `https://localhost:7081/api/User/MemberById/${user.id}`
           : `https://localhost:7081/api/User/${user.id}`;
 
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
 
         if (!response.ok) throw new Error("Error al obtener los datos del usuario");
         
@@ -62,6 +66,7 @@ const ProfilePage = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(updatedData),
       });

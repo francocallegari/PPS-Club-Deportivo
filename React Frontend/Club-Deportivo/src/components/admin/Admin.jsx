@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Form,
   Button,
@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import "./Admin.css";
 import Alert from "../alert/Alert";
+import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 
 const Admin = () => {
   const [showModal, setShowModal] = useState(false);
@@ -26,6 +27,7 @@ const Admin = () => {
   const [newsEventDate, setNewsEventDate] = useState("");
   const [errorType, setErrorType] = useState("error");
   const [error, setError] = useState(null);
+  const {token} = useContext(AuthenticationContext)
 
   const handleShow = (type) => {
     setEventType(type);
@@ -70,6 +72,7 @@ const Admin = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify(eventData),
         }
@@ -104,6 +107,7 @@ const Admin = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(newsData),
       });

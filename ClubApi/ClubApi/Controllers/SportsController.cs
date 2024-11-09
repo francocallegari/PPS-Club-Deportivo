@@ -3,12 +3,15 @@ using Application.Models;
 using Application.Models.Request;
 using Application.Services;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ClubApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SportsController : ControllerBase
     {
         private readonly ISportsService _sportsService;
@@ -18,6 +21,7 @@ namespace ClubApi.Controllers
             _sportsService = sportsService;
         }
 
+        [AllowAnonymous]
         [HttpGet("sports")]
         public ActionResult<ICollection<SportDto>> GetAllSports()
         {
@@ -32,6 +36,7 @@ namespace ClubApi.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("{name}")]
         public ActionResult<SportDto> GetSportByName(string name)
         {
@@ -51,6 +56,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin" && userRole != "Coach")
+                    return Forbid();
+
                 return Ok(_sportsService.GetAllMembers(id));
             }
             catch (Exception ex)
@@ -64,6 +73,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Coach")
+                    return Forbid();
+
                 return Ok(_sportsService.GetByCoachId(id));
             }
             catch (Exception ex)
@@ -78,6 +91,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin")
+                    return Forbid();
+
                 var existingSport = _sportsService.GetSportByName(sport.Name);
 
                 if (existingSport != null)
@@ -97,6 +114,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin")
+                    return Forbid();
+
                 _sportsService.UpdateSport(id, sport);
                 return NoContent();
             }
@@ -112,6 +133,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Admin")
+                    return Forbid();
+
                 _sportsService.DeleteSport(id);
                 return NoContent();
             }
@@ -126,6 +151,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Member")
+                    return Forbid();
+
                 _sportsService.SignUpSport(sportId, memberId);
                 return Ok();
             }
@@ -139,6 +168,10 @@ namespace ClubApi.Controllers
         {
             try
             {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Member")
+                    return Forbid();
+
                 _sportsService.DropOutSport(sportId, memberId);
                 return Ok();
             }
