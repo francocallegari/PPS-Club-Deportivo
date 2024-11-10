@@ -12,6 +12,7 @@ namespace Application.Models
         public DateOnly DateOfBirth { get; set; }
         public string DNI { get; set; }
         public string Address { get; set; }
+        public string PhoneNumber { get; set; }
 
         public static MemberDto Create(Member member)
         {
@@ -27,6 +28,7 @@ namespace Application.Models
             dto.Address = member.Address;
             dto.DateOfBirth = member.DateOfBirth;
             dto.DNI = member.Dni;
+            dto.PhoneNumber = member.PhoneNumber;
             
 
             return dto;

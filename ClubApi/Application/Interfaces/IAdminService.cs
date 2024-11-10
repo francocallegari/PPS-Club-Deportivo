@@ -13,7 +13,7 @@ namespace Application.Interfaces
     {
         ICollection<UserResponse> GetAllAdmins();
         UserResponse GeAdminById(int id);
-        void UpDateAdmin(int id, UserRequest adminRequest);
+        void UpDateAdmin(int id, UserUpdateRequest adminRequest);
         void DeleteAdmin(int id);
         void CreateAdmin(UserRequest adminRequest);
     }

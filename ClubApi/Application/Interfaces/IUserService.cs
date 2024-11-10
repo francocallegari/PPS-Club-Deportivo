@@ -9,7 +9,7 @@ namespace Application.Interfaces
         ICollection<UserResponse> GetAllUsers();
         UserResponse GetUserById(int id);
         User GetUserByUserName(string userName);
-        void UpdateUser(int id, UserRequest customer);
+        void UpdateUser(int id, UserUpdateRequest customer);
         void DeleteUser(int id);
         UserResponse CreateUser(UserRequest user);
         User RegisterUser(UserRequest user);

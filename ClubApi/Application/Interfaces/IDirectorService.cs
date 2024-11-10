@@ -13,7 +13,7 @@ namespace Application.Interfaces
     {
         ICollection<UserResponse> GetAllDirectors();
         UserResponse GetDirectorById(int id);
-        void UpdateDirector(int id, UserRequest directorRequest);
+        void UpdateDirector(int id, UserUpdateRequest directorRequest);
         void DeleteDirector(int id);
         void CreateDirector(UserRequest directorRequest);
         void AssignCoachToSport(Coach coachId, Sport sportId);

@@ -54,20 +54,24 @@ namespace Application.Services
             return user;
         }
 
-        public void UpdateUser(int id, UserRequest dto)
+        public void UpdateUser(int id, UserUpdateRequest dto)
         {
 
             var existingUser = _userRepository.GetByIdAsync(id).Result ?? throw new KeyNotFoundException("No se encontró el usuario");
 
-            if (_userRepository.GetUserByName(dto.UserName) != null)
+            var existingUserName = _userRepository.GetUserByName(dto.UserName);
+
+            if (existingUserName != null && existingUserName.Id != id)
                 throw new InvalidOperationException("El nombre de usuario ya está en uso.");
 
             existingUser.Name = dto.Name;
             existingUser.Email = dto.Email;
-            existingUser.Password = dto.Password;
             existingUser.UserName = dto.UserName;
             existingUser.UserType = dto.UserType;
             existingUser.PhoneNumber = dto.PhoneNumber;
+            existingUser.Dni = dto.Dni;
+            existingUser.Address = dto.Address;
+            existingUser.DateOfBirth = dto.DateOfBirth;
 
             _userRepository.UpdateAsync(existingUser).Wait();
         }

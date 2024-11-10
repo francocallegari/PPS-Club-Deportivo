@@ -23,7 +23,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const url = user.userType === "Member"
+        const url = user.role === "Member"
           ? `https://localhost:7081/api/User/MemberById/${user.id}`
           : `https://localhost:7081/api/User/${user.id}`;
 
@@ -45,24 +45,24 @@ const ProfilePage = () => {
     };
 
     fetchUser();
-  }, [user.id, user.userType]);
+  }, [user.id, user.role]);
 
   const handleModify = async () => {
     try {
       const formattedDate = new Date(userData.dateOfBirth).toISOString().split('T')[0];
   
       const updatedData = {
-        Name: userData.name || "",  
-        UserName: userData.userName || "",  
+        Name: userData.name,  
+        UserName: userData.userName,  
         dni: userData.dni,
         email: userData.email,
         phoneNumber: userData.phoneNumber,
-        Address: userData.address,
+        address: userData.address,
         dateOfBirth: formattedDate,
-        SportsAttended: userData.sportsAttended || [],
+        userType: user.role
       };
   
-      const response = await fetch(`https://localhost:7081/api/User/MemberUpDate/${user.id}`, {
+      const response = await fetch(`https://localhost:7081/api/User/${user.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
