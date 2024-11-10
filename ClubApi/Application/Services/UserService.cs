@@ -92,38 +92,47 @@ namespace Application.Services
                 throw new InvalidOperationException("El usuario ya está registrado.");
             }
 
-            if (dto.UserType == "Member")
+            if (dto.UserType == "Coach")
             {
-                var member = new Member();
-                member.UserName = dto.UserName;
-                member.Email = dto.Email;
-                member.Password = dto.Password;
-                member.UserType = dto.UserType;
-                member.PhoneNumber = dto.PhoneNumber;
-                member.Name = dto.Name;
-                member.UserRegistrationDate = DateTime.Now;
-                member.DateOfBirth = dto.DateOfBirth;
-                member.Dni = dto.Dni;
-                member.Address = dto.Address;
+                if (!dto.SportId.HasValue)
+                {
+                    throw new InvalidOperationException("El Coach debe tener un SportId.");
+                }
 
-                user = _userRepository.Add(member);
+                var coach = new Coach
+                {
+                    UserName = dto.UserName,
+                    Email = dto.Email,
+                    Password = dto.Password,
+                    UserType = dto.UserType,
+                    PhoneNumber = dto.PhoneNumber,
+                    Name = dto.Name,
+                    UserRegistrationDate = DateTime.Now,
+                    DateOfBirth = dto.DateOfBirth,
+                    Dni = dto.Dni,
+                    Address = dto.Address,
+                    SportId = dto.SportId.Value // Asignar el SportId recibido en la solicitud
+                };
 
-                _repositoryMembershipFee.GenerateFeeForNewMember(member);
-            } else
+                user = _userRepository.Add(coach);
+            }
+            else
             {
-                var newUser = new User();
-                newUser.UserName = dto.UserName;
-                newUser.Email = dto.Email;
-                newUser.Password = dto.Password;
-                newUser.UserType = dto.UserType;
-                newUser.PhoneNumber = dto.PhoneNumber;
-                newUser.Name = dto.Name;
-                newUser.UserRegistrationDate = DateTime.Now;
-                newUser.DateOfBirth = dto.DateOfBirth;
-                newUser.Dni = dto.Dni;
-                newUser.Address = dto.Address;
+                var newUser = new User
+                {
+                    UserName = dto.UserName,
+                    Email = dto.Email,
+                    Password = dto.Password,
+                    UserType = dto.UserType,
+                    PhoneNumber = dto.PhoneNumber,
+                    Name = dto.Name,
+                    UserRegistrationDate = DateTime.Now,
+                    DateOfBirth = dto.DateOfBirth,
+                    Dni = dto.Dni,
+                    Address = dto.Address
+                };
 
-                user = _userRepository.Add(user);
+                user = _userRepository.Add(newUser);
             }
 
             return user;
