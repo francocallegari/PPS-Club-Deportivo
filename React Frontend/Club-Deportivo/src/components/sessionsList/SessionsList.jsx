@@ -59,7 +59,6 @@ const SessionsList = () => {
       if (response.ok) {
         const data = await response.json();
         setSessions(data);
-        console.log(data);
       } else {
         throw new Error("Error al obtener las clases de entrenamiento");
       }
@@ -74,7 +73,6 @@ const SessionsList = () => {
         const url = `https://localhost:7081/api/TrainingSession/SessionsByMemberId?memberId=${user.id}`;
         fetchSessions(url);
       } else if (user.role === "Coach") {
-        console.log("Coach ID:", user.id); // Aquí logeamos el ID del coach
         fetchCoachSport();
       }
     } else {
@@ -101,7 +99,7 @@ const SessionsList = () => {
   
       return {
         id: session.id,
-        title: session.field.name, // Usamos el nombre de la cancha (field)
+        title: session.field.name,
         daysOfWeek: session.daysOfWeek,
         startTime: session.time,
         endTime: endTime,
@@ -109,7 +107,7 @@ const SessionsList = () => {
           field: session.field,
           coach: session.coach,
           color: eventColor,
-          sport: session.field.sport.name, // Aquí guardamos el nombre del deporte
+          sport: session.field.sport.name,
         },
       };
     });

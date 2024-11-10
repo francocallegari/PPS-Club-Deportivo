@@ -3,12 +3,6 @@ import { Modal, Button, Form, CloseButton, Alert } from "react-bootstrap";
 import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 import "./SessionForm.css";
 
-{
-  /* El Coach se va a mandar automaticamente sacando su ID de la autenticacion.
-    A partir del ID del Coach, se va a obtener el deporte del cual se quiere crear la clase
-*/
-}
-
 const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
   const { user, token } = useContext(AuthenticationContext);
   const [fields, setFields] = useState([]);
@@ -36,7 +30,6 @@ const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
       );
       if (response.ok) {
         const data = await response.json();
-
         await fetchFields(data.id);
       } else {
         throw new Error("Error al obtener el deporte del entrenador");
@@ -115,6 +108,20 @@ const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
         };
       }
     });
+  };
+
+  // Función para generar los horarios disponibles en intervalos de 30 minutos
+  const generateTimeOptions = () => {
+    const timeOptions = [];
+    for (let hour = 8; hour <= 22; hour++) {
+      for (let minute = 0; minute < 60; minute += 30) {
+        const time = `${hour.toString().padStart(2, "0")}:${minute
+          .toString()
+          .padStart(2, "0")}`;
+        timeOptions.push(time);
+      }
+    }
+    return timeOptions;
   };
 
   const handleSubmit = (e) => {
@@ -217,7 +224,7 @@ const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
               />
               <Form.Check
                 inline
-                name="Miercoles"
+                name="Miércoles"
                 type="checkbox"
                 label="Miércoles"
                 value={3}
@@ -248,15 +255,20 @@ const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
             <Form.Label>
               <b>Hora de Inicio</b>
             </Form.Label>
-            <Form.Control
-              type="time"
-              min="08:00"
-              max="22:00"
+            <Form.Select
               name="startTime"
               value={sessionData.startTime}
               onChange={handleChange}
-              required
-            ></Form.Control>
+            >
+              <option disabled value="">
+                Seleccione una Hora
+              </option>
+              {generateTimeOptions().map((time) => (
+                <option key={time} value={time}>
+                  {time}
+                </option>
+              ))}
+            </Form.Select>
           </Form.Group>
           <Form.Group>
             <Form.Label>
@@ -304,27 +316,37 @@ const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
               <option disabled value="">
                 Seleccione una Cancha
               </option>
-              {fields.map((f) => (
-                <option key={f.id} value={f.id}>
-                  {f.name}
+              {fields.map((field) => (
+                <option key={field.id} value={field.id}>
+                  {field.title}
                 </option>
               ))}
             </Form.Select>
           </Form.Group>
         </Form>
+        {alert && (
+          <Alert variant="danger" className="mt-3">
+            Todos los campos son requeridos.
+          </Alert>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button
+          className="btn-modal"
+          variant="danger"
           onClick={() => {
             resetForm();
             props.onHide();
           }}
-          variant="dark"
         >
-          Cerrar
+          Cancelar
         </Button>
-        <Button variant="success" onClick={handleSubmit}>
-          {selectedSession ? "Guardar Cambios" : "Agregar Clase"}
+        <Button
+          className="btn-modal"
+          variant="primary"
+          onClick={handleSubmit}
+        >
+          Guardar
         </Button>
       </Modal.Footer>
     </Modal>
