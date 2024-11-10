@@ -30,6 +30,8 @@ namespace Application.Models.Request
 
         public string Address { get; set; }
 
+        public int? SportId { get; set; }
+
         public static User ToEntity(UserUpdateRequest dto)
         {
             return new User

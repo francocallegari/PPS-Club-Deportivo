@@ -80,34 +80,23 @@
     background-color: transparent;
 }
 
-.event-Futbol {
-    background-color: #8f1e1e;
-}
-.event-Futbol:hover {
+/* Estilo para eventos saturados (cuando el coach es el usuario logueado) */
+.event {
+    background-color: rgb(41, 79, 155); /* Rojo para Basquet, puedes personalizarlo */
+    color: white;
+  }
+  
+  /* Estilo para eventos faded (cuando el coach NO es el usuario logueado) */
+  .event-faded {
+    background-color: rgb(106, 141, 212); /* Rojo más claro (faded) */
+    color: gray;
+  }
+  
+  
+  /* Hover effect */
+  .fc-event:hover {
     cursor: pointer;
-    background-color: #9e3737;
-}
-
-.event-Tenis {
-    background-color: #2d7ba8;
-}
-.event-Tenis:hover {
-    cursor: pointer;
-    background-color: #5896b8;
-}
-
-.event-Basquet {
-    background-color: rgb(41, 79, 155);
-}
-.event-Basquet:hover {
-    cursor: pointer;
-    background-color: rgb(58, 98, 179);
-}
-
-.event-Voley {
-    background-color: rgb(230, 200, 67);
-}
-.event-Voley:hover {
-    cursor: pointer;
-    background-color: rgb(228, 207, 114);
-}
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+  
