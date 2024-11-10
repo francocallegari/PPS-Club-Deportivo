@@ -1,0 +1,13 @@
+.d-flex.flex-column .form-check {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0px 170px;
+}
+
+.modal-dialog {
+    max-width: 500px;
+    width: 100%;
+  }
+  
