@@ -6,32 +6,35 @@ import { AuthenticationContext } from "../../services/authentication/Authenticat
 const SportDetail = ({ sport, onClose }) => {
   const { user } = useContext(AuthenticationContext);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [sportSessions, setSportSessions] = useState([])
+  const [sportSessions, setSportSessions] = useState([]);
 
   const days = [
-    'Domingo',
-    'Lunes',
-    'Martes',
-    'Miércoles',
-    'Jueves',
-    'Viernes',
-    'Sábado'
-  ]
+    "Domingo",
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+  ];
 
   const convertToDays = (daysOfWeek) => {
-    const daysConverted = daysOfWeek.map(day => days[day])
-    return daysConverted
-  }
+    const daysConverted = daysOfWeek.map((day) => days[day]);
+    return daysConverted;
+  };
 
   const fetchSessionsBySport = async () => {
     try {
-      const response = await fetch(`https://localhost:7081/api/TrainingSession/SessionsBySportId/${sport.id}`, {
-        method: "GET",
-        headers: {
-          accept: "*/*",
-          "Content-Type": "application/json",
-        },
-      })
+      const response = await fetch(
+        `https://localhost:7081/api/TrainingSession/SessionsBySportId/${sport.id}`,
+        {
+          method: "GET",
+          headers: {
+            accept: "*/*",
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         setSportSessions(data);
@@ -39,27 +42,30 @@ const SportDetail = ({ sport, onClose }) => {
         throw new Error("Error al obtener las clases de entrenamiento");
       }
     } catch (error) {
-      console.error("Error:", error)
+      console.error("Error:", error);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchSessionsBySport()
-  }, [])
+    fetchSessionsBySport();
+  }, []);
 
   const handleInscripcion = async () => {
     try {
-      const response = await fetch(`https://localhost:7081/api/TrainingSession/`, {
-        method: "GET",
-        headers: {
-          accept: "*/*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user.id,
-          sportId: sport.id
-        })
-      });
+      const response = await fetch(
+        `https://localhost:7081/api/TrainingSession/`,
+        {
+          method: "GET",
+          headers: {
+            accept: "*/*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user.id,
+            sportId: sport.id,
+          }),
+        }
+      );
 
       if (response.ok) {
         setShowConfirmation(true);
@@ -69,7 +75,7 @@ const SportDetail = ({ sport, onClose }) => {
     } catch (error) {
       console.error("Error:", error);
     }
-  }
+  };
 
   const handleCloseConfirmation = () => {
     setShowConfirmation(false);
@@ -106,14 +112,15 @@ const SportDetail = ({ sport, onClose }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {sportSessions.map((session, index) => (
+                    {sportSessions.map((session, index) =>
                       convertToDays(session.daysOfWeek).map((day, dayIndex) => (
                         <tr key={`${index}-${dayIndex}`}>
                           <td>{day}</td>
-                          <td>{session.time}</td> {/* Horario compartido por todos los días */}
+                          <td>{session.time}</td>{" "}
+                          {/* Horario compartido por todos los días */}
                         </tr>
                       ))
-                    ))}
+                    )}
                   </tbody>
                 </Table>
 
@@ -121,7 +128,8 @@ const SportDetail = ({ sport, onClose }) => {
                 <ul className="sport-detail-list">
                   {sportSessions.map((session, index) => (
                     <li key={index}>
-                      <b>Profesor:</b> {session.coach.name} - <b>Cancha:</b> {session.field.name}
+                      <b>Profesor:</b> {session.coach.name} - <b>Cancha:</b>{" "}
+                      {session.field.name}
                     </li>
                   ))}
                 </ul>
@@ -135,7 +143,11 @@ const SportDetail = ({ sport, onClose }) => {
         <div className="btn-sport">
           {user && user.role === "Member" && (
             <Modal.Footer>
-              <Button className="btn-Incribirme" onClick={handleInscripcion}>
+              <Button
+                className="btn-Incribirme"
+                onClick={handleInscripcion}
+                disabled={sportSessions.length === 0}
+              >
                 Incribirme
               </Button>
             </Modal.Footer>
