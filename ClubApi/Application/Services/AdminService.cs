@@ -38,7 +38,7 @@ namespace Application.Services
             return admin;
         }
 
-        public void UpDateAdmin(int id, UserRequest adminRequest)
+        public void UpDateAdmin(int id, UserUpdateRequest adminRequest)
         {
             var existingAdmin = _userService.GetUserById(id);
             if (existingAdmin.UserType.Equals("Admin", StringComparison.OrdinalIgnoreCase))

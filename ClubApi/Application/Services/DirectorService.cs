@@ -43,7 +43,7 @@ namespace Application.Services
             return director;
         }
 
-        public void UpdateDirector(int id, UserRequest directorRequest)
+        public void UpdateDirector(int id, UserUpdateRequest directorRequest)
         {
             
             var existingDirector = _userService.GetUserById(id);

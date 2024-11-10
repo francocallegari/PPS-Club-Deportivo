@@ -134,7 +134,7 @@ namespace ClubApi.Controllers
         }*/
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUser([FromRoute] int id, [FromBody] UserRequest user)
+        public IActionResult UpdateUser([FromRoute] int id, [FromBody] UserUpdateRequest user)
         {
             try
             {
@@ -142,7 +142,7 @@ namespace ClubApi.Controllers
                 if (userRole == null)
                     return Forbid();
 
-                if (!UserRequest.validateDto(user))
+                if (!UserUpdateRequest.validateDto(user))
                     return BadRequest("La solicitud no es válida." +
                         " Verifica que todos los campos requeridos estén presentes y contengan valores adecuados.");
 
