@@ -136,7 +136,7 @@ const Cuotas = () => {
               <div className="info-container">
                 <Card.Body>
                   <Card.Title>Cuota de {cuota.monthName}</Card.Title>
-                  <Card.Text>Monto: {cuota.feePrice}</Card.Text>
+                  <Card.Text>Monto: ${cuota.feePrice}</Card.Text>
                   <Card.Text>
                     Fecha de vencimiento {cuota.expirationDate}
                   </Card.Text>

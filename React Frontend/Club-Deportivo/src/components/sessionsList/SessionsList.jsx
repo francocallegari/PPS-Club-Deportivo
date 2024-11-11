@@ -8,6 +8,7 @@ import { Alert, Button, CloseButton, Modal } from "react-bootstrap";
 import UsersList from "../usersList/UsersList";
 import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SessionsList = () => {
   const [showModal, setShowModal] = useState(false);
@@ -19,6 +20,41 @@ const SessionsList = () => {
   const { user, token } = useContext(AuthenticationContext);
   const [coachSport, setCoachSport] = useState({});
   const [errorAlert, setErrorAlert] = useState(false);
+  const [pendingFees, setPendingFees] = useState([]);
+
+  const memberId = user?.id;
+
+  // Fetch pending fees
+  useEffect(() => {
+    const fetchPendingFees = async () => {
+      if (!memberId || !token) return;
+
+      try {
+        const response = await fetch(
+          `https://localhost:7081/api/MemberShipFee/MemberFees/${memberId}`,
+          {
+            method: "GET",
+            headers: {
+              accept: "*/*",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const pendientes = data.filter((fee) => fee.status === 1);
+          setPendingFees(pendientes);
+        } else {
+          console.error("Error al obtener las cuotas pendientes");
+        }
+      } catch (error) {
+        console.error("Error al obtener las cuotas:", error);
+      }
+    };
+
+    fetchPendingFees();
+  }, [memberId, token]);
 
   const fetchCoachSport = async () => {
     try {
@@ -259,117 +295,135 @@ const SessionsList = () => {
       ) : (
         <h2 className="sessions-title">Mis clases</h2>
       )}
-
-      {errorAlert && (
-        <Alert
-          variant="danger"
-          className="alert-fixed"
-        >
-          Ya existe una clase en ese horario o la cancha se encuentra ocupada
-        </Alert>
-      )}
-
-      {showAlert ? (
-        <Alert
-          variant="warning"
-          style={{
-            textAlign: "center",
-            marginLeft: "100px",
-            marginRight: "100px",
-          }}
-        >
-          Tiene que iniciar sesión para poder ver las clases disponibles!
-        </Alert>
+  
+      {pendingFees.length >= 2 ? (
+        <div>
+          <Alert variant="warning" className="custom-alert">
+            <p>Tienes 2 o más cuotas pendientes.</p>
+            <p>No puedes inscribirte en nuevos deportes hasta que regularices tu situación.</p>
+          </Alert>
+          <div className="suscripcion">
+            <h3 className="section-title">Cuotas pendientes</h3>
+            <Link to="/cuotas">
+              <Button className="boton-modificar" variant="primary">
+                Ver mis cuotas
+              </Button>
+            </Link>
+          </div>
+        </div>
       ) : (
-        <div
-          className="sessions-container"
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          {user && user.role === "Coach" && (
-            <Button
-              variant="primary"
-              className="modal-button mb-5 mt-5"
-              onClick={() => {
-                setSelectedSession(null);
-                setShowModal(true);
+        <>
+          {errorAlert && (
+            <Alert variant="danger" className="alert-fixed">
+              Ya existe una clase en ese horario o la cancha se encuentra ocupada
+            </Alert>
+          )}
+  
+          {showAlert ? (
+            <Alert
+              variant="warning"
+              style={{
+                textAlign: "center",
+                marginLeft: "100px",
+                marginRight: "100px",
               }}
             >
-              + Agregar Clase
-            </Button>
-          )}
-
-          <SessionForm
-            selectedSession={selectedSession}
-            show={showModal}
-            onHide={() => setShowModal(false)}
-            onSave={addNewSession}
-            onEdit={editSession}
-          />
-
-          <div style={{ display: "flex", marginBottom: "30px" }}>
-            <div className="calendarContainer">
-            <FullCalendar
-  plugins={[timeGridPlugin]}
-  initialView="timeGridWeek"
-  headerToolbar={false}
-  allDaySlot={false}
-  slotMinTime="08:00:00" // Hora de inicio
-  slotMaxTime="22:00:00" // Hora de fin
-  slotDuration="00:30:00" // Intervalos de 30 minutos
-  slotLabelInterval="01:00:00"
-  dayHeaderFormat={{ weekday: "long" }}
-  weekends={false}
-  locale="es"
-  contentHeight="auto"
-  events={convertSessionsToEvents(sessions)}
-  eventClick={handleEventClick}
-  slotEventOverlap={false} // Evita que los eventos se superpongan en la misma franja horaria
-  eventOverlap={true} // Permite que dos eventos se alineen uno junto al otro
-  eventOrder="field.name"
-  eventClassNames={(info) => {
-    // Aquí aplicamos la clase dinámica 'sportClass' para asignar colores por deporte
-    return info.event.extendedProps.sportClass; // Clase CSS dinámica para cada deporte
-  }}
-/>
-
-            </div>
-            <div>
-              {event && (
-                <Modal
-                  show={showSessionModal}
-                  onHide={() => setShowSessionModal(false)}
+              Tiene que iniciar sesión para poder ver las clases disponibles!
+            </Alert>
+          ) : (
+            <div
+              className="sessions-container"
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              {user && user.role === "Coach" && (
+                <Button
+                  variant="primary"
+                  className="modal-button mb-5 mt-5"
+                  onClick={() => {
+                    setSelectedSession(null);
+                    setShowModal(true);
+                  }}
                 >
-                  <Modal.Header className="modal-header">
-                    <CloseButton
-                      variant="white"
-                      className="close-button-modal"
-                      onClick={() => setShowSessionModal(false)}
-                    ></CloseButton>
-                  </Modal.Header>
-                  <SessionCard
-                    session={event}
-                    onEdit={handleEdit}
-                    onDelete={deleteSession}
+                  + Agregar Clase
+                </Button>
+              )}
+  
+              <SessionForm
+                selectedSession={selectedSession}
+                show={showModal}
+                onHide={() => setShowModal(false)}
+                onSave={addNewSession}
+                onEdit={editSession}
+              />
+  
+              <div style={{ display: "flex", marginBottom: "30px" }}>
+                <div className="calendarContainer">
+                  <FullCalendar
+                    plugins={[timeGridPlugin]}
+                    initialView="timeGridWeek"
+                    headerToolbar={false}
+                    allDaySlot={false}
+                    slotMinTime="08:00:00" // Hora de inicio
+                    slotMaxTime="22:00:00" // Hora de fin
+                    slotDuration="00:30:00" // Intervalos de 30 minutos
+                    slotLabelInterval="01:00:00"
+                    dayHeaderFormat={{ weekday: "long" }}
+                    weekends={false}
+                    locale="es"
+                    contentHeight="auto"
+                    events={convertSessionsToEvents(sessions)}
+                    eventClick={handleEventClick}
+                    slotEventOverlap={false} // Evita que los eventos se superpongan en la misma franja horaria
+                    eventOverlap={true} // Permite que dos eventos se alineen uno junto al otro
+                    eventOrder="field.name"
+                    eventClassNames={(info) => {
+                      // Aquí aplicamos la clase dinámica 'sportClass' para asignar colores por deporte
+                      return info.event.extendedProps.sportClass; // Clase CSS dinámica para cada deporte
+                    }}
                   />
-                </Modal>
+                </div>
+  
+                <div>
+                  {event && (
+                    <Modal
+                      show={showSessionModal}
+                      onHide={() => setShowSessionModal(false)}
+                    >
+                      <Modal.Header className="modal-header">
+                        <CloseButton
+                          variant="white"
+                          className="close-button-modal"
+                          onClick={() => setShowSessionModal(false)}
+                        ></CloseButton>
+                      </Modal.Header>
+                      <SessionCard
+                        session={event}
+                        onEdit={handleEdit}
+                        onDelete={deleteSession}
+                      />
+                    </Modal>
+                  )}
+                </div>
+              </div>
+  
+              {user && user.role === "Coach" && coachSport && (
+                <div className="mt-5 mb-5">
+                  <h2 className="membersList-title">SOCIOS ANOTADOS</h2>
+                  <div className="users-list-container">
+                    <UsersList
+                      option="sportMembers"
+                      sportId={coachSport.id}
+                    />
+                  </div>
+                </div>
               )}
             </div>
-          </div>
-          {user && user.role === "Coach" && coachSport && (
-            <div className="mt-5 mb-5">
-              <h2 className="membersList-title">SOCIOS ANOTADOS</h2>
-              <div className="users-list-container">
-                <UsersList
-                  option="sportMembers"
-                  sportId={coachSport.id}
-                ></UsersList>
-              </div>
-            </div>
           )}
-        </div>
+        </>
       )}
     </div>
   );
-};
+  
+}
 
 export default SessionsList;
