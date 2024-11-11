@@ -13,6 +13,10 @@ namespace Infrastructure.Data
     {
         public RepositoryPayment(ApplicationContext context) : base(context)
         {
-       }
+        }
+        public List<MembershipFeePayment> GetAllFees()
+        {
+            return _context.MembershipFeePayments.Include(mfp => mfp.Fee).ToList();
+        }
     }
 }
