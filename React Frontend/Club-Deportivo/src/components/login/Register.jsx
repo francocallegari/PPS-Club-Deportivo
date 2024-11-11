@@ -84,7 +84,7 @@ function RegisterForm({ checkForm, alertMessage }) {
 
   const validateUser = async (userData) => {
     try {
-      const response = await fetch(`https://localhost:7081/api/User/ValidateExistingUser?userName=${userData.userName}`, {
+      const response = await fetch(`https://localhost:7081/api/User/ValidateExistingUser?email=${userData.email}`, {
         method: "GET",
         headers: {
           accept: "*/*",
@@ -122,6 +122,7 @@ function RegisterForm({ checkForm, alertMessage }) {
               onChange={(e) => setEmail(e.target.value)}
             />
             {errors.email && <small className="text-danger">{errors.email}</small>}
+            {existingUser && <small className="text-danger">El email ya está registrado</small>}
           </Form.Group>
 
           <Form.Group as={Col} controlId="formGridPassword">
@@ -180,7 +181,6 @@ function RegisterForm({ checkForm, alertMessage }) {
               className="register-input"
             />
             {errors.userName && <small className="text-danger">{errors.userName}</small>}
-            {existingUser && <small className="text-danger">El nombre de usuario ya está registrado</small>}
           </Form.Group>
         </Row>
 

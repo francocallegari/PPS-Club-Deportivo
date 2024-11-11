@@ -13,5 +13,6 @@ namespace Application.Interfaces
         void DeleteUser(int id);
         UserResponse CreateUser(UserRequest user);
         User RegisterUser(UserRequest user);
+        User? GetUserByEmail(string email);
     }
 }
