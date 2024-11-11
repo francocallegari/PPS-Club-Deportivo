@@ -116,7 +116,7 @@ namespace ClubApi.Controllers
             try
             {
                 var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-                if (userRole != "Admin")
+                if (userRole != "Admin" && userRole != "Director")
                     return Forbid();
 
                 _eventService.DeleteEvent(id);
@@ -128,6 +128,7 @@ namespace ClubApi.Controllers
                     "Ha ocurrido un error inesperado. Error: " + ex.Message);
             }
         }
+
         [HttpPost("SignUpEvent")]
         public IActionResult SignUpEvent(int memberId, int eventId)
         {
