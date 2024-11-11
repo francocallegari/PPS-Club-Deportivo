@@ -109,3 +109,20 @@
   @apply uppercase; /* Convierte los días a mayúsculas */
   @apply font-bold; /* Hace que el texto sea más grueso */
 }
+
+
+.custom-alert {
+  width: 80%; 
+  max-width: 600px; 
+  margin: 20px auto;
+  padding: 15px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.suscripcion-title {
+  width: 80%; 
+  max-width: 400px; 
+  margin: 20px auto; 
+  text-align: center;
+}

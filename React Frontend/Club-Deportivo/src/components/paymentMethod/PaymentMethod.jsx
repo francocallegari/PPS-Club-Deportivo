@@ -1,14 +1,13 @@
 import { React, useState, useEffect } from "react";
-import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import "./PaymentMethod.css";
+import axios from "axios";
 import { Button } from "react-bootstrap";
 
-const PaymentMethod = ({monto, redirectionPage}) => {
+const PaymentMethod = ({ monto, redirectionPage }) => {
   const [preferenceId, setPreferenceId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     initMercadoPago(import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY, {
@@ -16,24 +15,11 @@ const PaymentMethod = ({monto, redirectionPage}) => {
     });
   }, []);
 
-  useEffect(() => {
-    const fetchPrice = async () => {
-      try {
-        const response = await axios.get("https://localhost:7081/api/MemberShipFee/CurrentRatePrice");
-        setPrice(response.data); // Data retorna unicamente el precio
-      } catch (error) {
-        console.error("Error fetching price:", error);
-        setError("Error fetching the current rate price.");
-      }
-    };
-    fetchPrice();
-  }, []);
-
   const createPreference = async () => {
     setLoading(true);
     setError(null);
 
-    if (price === 0) {
+    if (monto === 0) {
       setError("Error. Monto no válido");
       setLoading(false);
       return;
@@ -45,7 +31,7 @@ const PaymentMethod = ({monto, redirectionPage}) => {
         {
           title: "Pago membresía Club All Stars",
           quantity: 1,
-          price: price,
+          price: monto,
           currencyId: "ARS",
           successUrl: `http://localhost:5173/${redirectionPage}`,
           failureUrl: `http://localhost:5173/${redirectionPage}`,
@@ -72,8 +58,8 @@ const PaymentMethod = ({monto, redirectionPage}) => {
       <div className="card-product">
         <div className="card">
           <h3>Pagar con Mercado Pago</h3>
-          <p>Monto: ${price}</p>
-          <Button variant="primary" onClick={handlePay} disabled={loading || price === 0}>
+          <p>Monto: ${monto}</p> 
+          <Button variant="primary" onClick={handlePay} disabled={loading || monto === 0}>
             {loading ? "Cargando..." : "Pagar"}
           </Button>
           {error && <p className="error">{error}</p>}
