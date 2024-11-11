@@ -47,9 +47,9 @@ const PaymentMethod = () => {
           quantity: 1,
           price: price,
           currencyId: "ARS",
-          successUrl: "http://localhost:5174/",
-          failureUrl: "http://localhost:5174/",
-          pendingUrl: "http://localhost:5174/",
+          successUrl: "http://localhost:5173/cuotas",
+          failureUrl: "http://localhost:5173/cuotas",
+          pendingUrl: "http://localhost:5173/cuotas",
         }
       );
 

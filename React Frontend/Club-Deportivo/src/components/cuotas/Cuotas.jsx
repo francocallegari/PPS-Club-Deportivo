@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
 import "./Cuotas.css";
@@ -65,6 +65,20 @@ const Cuotas = () => {
     setShowPaymentModal(false);
     setSelectedMonto(null);
   };
+
+  useEffect(() => {
+    // Captura los parámetros de la URL
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const paymentId = params.get('payment_id');
+    const collectionId = params.get('collection_id');
+    const externalReference = params.get('external_reference');
+
+    // Verifica si el estado es aprobado
+    if (status === 'approved') {
+      console.log("aprobado")
+    
+    }})
 
   return (
     <div className="cuotas-container">

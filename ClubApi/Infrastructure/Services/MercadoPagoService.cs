@@ -32,14 +32,15 @@ public class MercadoPagoService
             },
                 BackUrls = new PreferenceBackUrlsRequest
                 {
-                    Success = request.SuccessUrl ?? "http://google.com/",
-                    Failure = request.FailureUrl ?? "http://google.com/",
-                    Pending = request.PendingUrl ?? "http://google.com/",
+                    Success = request.SuccessUrl ?? "http://localhost:5173/",
+                    Failure = request.FailureUrl ?? "http://localhost:5173/",
+                    Pending = request.PendingUrl ?? "http://localhost:5173/",
                 },
                 AutoReturn = "approved"
             };
 
             Preference preference = await client.CreateAsync(preferenceRequest);
+            // En base a la respuesta 
             return preference;
         }
         catch (Exception ex)
