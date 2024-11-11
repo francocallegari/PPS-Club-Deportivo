@@ -18,6 +18,7 @@ const SessionsList = () => {
   const [sessions, setSessions] = useState([]);
   const { user, token } = useContext(AuthenticationContext);
   const [coachSport, setCoachSport] = useState({});
+  const [errorAlert, setErrorAlert] = useState(false);
 
   const fetchCoachSport = async () => {
     try {
@@ -84,19 +85,35 @@ const SessionsList = () => {
   const convertSessionsToEvents = (sessions) => {
     return sessions.map((session) => {
       let [hours, minutes] = session.time.split(":").map(Number);
-
+  
       let startDate = new Date(`1970-01-01T${session.time}`);
       startDate.setHours(hours, minutes, 0, 0);
       startDate.setMinutes(startDate.getMinutes() + session.duration);
-
-      const endTime = `${String(startDate.getHours()).padStart(
-        2,
-        "0"
-      )}:${String(startDate.getMinutes()).padStart(2, "0")}`;
+  
+      const endTime = `${String(startDate.getHours()).padStart(2, "0")}:${String(startDate.getMinutes()).padStart(2, "0")}`;
+  
 
       const isCurrentUserCoach = String(session.coach.id) === String(user.id);
-      const eventColor = isCurrentUserCoach ? `event` : `event-faded`;
+  
 
+      const memberColors = ['event-color-1', 'event-color-2', 'event-color-3', 'event-color-4'];
+  
+      let eventColor = '';
+  
+      if (isCurrentUserCoach) {
+
+        eventColor = 'event-color';
+      } else {
+        eventColor = memberColors[Math.floor(Math.random() * memberColors.length)];
+
+        if (session.coach.id !== user.id) {
+          eventColor = 'faded-class';
+        }
+      }
+  
+      // Asignar la clase de deporte dependiendo del nombre del deporte
+      const sportClass = `sport-${session.field.sport.name.toLowerCase().replace(/\s+/g, '-')}`;
+  
       return {
         id: session.id,
         title: session.field.name,
@@ -106,13 +123,16 @@ const SessionsList = () => {
         extendedProps: {
           field: session.field,
           coach: session.coach,
-          color: eventColor,
+          sportClass: sportClass,
           sport: session.field.sport.name,
         },
+        classNames: `${eventColor} ${sportClass}`, 
       };
     });
   };
-
+  
+  
+  
   const handleEventClick = (info) => {
     const { title, start, end, extendedProps, _def, id } = info.event;
     const days = _def.recurringDef.typeData.daysOfWeek;
@@ -162,6 +182,7 @@ const SessionsList = () => {
       }
     } catch (error) {
       console.error("Ocurrió un error inesperado", error);
+      setErrorAlert(true);
     }
   };
 
@@ -190,6 +211,7 @@ const SessionsList = () => {
       }
     } catch (error) {
       console.error("Ocurrió un error inesperado", error);
+      setErrorAlert(true);
     }
   };
 
@@ -219,10 +241,32 @@ const SessionsList = () => {
     }
   };
 
+  useEffect(() => {
+    if (errorAlert) {
+      const timer = setTimeout(() => {
+        setErrorAlert(false);
+      }, 6000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorAlert]);
+
   return (
     <div>
-      {coachSport && (
-        <h2 className="sessions-title">Clases de {coachSport.name}</h2>
+      {user && user.role === "Coach" ? (
+        coachSport && (
+          <h2 className="sessions-title">Clases de {coachSport.name}</h2>
+        )
+      ) : (
+        <h2 className="sessions-title">Mis clases</h2>
+      )}
+
+      {errorAlert && (
+        <Alert
+          variant="danger"
+          className="alert-fixed"
+        >
+          Ya existe una clase en ese horario o la cancha se encuentra ocupada
+        </Alert>
       )}
 
       {showAlert ? (
@@ -261,28 +305,33 @@ const SessionsList = () => {
             onSave={addNewSession}
             onEdit={editSession}
           />
+
           <div style={{ display: "flex", marginBottom: "30px" }}>
             <div className="calendarContainer">
-              <FullCalendar
-                plugins={[timeGridPlugin]}
-                initialView="timeGridWeek"
-                headerToolbar={false}
-                allDaySlot={false}
-                slotMinTime="08:00:00" // Hora de inicio
-                slotMaxTime="22:00:00" // Hora de fin
-                slotDuration="00:30:00" // Intervalos de 30 minutos
-                slotLabelInterval="01:00:00"
-                dayHeaderFormat={{ weekday: "long" }}
-                weekends={false}
-                locale="es"
-                contentHeight="auto"
-                events={convertSessionsToEvents(sessions)}
-                eventClick={handleEventClick}
-                eventClassNames={(arg) => arg.event.extendedProps.color} // Usar el color de las propiedades extendidas
-                slotEventOverlap={false} // Evita que los eventos se superpongan en la misma franja horaria
-                eventOverlap={true} // Permite que dos eventos se alineen uno junto al otro
-                eventOrder="field.name"
-              />
+            <FullCalendar
+  plugins={[timeGridPlugin]}
+  initialView="timeGridWeek"
+  headerToolbar={false}
+  allDaySlot={false}
+  slotMinTime="08:00:00" // Hora de inicio
+  slotMaxTime="22:00:00" // Hora de fin
+  slotDuration="00:30:00" // Intervalos de 30 minutos
+  slotLabelInterval="01:00:00"
+  dayHeaderFormat={{ weekday: "long" }}
+  weekends={false}
+  locale="es"
+  contentHeight="auto"
+  events={convertSessionsToEvents(sessions)}
+  eventClick={handleEventClick}
+  slotEventOverlap={false} // Evita que los eventos se superpongan en la misma franja horaria
+  eventOverlap={true} // Permite que dos eventos se alineen uno junto al otro
+  eventOrder="field.name"
+  eventClassNames={(info) => {
+    // Aquí aplicamos la clase dinámica 'sportClass' para asignar colores por deporte
+    return info.event.extendedProps.sportClass; // Clase CSS dinámica para cada deporte
+  }}
+/>
+
             </div>
             <div>
               {event && (

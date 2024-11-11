@@ -5,11 +5,18 @@
     margin-bottom: 20px;
     font-weight: bold;
     color: rgba(13, 48, 118, 0.912);
+    text-transform: uppercase;
+    border: none;
+}
+
+.fc-event:focus,
+.fc-event:active {
+    outline: none; 
+    box-shadow: none; 
 }
 
 .calendarContainer {
     width: 90%;
-    /*margin: 0 auto;*/
     margin-left: 80px;
     margin-right: 80px;
 }
@@ -80,23 +87,60 @@
     background-color: transparent;
 }
 
-/* Estilo para eventos saturados (cuando el coach es el usuario logueado) */
-.event {
-    background-color: rgb(41, 79, 155); /* Rojo para Basquet, puedes personalizarlo */
+.coach-class {
+    background-color: #007bff; 
+    color: white; 
+    cursor: pointer;
+  }
+  
+
+  .faded-class {
+    background-color: #5fa4ed;
     color: white;
   }
   
-  /* Estilo para eventos faded (cuando el coach NO es el usuario logueado) */
-  .event-faded {
-    background-color: rgb(106, 141, 212); /* Rojo más claro (faded) */
-    color: gray;
-  }
-  
-  
-  /* Hover effect */
   .fc-event:hover {
     cursor: pointer;
     opacity: 0.8;
     transform: scale(1.05);
   }
+  
+  .alert-fixed {
+    position: fixed;
+    top: 100px;
+    right: 50px;
+    z-index: 9999; 
+    text-align: center;
+  }
+
+
+
+.fc-event {
+    padding: 5px;
+    border-radius: 5px;
+    color: white; 
+    font-size: 12px;
+    border: none;
+  }
+  
+
+  .sport-futbol {
+    background-color: #FF5733; 
+  }
+  
+
+  .sport-basketball {
+    background-color: #33FF57; 
+  }
+  
+
+  .sport-voleibol {
+    background-color: #3357FF;
+  }
+  
+
+  .sport-hockey {
+    background-color: #F333FF; 
+  }
+  
   

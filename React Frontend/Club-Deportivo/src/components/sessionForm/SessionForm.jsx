@@ -189,7 +189,7 @@ const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
           variant="white"
           className="close-button-modal"
           onClick={() => {
-            resetForm(); 
+            resetForm();
             props.onHide();
           }}
         ></CloseButton>
@@ -318,7 +318,7 @@ const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
               </option>
               {fields.map((field) => (
                 <option key={field.id} value={field.id}>
-                  {field.title}
+                  {field.name}
                 </option>
               ))}
             </Form.Select>
@@ -341,11 +341,7 @@ const SessionForm = ({ selectedSession, onSave, onEdit, ...props }) => {
         >
           Cancelar
         </Button>
-        <Button
-          className="btn-modal"
-          variant="primary"
-          onClick={handleSubmit}
-        >
+        <Button className="btn-modal" variant="primary" onClick={handleSubmit}>
           Guardar
         </Button>
       </Modal.Footer>
