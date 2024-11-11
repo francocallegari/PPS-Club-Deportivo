@@ -11,12 +11,17 @@ namespace Application.Services
         private readonly IRepositoryUser _userRepository;
         private readonly IEmailService _emailService;
         private readonly IRepositoryMembershipFee _repositoryMembershipFee;
+        private readonly IRepositorySport _repositorySport;
 
-        public UserService(IRepositoryUser userRepository, IEmailService emailService, IRepositoryMembershipFee repositoryMembershipFee)
+        public UserService(IRepositoryUser userRepository, 
+            IEmailService emailService, 
+            IRepositoryMembershipFee repositoryMembershipFee,
+            IRepositorySport repositorySport)
         {
             _userRepository = userRepository;
             _emailService = emailService;
             _repositoryMembershipFee = repositoryMembershipFee;
+            _repositorySport = repositorySport;
         }
 
         public ICollection<UserResponse> GetAllUsers()
@@ -34,6 +39,11 @@ namespace Application.Services
         public User? GetUserByUserName(string userName)
         {
             return _userRepository.GetUserByName(userName);
+        }
+
+        public User? GetUserByEmail(string email)
+        {
+            return _userRepository.GetUserByEmail(email);
         }
 
         public UserResponse CreateUser(UserRequest dto)
@@ -84,8 +94,9 @@ namespace Application.Services
 
         public User RegisterUser(UserRequest dto)
         {
-            var existingUser = _userRepository.GetUserByName(dto.UserName);
+            var existingUser = _userRepository.GetUserByEmail(dto.Email);
             var user = new User();
+            var sport = new Sport();
 
             if (existingUser != null)
             {
@@ -97,6 +108,10 @@ namespace Application.Services
                 if (!dto.SportId.HasValue)
                 {
                     throw new InvalidOperationException("El Coach debe tener un SportId.");
+                } else
+                {
+                    sport = _repositorySport.GetById(dto.SportId)
+                        ?? throw new InvalidOperationException("No se encontró el deporte");
                 }
 
                 var coach = new Coach
@@ -111,7 +126,8 @@ namespace Application.Services
                     DateOfBirth = dto.DateOfBirth,
                     Dni = dto.Dni,
                     Address = dto.Address,
-                    SportId = dto.SportId.Value // Asignar el SportId recibido en la solicitud
+                    SportId = dto.SportId.Value, // Asignar el SportId recibido en la solicitud
+                    SportAssigned = sport
                 };
 
                 user = _userRepository.Add(coach);
@@ -133,6 +149,11 @@ namespace Application.Services
                 };
 
                 user = _userRepository.Add(newUser);
+
+                if (newUser.UserType == "Member")
+                {
+                    _repositoryMembershipFee.GenerateFeeForNewMember(newUser);
+                }
             }
 
             return user;

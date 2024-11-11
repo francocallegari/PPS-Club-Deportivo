@@ -55,7 +55,7 @@ namespace Infrastructure.Data
             _context.SaveChanges();
         }
 
-        public void GenerateFeeForNewMember(Member user)
+        public void GenerateFeeForNewMember(User user)
         {
             var latestFee = _context.MembershipFees.OrderByDescending(f => f.ExpirationDate).FirstOrDefault();
             if (latestFee == null)
@@ -66,7 +66,7 @@ namespace Infrastructure.Data
             var payment = new MembershipFeePayment
             {
                 MemberId = user.Id,
-                Member = user,
+                Member = (Member)user,
                 FeeId = latestFee.Id,
                 Fee = latestFee,
                 Price = latestFee.Price,
