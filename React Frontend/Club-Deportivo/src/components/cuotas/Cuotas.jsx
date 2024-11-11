@@ -1,57 +1,50 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Card, Button } from "react-bootstrap";
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
 import "./Cuotas.css";
 import PaymentMethod from "../paymentMethod/PaymentMethod";
+import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
 
 const Cuotas = () => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedMonto, setSelectedMonto] = useState(null);
+  const [cuotas, setCuotas] = useState([]);
+  const { user, token } = useContext(AuthenticationContext);
 
-  const cuotas = [
-    {
-      id: 1,
-      estado: "Pagada",
-      fecha: "2024-09-10",
-      monto: "$1000",
-      metodoPago: "Tarjeta de Crédito",
-    },
-    {
-      id: 2,
-      estado: "Pendiente",
-      fecha: "2024-10-10",
-      monto: "$1000",
-      vencimiento: "2024-10-30",
-    },
-    {
-      id: 3,
-      estado: "Pendiente",
-      fecha: "2024-11-10",
-      monto: "$1000",
-      vencimiento: "2024-11-30",
-    },
-    {
-      id: 4,
-      estado: "Pendiente",
-      fecha: "2024-12-10",
-      monto: "$1000",
-      vencimiento: "2024-12-30",
-    },
-    {
-      id: 5,
-      estado: "Pagada",
-      fecha: "2024-08-10",
-      monto: "$1000",
-      metodoPago: "Transferencia bancaria",
-    },
-    {
-      id: 6,
-      estado: "Pagada",
-      fecha: "2024-07-10",
-      monto: "$1000",
-      metodoPago: "Tarjeta de Crédito",
-    },
-  ];
+  const memberId = user?.id;
+
+  useEffect(() => {
+    const fetchCuotas = async () => {
+      if (!memberId || !token) {
+        console.error("Falta el ID de miembro o el token");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://localhost:7081/api/MemberShipFee/MemberFees/${memberId}`,
+          {
+            method: "GET",
+            headers: {
+              accept: "*/*",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setCuotas(data);
+        } else {
+          throw new Error("Error al obtener las cuotas");
+        }
+      } catch (error) {
+        console.error("Error al obtener las cuotas:", error);
+      }
+    };
+
+    fetchCuotas();
+  }, [memberId, token]);
 
   const pagadas = cuotas.filter((cuota) => cuota.estado === "Pagada");
   const pendientes = cuotas.filter((cuota) => cuota.estado === "Pendiente");
@@ -65,20 +58,6 @@ const Cuotas = () => {
     setShowPaymentModal(false);
     setSelectedMonto(null);
   };
-
-  useEffect(() => {
-    // Captura los parámetros de la URL
-    const params = new URLSearchParams(window.location.search);
-    const status = params.get('status');
-    const paymentId = params.get('payment_id');
-    const collectionId = params.get('collection_id');
-    const externalReference = params.get('external_reference');
-
-    // Verifica si el estado es aprobado
-    if (status === 'approved') {
-      console.log("aprobado")
-    
-    }})
 
   return (
     <div className="cuotas-container">
