@@ -84,19 +84,19 @@ const SessionsList = () => {
   const convertSessionsToEvents = (sessions) => {
     return sessions.map((session) => {
       let [hours, minutes] = session.time.split(":").map(Number);
-  
+
       let startDate = new Date(`1970-01-01T${session.time}`);
       startDate.setHours(hours, minutes, 0, 0);
       startDate.setMinutes(startDate.getMinutes() + session.duration);
-  
+
       const endTime = `${String(startDate.getHours()).padStart(
         2,
         "0"
       )}:${String(startDate.getMinutes()).padStart(2, "0")}`;
-  
+
       const isCurrentUserCoach = String(session.coach.id) === String(user.id);
       const eventColor = isCurrentUserCoach ? `event` : `event-faded`;
-  
+
       return {
         id: session.id,
         title: session.field.name,
@@ -112,7 +112,6 @@ const SessionsList = () => {
       };
     });
   };
-  
 
   const handleEventClick = (info) => {
     const { title, start, end, extendedProps, _def, id } = info.event;
@@ -222,7 +221,9 @@ const SessionsList = () => {
 
   return (
     <div>
-      {coachSport && <h2 className="sessions-title">Clases de {coachSport.name}</h2>}
+      {coachSport && (
+        <h2 className="sessions-title">Clases de {coachSport.name}</h2>
+      )}
 
       {showAlert ? (
         <Alert
