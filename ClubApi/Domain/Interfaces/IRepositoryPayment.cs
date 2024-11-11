@@ -9,5 +9,6 @@ namespace Domain.Interfaces
 {
     public interface IRepositoryPayment : IRepositoryBase<MembershipFeePayment>
     {
+        List<MembershipFeePayment> GetAllFees();
     }
 }

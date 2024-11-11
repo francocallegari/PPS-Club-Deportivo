@@ -47,7 +47,7 @@ namespace Application.Services
 
         public List<MemberShipFeePaymentDto> GetMemberFees(int memberId, FeeStatus? status = null)
         {
-            var feePayments = _paymentRepository.GetAll()
+            var feePayments = _paymentRepository.GetAllFees()
                 .Where(mfp => mfp.MemberId == memberId);
 
             if (status.HasValue)

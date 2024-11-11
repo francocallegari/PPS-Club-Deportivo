@@ -4,7 +4,7 @@ import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import "./PaymentMethod.css";
 import { Button } from "react-bootstrap";
 
-const PaymentMethod = () => {
+const PaymentMethod = ({monto, redirectionPage}) => {
   const [preferenceId, setPreferenceId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -47,9 +47,9 @@ const PaymentMethod = () => {
           quantity: 1,
           price: price,
           currencyId: "ARS",
-          successUrl: "http://localhost:5173/cuotas",
-          failureUrl: "http://localhost:5173/cuotas",
-          pendingUrl: "http://localhost:5173/cuotas",
+          successUrl: `http://localhost:5173/${redirectionPage}`,
+          failureUrl: `http://localhost:5173/${redirectionPage}`,
+          pendingUrl: `http://localhost:5173/${redirectionPage}`,
         }
       );
 

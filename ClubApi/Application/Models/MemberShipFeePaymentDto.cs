@@ -13,6 +13,7 @@ namespace Application.Models
         public int Id { get; set; }
         public int MemberId { get; set; }
         public int FeeId { get; set; }
+        public MembershipFeeDto MembershipFee { get; set; }
         public FeeStatus Status { get; set; }
         public DateTime? PaymentDate { get; set; }
         public float FeePrice { get; set; }
@@ -27,6 +28,7 @@ namespace Application.Models
             dto.Status = fee.Status;
             dto.PaymentDate = fee.PaymentDate;
             dto.FeePrice = fee.Price;
+            dto.MembershipFee = MembershipFeeDto.Create(fee.Fee);
 
             return dto;
 

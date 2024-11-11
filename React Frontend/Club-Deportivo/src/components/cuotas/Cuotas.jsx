@@ -46,8 +46,26 @@ const Cuotas = () => {
     fetchCuotas();
   }, [memberId, token]);
 
-  const pagadas = cuotas.filter((cuota) => cuota.estado === "Pagada");
-  const pendientes = cuotas.filter((cuota) => cuota.estado === "Pendiente");
+  const formattedFees = (fees, condition) => {
+    return fees.filter((fee) => fee.status === condition).map((fee) => {
+      const cuotaDate = new Date(fee.membershipFee.expirationDate)
+      const monthName = cuotaDate.toLocaleString('es-ES', { month: 'long' })
+
+      return {
+        id: fee.id,
+        monthName: monthName,
+        memberId: fee.memberId,
+        feeId: fee.feeId,
+        expirationDate: cuotaDate.toLocaleDateString('es-ES'),
+        status: fee.status,
+        paymentDate: fee.paymentDate,
+        feePrice: fee.feePrice
+      };
+    });
+  }
+
+  const pagadas = cuotas.length > 0 ? formattedFees(cuotas, 0) : []
+  const pendientes = cuotas.length > 0 ? formattedFees(cuotas, 1) : []
 
   const handlePayClick = (monto) => {
     setSelectedMonto(monto);
@@ -58,6 +76,23 @@ const Cuotas = () => {
     setShowPaymentModal(false);
     setSelectedMonto(null);
   };
+
+  useEffect(() => {
+    // Captura los parámetros de la URL
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const paymentId = params.get('payment_id');
+    const collectionId = params.get('collection_id');
+    const externalReference = params.get('external_reference');
+
+    // Verifica si el estado es aprobado
+    if (status === 'approved') {
+      console.log("aprobado")
+
+    } else if (status == "null"){
+      console.log("no se pudo completar el pago")
+    }
+  }, [])
 
   return (
     <div className="cuotas-container">
@@ -72,9 +107,9 @@ const Cuotas = () => {
                 </div>
                 <div className="info-container">
                   <Card.Body>
-                    <Card.Title>Cuota del {cuota.fecha}</Card.Title>
-                    <Card.Text>Monto: {cuota.monto}</Card.Text>
-                    <Card.Text>Metodo Pago: {cuota.metodoPago}</Card.Text>
+                    <Card.Title>Cuota de {cuota.monthName}</Card.Title>
+                    <Card.Text>Monto: {cuota.feePrice}</Card.Text>
+                    <Card.Text>Fecha de Pago: {cuota.paymentDate}</Card.Text>
                     <Button className="boton-pagar" variant="success" disabled>
                       Pagada
                     </Button>
@@ -91,7 +126,8 @@ const Cuotas = () => {
       {/* Cuotas Pendientes */}
       <div className="column">
         <h4 className="subtitle">Cuotas Pendientes</h4>
-        {pendientes.map((cuota) => (
+        {pendientes.length > 0 ? 
+        pendientes.map((cuota) => (
           <Card key={cuota.id} className="mb-3 cuota-card pending">
             <div className="card-content">
               <div className="icon-container">
@@ -99,15 +135,15 @@ const Cuotas = () => {
               </div>
               <div className="info-container">
                 <Card.Body>
-                  <Card.Title>Cuota del {cuota.fecha}</Card.Title>
-                  <Card.Text>Monto: {cuota.monto}</Card.Text>
+                  <Card.Title>Cuota de {cuota.monthName}</Card.Title>
+                  <Card.Text>Monto: {cuota.feePrice}</Card.Text>
                   <Card.Text>
-                    Fecha de vencimiento {cuota.vencimiento}
+                    Fecha de vencimiento {cuota.expirationDate}
                   </Card.Text>
                   <Button
                     className="boton-pagar"
                     variant="primary"
-                    onClick={() => handlePayClick(cuota.monto)}
+                    onClick={() => handlePayClick(cuota.feePrice)}
                   >
                     Pagar
                   </Button>
@@ -115,14 +151,16 @@ const Cuotas = () => {
               </div>
             </div>
           </Card>
-        ))}
+        )) : (
+          <p>No tiene cuotas pendientes</p>
+        )}
       </div>
 
       {showPaymentModal && (
         <div className="payment-modal">
           <div className="modal-content">
             <h2 className="title-modal">Realizar Pago</h2>
-            <PaymentMethod monto={selectedMonto} />
+            <PaymentMethod monto={selectedMonto} redirectionPage="cuotas"/>
             <div className="modal-footer">
               <Button
                 className="boton-modal"

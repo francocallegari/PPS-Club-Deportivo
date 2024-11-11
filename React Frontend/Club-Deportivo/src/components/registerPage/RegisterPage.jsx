@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import RegisterForm from '../login/Register'
 import { ProgressBar, Button, Form, Modal, Alert, Spinner } from 'react-bootstrap'
 import RegisterPaymentStep from '../registerPaymentStep/RegisterPaymentStep'
@@ -9,15 +9,31 @@ import { useNavigate } from 'react-router-dom'
 const RegisterPage = () => {
     const [step, setStep] = useState(1)
     const [progress, setProgress] = useState(0)
-    const [userData, setUserData] = useState({})
     const navigate = useNavigate()
+    const [messageAlert, setMessageAlert] = useState("")
+
+    useEffect(() => {
+        // Captura los parámetros de la URL
+        const params = new URLSearchParams(window.location.search);
+        const status = params.get('status');
+
+        // Verifica si el estado es aprobado
+        if (status === 'approved') {
+            console.log("aprobado")
+            setStep(2)
+            setProgress(50)
+            registerNewMember()
+
+        } else {
+            setMessageAlert("No se pudo completar el pago. Vuelva a intentarlo")
+        } 
+    }, [])
 
     const goToNextStep = (data) => {
         if (step === 1) {
             setStep(2)
             setProgress(50)
-            setUserData(data)
-            console.log(data)
+            localStorage.setItem("UserData", JSON.stringify(data))
         }
     }
 
@@ -25,18 +41,13 @@ const RegisterPage = () => {
         if (step === 2) {
             setStep(1)
             setProgress(0)
-        }
-    }
-
-    const verifyResponse = (responseFromApi) => {
-
-        if (responseFromApi == "OK") {
-            console.log("Pago registrado con éxito")
-            registerNewMember()
+            localStorage.removeItem("UserData")
         }
     }
 
     const registerNewMember = async () => {
+        const userData = JSON.parse(localStorage.getItem("UserData"))
+
         try {
             const response = await fetch("https://localhost:7081/api/User/registerUser", {
                 method: "POST",
@@ -49,26 +60,29 @@ const RegisterPage = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log("Usuario creado con éxito:", data)
+                localStorage.removeItem("UserData")
                 setProgress(100)
                 setStep(3)
                 setTimeout(() => {
                     navigate("/login")
                 }, 3000)
             } else {
-                console.error("Error al registrar usuario:", errorData);;
+                console.error("Error al registrar usuario:", errorData);
+                localStorage.removeItem("UserData")
             }
         } catch (error) {
             console.error("Error de red o en la conexión:", error);
+            localStorage.removeItem("UserData")
         }
     }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            {step == 1 && <RegisterForm checkForm={goToNextStep}></RegisterForm>}
+            {step == 1 && <RegisterForm checkForm={goToNextStep} alertMessage={messageAlert}></RegisterForm>}
 
             {step == 2 && (
                 <div style={{ width: '1000px', marginBottom: '30px' }}>
-                    <RegisterPaymentStep handleResponse={verifyResponse}></RegisterPaymentStep>
+                    <RegisterPaymentStep></RegisterPaymentStep>
                     <button className='flex items-center previous-button' onClick={goToPreviousStep}>
                         <FaArrowLeft className='ml-2'></FaArrowLeft>
                         Anterior
