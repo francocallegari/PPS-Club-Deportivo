@@ -59,6 +59,23 @@ const Cuotas = () => {
     setSelectedMonto(null);
   };
 
+  useEffect(() => {
+    // Captura los parámetros de la URL
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const paymentId = params.get('payment_id');
+    const collectionId = params.get('collection_id');
+    const externalReference = params.get('external_reference');
+
+    // Verifica si el estado es aprobado
+    if (status === 'approved') {
+      console.log("aprobado")
+
+    } else if (status == "null"){
+      console.log("no se pudo completar el pago")
+    }
+  }, [])
+
   return (
     <div className="cuotas-container">
       <div className="column">
@@ -122,7 +139,7 @@ const Cuotas = () => {
         <div className="payment-modal">
           <div className="modal-content">
             <h2 className="title-modal">Realizar Pago</h2>
-            <PaymentMethod monto={selectedMonto} />
+            <PaymentMethod monto={selectedMonto} redirectionPage="cuotas"/>
             <div className="modal-footer">
               <Button
                 className="boton-modal"

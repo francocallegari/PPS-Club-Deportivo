@@ -28,6 +28,7 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Estilo del botón */
 .login-button {
   width: 100%;
   padding: 10px;
