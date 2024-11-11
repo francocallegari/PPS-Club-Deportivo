@@ -95,6 +95,7 @@ namespace Application.Services
 
         public void SignUpEvent(int memberId, int eventId)
         {
+            var dateToday = DateTime.Now;
             var response = _userRepository.GetById(memberId);
             if (response == null || response.UserType != "Member")
                 throw new InvalidOperationException("No se encontró al miembro.");
@@ -105,6 +106,9 @@ namespace Application.Services
 
             if (eventEntity.Members.Any(m => m.Id == memberId))
                 throw new InvalidOperationException("El miembro ya está inscripto en este evento.");
+
+            if(eventEntity.Date < dateToday)
+                throw new InvalidOperationException("No puede inscribirse al evento porque ya pasó su fecha");
 
             eventEntity.Members.Add((Member)response);
             _eventRepository.Update(eventEntity);

@@ -77,9 +77,9 @@ namespace ClubApi.Controllers
 
         [AllowAnonymous]
         [HttpGet("ValidateExistingUser")]
-        public IActionResult GetByUserName([FromQuery] string userName)
+        public IActionResult GetByEmail([FromQuery] string email)
         {
-            var existingUser = _userService.GetUserByUserName(userName);
+            var existingUser = _userService.GetUserByEmail(email);
             if (existingUser == null)
             {
                 return Ok();

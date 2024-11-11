@@ -18,15 +18,18 @@ const RegisterPage = () => {
         const status = params.get('status');
 
         // Verifica si el estado es aprobado
-        if (status === 'approved') {
-            console.log("aprobado")
-            setStep(2)
-            setProgress(50)
-            registerNewMember()
-
-        } else {
-            setMessageAlert("No se pudo completar el pago. Vuelva a intentarlo")
-        } 
+        if (status){
+            if (status === 'approved') {
+                console.log("aprobado")
+                setStep(2)
+                setProgress(50)
+                registerNewMember()
+    
+            } else {
+                setMessageAlert("No se pudo completar el pago. Vuelva a intentarlo")
+            }
+        }
+         
     }, [])
 
     const goToNextStep = (data) => {
