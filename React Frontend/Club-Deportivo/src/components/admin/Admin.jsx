@@ -43,6 +43,7 @@ const Admin = () => {
     }
     handleClose();
     fetchData();
+    resetForm();
   };
 
   const handleEventSubmit = (e) => {
@@ -145,6 +146,13 @@ const Admin = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+
+  const resetForm = () => {
+    setNewsTitle(""); 
+    setNewsDescription(""); 
+    setNewsImage(""); 
+  };
 
   return (
     <div>

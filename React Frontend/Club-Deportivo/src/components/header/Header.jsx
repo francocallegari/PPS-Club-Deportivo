@@ -10,7 +10,7 @@ import { AuthenticationContext } from "../../services/authentication/Authenticat
 const Header = () => {
   const navigate = useNavigate();
 
-  const { user, handleLogout } = useContext(AuthenticationContext)
+  const { user, handleLogout } = useContext(AuthenticationContext);
 
   // Funciones de navegación
   const handleHomeNavigation = (e) => {
@@ -34,8 +34,8 @@ const Header = () => {
   };
 
   const handleLogoutButton = (e) => {
-    handleLogout()
-    navigate("/")
+    handleLogout();
+    navigate("/");
   };
 
   const handleProfile = (e) => {
@@ -55,23 +55,23 @@ const Header = () => {
 
   const handleAdmin = (e) => {
     e.preventDefault();
-    navigate("/admin")
-  }
+    navigate("/admin");
+  };
 
   const handleCoach = (e) => {
     e.preventDefault();
-    navigate("/sessions")
-  }
+    navigate("/sessions");
+  };
 
   const handleDirector = (e) => {
     e.preventDefault();
     navigate("/director");
-  }
+  };
 
   const handleSessionsNavigation = (e) => {
     e.preventDefault();
     navigate("/sessions");
-  }
+  };
 
   return (
     <Navbar className="navbar-container" expand="lg">
@@ -95,9 +95,18 @@ const Header = () => {
               Deportes
             </Nav.Item>
 
-            <Nav.Item className="Nav-Seccion" onClick={handleActivitiesNavigation}>
+            <Nav.Item
+              className="Nav-Seccion"
+              onClick={handleActivitiesNavigation}
+            >
               Actividades
             </Nav.Item>
+            <Nav.Item
+          className="Nav-Seccion"
+          onClick={!user ? handleLoginNavigation : handleLogoutButton}
+        >
+          {!user ? "Iniciar sesión" : "Cerrar Sesión"}
+        </Nav.Item>
           </>
         )}
 
@@ -108,9 +117,21 @@ const Header = () => {
         )}
 
         {user && user.role === "Admin" && (
-          <Nav.Item className="Nav-Seccion" onClick={handleAdmin}>
-            Panel de Admin
-          </Nav.Item>
+          <>
+            
+            <Nav.Item className="Nav-Seccion" onClick={handleSportsNavigation}>
+              Deportes
+            </Nav.Item>
+            <Nav.Item
+              className="Nav-Seccion"
+              onClick={handleActivitiesNavigation}
+            >
+              Actividades
+            </Nav.Item>
+            <Nav.Item className="Nav-Seccion" onClick={handleAdmin}>
+              Panel de Admin
+            </Nav.Item>
+          </>
         )}
 
         {user && user.role === "Coach" && (
@@ -120,27 +141,53 @@ const Header = () => {
         )}
 
         {user && user.role === "Director" && (
-          <Nav.Item className="Nav-Seccion" onClick={handleDirector}>
-            Panel del director
-          </Nav.Item>
+          <>
+            
+            <Nav.Item className="Nav-Seccion" onClick={handleSportsNavigation}>
+              Deportes
+            </Nav.Item>
+            <Nav.Item
+              className="Nav-Seccion"
+              onClick={handleActivitiesNavigation}
+            >
+              Actividades
+            </Nav.Item>
+            <Nav.Item className="Nav-Seccion" onClick={handleDirector}>
+              Panel del director
+            </Nav.Item>
+          </>
         )}
 
-        <Nav.Item className="Nav-Seccion" onClick={!user ? handleLoginNavigation : handleLogoutButton}>
-          {!user ? "Iniciar sesión" : "Cerrar Sesión"}
-        </Nav.Item>
+        
 
         {!user && (
           <div className="ecomeMember-button">
-            <Nav.Item className="becomeMember-button" onClick={handleRegisterNavigation}>
+            <Nav.Item
+              className="becomeMember-button"
+              onClick={handleRegisterNavigation}
+            >
               ASOCIATE
             </Nav.Item>
           </div>
         )}
 
         {user && (
-          <i className="fa-regular fa-circle-user profile-icon" onClick={handleProfile}></i>
+          <>
+            <i
+              className="fa-regular fa-circle-user profile-icon"
+              onClick={handleProfile}
+            ></i>
+            <Nav.Item
+              className="Nav-Seccion"
+              onClick={!user ? handleLoginNavigation : handleLogoutButton}
+            >
+              {!user ? "Iniciar sesión" : "Cerrar Sesión"}
+            </Nav.Item>
+          </>
         )}
       </Nav>
+
+      
     </Navbar>
   );
 };
