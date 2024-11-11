@@ -23,7 +23,6 @@ const Admin = () => {
   //const [eventImage, setEventImage] = useState("");
   const [newsDescription, setNewsDescription] = useState("");
   const [newsImage, setNewsImage] = useState("");
-  const [newsDetailedDescription, setNewsDetailedDescription] = useState("");
   const [newsEventDate, setNewsEventDate] = useState("");
   const [errorType, setErrorType] = useState("error");
   const [error, setError] = useState(null);
@@ -43,7 +42,7 @@ const Admin = () => {
       await addNews();
     }
     handleClose();
-    fetchData(); // Refresh data if needed for real-time updates in other components
+    fetchData();
   };
 
   const handleEventSubmit = (e) => {
@@ -92,12 +91,14 @@ const Admin = () => {
     }
   };
 
+  const currentDate = new Date().toISOString().split("T")[0];
+
   const addNews = async () => {
     const newsData = {
       title: newsTitle,
-      description: newsDescription, // Cambiado de shortDescription a description
+      description: newsDescription, 
       imageUrl: newsImage,
-      publicationDate: newsEventDate, // Cambiado de eventDate a publicationDate
+      publicationDate: currentDate, 
     };
 
     console.log("Datos de la noticia a enviar:", newsData);
@@ -115,7 +116,6 @@ const Admin = () => {
       if (response.ok) {
         setErrorType("success");
         setError("Noticia agregada con éxito.");
-        console.log("Noticia agregada con éxito.");
       } else {
         setError("Error al agregar la noticia.");
         console.error("Error al agregar la noticia.");
@@ -261,14 +261,6 @@ const Admin = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formNewsEventDate">
-                <Form.Label>Fecha del evento</Form.Label>
-                <Form.Control
-                  type="date"
-                  value={newsEventDate}
-                  onChange={(e) => setNewsEventDate(e.target.value)}
-                />
-              </Form.Group>
 
               <Button variant="primary" type="submit" className="mt-3 button">
                 Agregar noticia
