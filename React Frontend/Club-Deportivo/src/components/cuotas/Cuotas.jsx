@@ -77,8 +77,11 @@ const Cuotas = () => {
     // Verifica si el estado es aprobado
     if (status === 'approved') {
       console.log("aprobado")
-    
-    }})
+
+    } else if (status == "null"){
+      console.log("no se pudo completar el pago")
+    }
+  }, [])
 
   return (
     <div className="cuotas-container">
@@ -143,7 +146,7 @@ const Cuotas = () => {
         <div className="payment-modal">
           <div className="modal-content">
             <h2 className="title-modal">Realizar Pago</h2>
-            <PaymentMethod monto={selectedMonto} />
+            <PaymentMethod monto={selectedMonto} redirectionPage="cuotas"/>
             <div className="modal-footer">
               <Button
                 className="boton-modal"

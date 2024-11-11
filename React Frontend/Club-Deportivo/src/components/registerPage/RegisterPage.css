@@ -30,7 +30,7 @@
 .paymentDiv {
     border: 2px solid rgb(24, 20, 20);
     border-radius: 20px;
-    height: 300px;
+    min-height: 300px;
     margin-top: 40px;
     margin-bottom: 20px;
     width: 400px;

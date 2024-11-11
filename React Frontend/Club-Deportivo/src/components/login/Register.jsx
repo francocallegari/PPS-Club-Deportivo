@@ -7,8 +7,9 @@ import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import "./Register.css";
 import { FaArrowAltCircleRight, FaArrowRight } from "react-icons/fa";
+import Alert from "../alert/Alert"
 
-function RegisterForm({ checkForm }) {
+function RegisterForm({ checkForm, alertMessage }) {
   const [birthDate, setBirthDate] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,6 +23,7 @@ function RegisterForm({ checkForm }) {
   const [errors, setErrors] = useState({});
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [existingUser, setExistingUser] = useState(false)
+  const [apiMessage, setApiMessage] = useState(alertMessage)
 
   const navigate = useNavigate();
 
@@ -105,6 +107,8 @@ function RegisterForm({ checkForm }) {
   return (
     <div className="registerDiv">
       <Form className="register-form-container">
+        {apiMessage && <Alert message={apiMessage} onClose={() => setApiMessage("")}></Alert>}
+    
         <h3 className="custom-title">Registrarse</h3>
 
         <Row className="mb-3 spacing-bottom">
