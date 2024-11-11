@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 import { Button, Alert } from "react-bootstrap";
 
 const CalendarEvents = () => {
-  const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [activities, setActivities] = useState([])
   const { user, token } = useContext(AuthenticationContext);
   const [pendingFees, setPendingFees] = useState([]);
 
@@ -48,51 +48,38 @@ const CalendarEvents = () => {
   }, [memberId, token]);
 
   const fetchEvents = async () => {
-    const activities = [
-      {
-        id: 1,
-        title: "Entrenamiento de Fútbol",
-        date: "2024-09-30",
-        time: "10:00",
-        description: "Un entrenamiento para todos los niveles.",
-        image: "url_de_la_imagen_1.jpg",
-      },
-      {
-        id: 2,
-        title: "Clase de Yoga",
-        date: "2024-10-02",
-        time: "6:00",
-        description: "Relájate y mejora tu flexibilidad.",
-        image: "url_de_la_imagen_2.jpg",
-      },
-      {
-        id: 3,
-        title: "Torneo de Ajedrez",
-        date: "2024-10-05",
-        time: "3:00",
-        description: "Competencia abierta para todos los socios.",
-        image: "url_de_la_imagen_3.jpg",
-      },
-      {
-        id: 4,
-        title: "Excursión al Parque",
-        date: "2024-10-10",
-        time: "9:00",
-        description: "Disfruta de un día en la naturaleza.",
-        image: "url_de_la_imagen_4.jpg",
-      },
-    ];
+    try {
+      const response = await fetch(`https://localhost:7081/api/Event/Events`, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          "Content-Type": "application/json"
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setActivities(data);
+      } else {
+        throw new Error("Error al obtener los eventos");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+  
+  const formattedEvents = (activities) => {
+    return activities.map((activity) => {
+      const [date, time] = activity.date.split("T")
 
-    const formattedEvents = activities.map((activity) => ({
-      title: activity.title,
-      date: new Date(activity.date),
-      time: activity.time,
-      description: activity.description,
-      image: activity.image,
-    }));
-
-    setEvents(formattedEvents);
-  };
+      return {
+        id: activity.id,
+        title: activity.name,
+        date: new Date(date),
+        time: time,
+        description: activity.description
+      }
+    })
+  }
 
   useEffect(() => {
     fetchEvents();
@@ -107,8 +94,8 @@ const CalendarEvents = () => {
     const description = extendedProps.description;
     const date = new Date(extendedProps.date);
     const time = extendedProps.time;
-    const image = extendedProps.image;
-    setSelectedEvent({ title, description, date, time, image });
+    const id = extendedProps.id;
+    setSelectedEvent({ title, description, date, time, id });
   };
 
   const formatDate = (date) => {
@@ -134,7 +121,6 @@ const CalendarEvents = () => {
   return (
     <div>
       <h2 className="calendar-title">ACTIVIDADES</h2>
-
       {/* Usar ternario para mostrar la alerta o el calendario */}
       {pendingFees.length >= 2 ? (
         <div>
@@ -160,11 +146,11 @@ const CalendarEvents = () => {
                 title: event.title,
                 date: event.date.toISOString().split("T")[0],
                 extendedProps: {
+                  id: event.id,
                   title: event.title,
                   date: event.date.toISOString(),
                   time: event.time,
-                  description: event.description,
-                  image: event.image,
+                  description: event.description
                 },
               }))}
               eventClick={handleEventClick}
@@ -178,31 +164,30 @@ const CalendarEvents = () => {
             />
           </div>
 
-          <div className="details-column">
-            <h2 className="details-column-title">Detalles</h2>
-            <div className="selected-event-card">
-              {selectedEvent ? (
-                <div>
-                  <button
-                    className="close-button"
-                    onClick={() => setSelectedEvent(null)}
-                  >
-                    &times;
-                  </button>
-                  <ActivityCard
-                    title={selectedEvent.title}
-                    date={formatDate(selectedEvent.date)}
-                    time={selectedEvent.time}
-                    description={selectedEvent.description}
-                    image={selectedEvent.image}
-                  />
-                </div>
-              ) : (
-                <div className="placeholder-text">
-                  <p>Seleccione un evento para más detalles</p>
-                </div>
-              )}
-            </div>
+        <div className="details-column">
+          <h2 className="details-column-title">Detalles</h2>
+          <div className="selected-event-card">
+            {selectedEvent ? (
+              <div>
+                <button
+                  className="close-button"
+                  onClick={() => setSelectedEvent(null)}
+                >
+                  &times;
+                </button>
+                <ActivityCard
+                  title={selectedEvent.title}
+                  date={formatDate(selectedEvent.date)}
+                  time={selectedEvent.time}
+                  description={selectedEvent.description}
+                  id={selectedEvent.id}
+                />
+              </div>
+            ) : (
+              <div className="placeholder-text">
+                <p>Seleccione un evento para más detalles</p>
+              </div>
+            )}
           </div>
         </div>
       )}
