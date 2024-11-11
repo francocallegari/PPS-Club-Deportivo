@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ActivityCard from "../activityCard/ActivityCard";
 import { Modal, Button } from "react-bootstrap";
 import "./ActivitiesGrid.css";
@@ -7,42 +7,31 @@ import CalendarEvents from "../calendarEvents/CalendarEvents";
 const ActivitiesGrid = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
+  const [activities, setActivities] = useState([])
 
-  // Datos estáticos de ejemplo
-  const activities = [
-    {
-      id: 1,
-      title: "Entrenamiento de Fútbol",
-      date: "2024-09-30",
-      time: "10:00 AM",
-      description: "Un entrenamiento para todos los niveles.",
-      link: "/actividades/futbol-entrenamiento",
-    },
-    {
-      id: 2,
-      title: "Clase de Yoga",
-      date: "2024-10-02",
-      time: "6:00 PM",
-      description: "Relájate y mejora tu flexibilidad.",
-      link: "/actividades/clase-yoga",
-    },
-    {
-      id: 3,
-      title: "Torneo de Ajedrez",
-      date: "2024-10-05",
-      time: "3:00 PM",
-      description: "Competencia abierta para todos los socios.",
-      link: "/actividades/torneo-ajedrez",
-    },
-    {
-      id: 4,
-      title: "Excursión al Parque",
-      date: "2024-10-10",
-      time: "9:00 AM",
-      description: "Disfruta de un día en la naturaleza.",
-      link: "/actividades/excursion-parque",
-    },
-  ];
+  const fetchEvents = async() => {
+    try {
+      const response = await fetch(`https://localhost:7081/api/Event/Events`, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          "Content-Type": "application/json"
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setActivities(data);
+      } else {
+        throw new Error("Error al obtener los eventos");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchEvents()
+  }, [])
 
   const handleSignUpClick = (activity) => {
     setSelectedActivity(activity);
@@ -67,7 +56,7 @@ const ActivitiesGrid = () => {
         {activities.map((activity) => (
           <ActivityCard
             key={activity.id}
-            title={activity.title}
+            title={activity.name}
             date={activity.date}
             time={activity.time}
             description={activity.description}

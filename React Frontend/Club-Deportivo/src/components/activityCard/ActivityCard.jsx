@@ -2,17 +2,45 @@ import React, { useState, useContext } from "react";
 import "./ActivityCard.css";
 import { Button, Modal } from "react-bootstrap";
 import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
+import Alert from '../alert/Alert'
 
-const ActivityCard = ({ title, date, time, description }) => {
+const ActivityCard = ({ title, date, time, description, id }) => {
   const [showModal, setShowModal] = useState(false);
-  const { user } = useContext(AuthenticationContext);
+  const { user, token } = useContext(AuthenticationContext);
+  const [alertMessage, setAlertMessage] = useState("")
+  const [alertType, setAlertType] = useState("")
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
-  const handleConfirmSignUp = () => {
-    console.log("Usuario inscrito a la actividad:", title);
-    handleClose();
+  const handleConfirmSignUp = async () => {
+    handleClose()
+
+    try {
+      const response = await fetch(
+        `https://localhost:7081/api/Event/SignUpEvent?memberId=${user.id}&eventId=${id}`,
+        {
+          method: "POST",
+          headers: {
+            accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response.ok) {
+        setAlertMessage("Se inscribió correctamente al evento")
+        setAlertType("success")
+      } else {
+        const errorData = await response.text();
+        setAlertMessage(errorData);
+        setAlertType("error")
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setAlertMessage(error)
+    }
   };
 
   return (
@@ -31,6 +59,8 @@ const ActivityCard = ({ title, date, time, description }) => {
           INSCRIBIRSE
         </Button>
       )}
+
+      {alertMessage && <Alert message={alertMessage} type={alertType} onClose={() => {setAlertMessage(""); setAlertType("")}}></Alert>}
 
       <Modal show={showModal} onHide={handleClose} centered>
         <Modal.Header closeButton>
