@@ -101,12 +101,7 @@ const Header = () => {
             >
               Actividades
             </Nav.Item>
-            <Nav.Item
-          className="Nav-Seccion"
-          onClick={!user ? handleLoginNavigation : handleLogoutButton}
-        >
-          {!user ? "Iniciar sesión" : "Cerrar Sesión"}
-        </Nav.Item>
+
           </>
         )}
 
