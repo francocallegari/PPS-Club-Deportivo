@@ -91,9 +91,8 @@ const Sports = () => {
             <p>Tienes 2 o más cuotas pendientes.</p>
             <p>No puedes inscribirte en nuevos deportes hasta que regularices tu situación.</p>
           </Alert>
-          <div className="suscripcion">
-            <h3 className="section-title">Cuotas pendientes</h3>
-            <Link to="/cuotas">
+          <div className="suscripcion-title">
+            <Link className="suscripcion-title" to="/cuotas">
               <Button className="boton-modificar" variant="primary">
                 Ver mis cuotas
               </Button>
