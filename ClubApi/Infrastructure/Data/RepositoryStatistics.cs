@@ -1,4 +1,5 @@
 ﻿using Application.Models;
+using Domain.Enums;
 using Domain.Interfaces;
 
 namespace Infrastructure.Data
@@ -43,10 +44,14 @@ namespace Infrastructure.Data
         {
             var totalMembers = _context.Members.Count();
 
-            var membersUpToDate = _context.MembershipFeePayments
-                .Where(p => p.PaymentDate >= DateTime.Now.AddMonths(-1))
-                .Select(p => p.MemberId)
-                .Distinct()
+            var membersUpToDate = _context.Members
+                .Where(member =>
+                    !_context.MembershipFeePayments.Any(payment =>
+                        payment.MemberId == member.Id &&
+                        payment.Status == FeeStatus.Pending && // Cuota impaga
+                        _context.MembershipFees.Any(fee =>
+                            fee.Id == payment.FeeId &&
+                            fee.ExpirationDate < DateTime.Now))) // Cuota vencida
                 .Count();
 
             var upToDatePercentage = (membersUpToDate / (double)totalMembers) * 100;
