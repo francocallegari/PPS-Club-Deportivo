@@ -4,6 +4,8 @@ using Application.Interfaces;
 using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Application.Models.Request;
+using Application.Services;
 
 namespace ClubApi.Controllers
 {
@@ -69,7 +71,20 @@ namespace ClubApi.Controllers
             }
         }
 
-
+        [HttpPut("{id}")]
+        public IActionResult ConfirmPayment([FromRoute] int id)
+        {
+            try
+            {
+                _membershipFeeService.UpdateFeeStatus(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Ha ocurrido un error inesperado. Error: " + ex.Message);
+            }
+        }
 
 
 

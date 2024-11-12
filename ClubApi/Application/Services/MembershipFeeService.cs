@@ -19,5 +19,9 @@ namespace Application.Services
         {
             _repositoryFee.UpdateFeesPrice(price);
         }
+        public void UpdateFeeStatus(int id)
+        {
+            _repositoryFee.UpdateFeeStatus(id);
+        }
     }
 }

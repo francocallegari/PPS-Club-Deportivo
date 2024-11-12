@@ -11,5 +11,6 @@ namespace Domain.Interfaces
     {
         void UpdateFeesPrice(float newPrice);
         void GenerateFeeForNewMember(User user);
+        void UpdateFeeStatus(int id);
     }
 }

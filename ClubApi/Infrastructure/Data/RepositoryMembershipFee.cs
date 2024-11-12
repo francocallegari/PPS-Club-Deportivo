@@ -76,5 +76,20 @@ namespace Infrastructure.Data
             _context.MembershipFeePayments.Add(payment);
             _context.SaveChanges();
         }
+
+        public void UpdateFeeStatus(int id)
+        {
+            var payment = _context.MembershipFeePayments.FirstOrDefault(p => p.Id == id);
+            if (payment != null)
+            {
+                payment.Status = FeeStatus.Paid;
+                payment.PaymentDate = DateTime.UtcNow;
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Pago no encontrado");
+            }
+        }
     }
 }
