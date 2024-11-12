@@ -20,5 +20,7 @@ namespace Domain.Entities
         [ForeignKey("SportId")]
         public Sport Sport { get; set; }
         public List<int> DaysOfWeek { get; set; }
+
+        public ICollection<Member> Members { get; set; } = new List<Member>();
     }
 }

@@ -14,5 +14,7 @@ namespace Application.Interfaces
         void SignUpSport(int sportId, int memberId);
         void DropOutSport(int sportId, int memberId);
         SportDto GetByCoachId(int coachId);
+
+        void SignUpSportSession(int sessionId, int memberId);
     }
 }

@@ -11,13 +11,15 @@ namespace Application.Services
         private readonly IRepositorySport _sportRepository;
         private readonly IRepositoryUser _userRepository;
         private readonly IRepositoryCoach _repositoryCoach;
+        private readonly IRepositoryTrainingSession _trainingSessionRepository;
 
-        public SportsService(IRepositoryBase<Sport> baseRepository, IRepositorySport sportRepository, IRepositoryUser userRepository, IRepositoryCoach repositoryCoach)
+        public SportsService(IRepositoryBase<Sport> baseRepository, IRepositorySport sportRepository, IRepositoryUser userRepository, IRepositoryCoach repositoryCoach, IRepositoryTrainingSession trainingSessionRepository)
         {
             _baseRepository = baseRepository;
             _sportRepository = sportRepository;
             _userRepository = userRepository;
             _repositoryCoach = repositoryCoach;
+            _trainingSessionRepository = trainingSessionRepository;
         }
 
         public ICollection<SportDto> GetAllSports()
@@ -107,6 +109,29 @@ namespace Application.Services
                 throw new InvalidOperationException($"El socio no se pudo desinscribir porque no está inscripto en el deporte");
             }
         }
+
+        public void SignUpSportSession(int sessionId, int memberId)
+        {
+            var session = _trainingSessionRepository.GetSessionById(sessionId)
+                ?? throw new KeyNotFoundException("No se encontró la sesión de entrenamiento");
+
+            var member = _userRepository.GetMemberById(memberId)
+                ?? throw new KeyNotFoundException("No se encontró al socio");
+
+
+            if (!member.SessionsAttended.Contains(session))
+            {
+                session.Members.Add(member);
+                member.SessionsAttended.Add(session);
+                _userRepository.Update(member);
+                _trainingSessionRepository.Update(session);
+            }
+            else
+            {
+                throw new InvalidOperationException($"El socio ya está inscrito en la sesión con ID {sessionId}");
+            }
+        }
+
         public SportDto GetByCoachId(int coachId)
         {
             var coach = _repositoryCoach.GetCoachById(coachId)

@@ -180,5 +180,22 @@ namespace ClubApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost("SignUpSportSession")]
+        public IActionResult SignUpSportSession([FromQuery] int memberId, [FromQuery] int sessionId)
+        {
+            try
+            {
+                var userRole = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                if (userRole != "Member")
+                    return Forbid();
+
+                _sportsService.SignUpSportSession(sessionId, memberId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
