@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import RegisterForm from '../login/Register'
 import { ProgressBar, Button, Form, Modal, Alert, Spinner } from 'react-bootstrap'
 import RegisterPaymentStep from '../registerPaymentStep/RegisterPaymentStep'
@@ -11,6 +11,7 @@ const RegisterPage = () => {
     const [progress, setProgress] = useState(0)
     const navigate = useNavigate()
     const [messageAlert, setMessageAlert] = useState("")
+    const hasRegistered = useRef(false)
 
     useEffect(() => {
         // Captura los parámetros de la URL
@@ -19,18 +20,21 @@ const RegisterPage = () => {
 
         // Verifica si el estado es aprobado
         if (status){
-            if (status === 'approved') {
+            if (status === 'approved' && !hasRegistered.current) {
                 console.log("aprobado")
                 setStep(2)
                 setProgress(50)
                 registerNewMember()
+                hasRegistered.current = true
     
             } else {
+                setStep(2)
+                setProgress(50)
                 setMessageAlert("No se pudo completar el pago. Vuelva a intentarlo")
             }
         }
          
-    }, [])
+    }, [hasRegistered])
 
     const goToNextStep = (data) => {
         if (step === 1) {
@@ -45,6 +49,8 @@ const RegisterPage = () => {
             setStep(1)
             setProgress(0)
             localStorage.removeItem("UserData")
+            history.replaceState(null, '', '/register')
+            setMessageAlert("")
         }
     }
 
@@ -70,12 +76,12 @@ const RegisterPage = () => {
                     navigate("/login")
                 }, 3000)
             } else {
-                console.error("Error al registrar usuario:", errorData);
-                localStorage.removeItem("UserData")
+                console.error("Error al registrar usuario");
+                setMessageAlert("Error al registrar usuario")
             }
         } catch (error) {
             console.error("Error de red o en la conexión:", error);
-            localStorage.removeItem("UserData")
+            setMessageAlert("Error al registrar usuario. Por favor, inténtelo más tarde.")
         }
     }
 
@@ -85,7 +91,7 @@ const RegisterPage = () => {
 
             {step == 2 && (
                 <div style={{ width: '1000px', marginBottom: '30px' }}>
-                    <RegisterPaymentStep></RegisterPaymentStep>
+                    <RegisterPaymentStep alertMessage={messageAlert}></RegisterPaymentStep>
                     <button className='flex items-center previous-button' onClick={goToPreviousStep}>
                         <FaArrowLeft className='ml-2'></FaArrowLeft>
                         Anterior

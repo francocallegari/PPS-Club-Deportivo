@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Models;
 using Application.Models.Request;
 using Application.Models.Response;
 using Domain.Entities;
@@ -92,11 +93,9 @@ namespace Application.Services
             _userRepository.DeleteAsync(userDto);
         }
 
-        public User RegisterUser(UserRequest dto)
+        public UserResponse RegisterUser(UserRequest dto)
         {
             var existingUser = _userRepository.GetUserByEmail(dto.Email);
-            var user = new User();
-            var sport = new Sport();
 
             if (existingUser != null)
             {
@@ -110,11 +109,31 @@ namespace Application.Services
                     throw new InvalidOperationException("El Coach debe tener un SportId.");
                 } else
                 {
-                    sport = _repositorySport.GetById(dto.SportId)
+                    var sport = _repositorySport.GetById(dto.SportId)
                         ?? throw new InvalidOperationException("No se encontró el deporte");
-                }
 
-                var coach = new Coach
+                    var coach = new Coach
+                    {
+                        UserName = dto.UserName,
+                        Email = dto.Email,
+                        Password = dto.Password,
+                        UserType = dto.UserType,
+                        PhoneNumber = dto.PhoneNumber,
+                        Name = dto.Name,
+                        UserRegistrationDate = DateTime.Now,
+                        DateOfBirth = dto.DateOfBirth,
+                        Dni = dto.Dni,
+                        Address = dto.Address,
+                        SportId = dto.SportId.Value, // Asignar el SportId recibido en la solicitud
+                        SportAssigned = sport
+                    };
+
+                    var user = _userRepository.Add(coach);
+                    return UserResponse.ToDto(user);
+                }
+            } else if (dto.UserType == "Member")
+            {
+                var member = new Member
                 {
                     UserName = dto.UserName,
                     Email = dto.Email,
@@ -126,11 +145,11 @@ namespace Application.Services
                     DateOfBirth = dto.DateOfBirth,
                     Dni = dto.Dni,
                     Address = dto.Address,
-                    SportId = dto.SportId.Value, // Asignar el SportId recibido en la solicitud
-                    SportAssigned = sport
                 };
 
-                user = _userRepository.Add(coach);
+                var user = _userRepository.Add(member);
+                _repositoryMembershipFee.GenerateFeeForNewMember(member);
+                return UserResponse.ToDto(user);
             }
             else
             {
@@ -148,15 +167,10 @@ namespace Application.Services
                     Address = dto.Address
                 };
 
-                user = _userRepository.Add(newUser);
-
-                if (newUser.UserType == "Member")
-                {
-                    _repositoryMembershipFee.GenerateFeeForNewMember(newUser);
-                }
+                var user = _userRepository.Add(newUser);
+                return UserResponse.ToDto(user);
             }
 
-            return user;
         }
     }
 }
