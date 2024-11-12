@@ -112,25 +112,27 @@ namespace Application.Services
 
         public void SignUpSportSession(int sessionId, int memberId)
         {
-            var session = _trainingSessionRepository.GetSessionById(sessionId)
+            var session = _trainingSessionRepository.GetById(sessionId)
                 ?? throw new KeyNotFoundException("No se encontró la sesión de entrenamiento");
 
             var member = _userRepository.GetMemberById(memberId)
                 ?? throw new KeyNotFoundException("No se encontró al socio");
 
-
-            if (!member.SessionsAttended.Contains(session))
-            {
-                session.Members.Add(member);
-                member.SessionsAttended.Add(session);
-                _userRepository.Update(member);
-                _trainingSessionRepository.Update(session);
-            }
-            else
+            // Check if the member is already enrolled in the session
+            if (member.SessionsAttended.Contains(session))
             {
                 throw new InvalidOperationException($"El socio ya está inscrito en la sesión con ID {sessionId}");
             }
+
+            // Add the session to the member's attended sessions and the member to the session's members
+            session.Members.Add(member);
+            member.SessionsAttended.Add(session);
+
+            // Update the member and the session using the repositories
+            _userRepository.Update(member);
+            _trainingSessionRepository.Update(session);
         }
+
 
         public SportDto GetByCoachId(int coachId)
         {

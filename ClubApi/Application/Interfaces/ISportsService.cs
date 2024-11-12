@@ -1,4 +1,5 @@
 ﻿using Application.Models;
+using Application.Services;
 using Domain.Entities;
 
 namespace Application.Interfaces
@@ -16,5 +17,6 @@ namespace Application.Interfaces
         SportDto GetByCoachId(int coachId);
 
         void SignUpSportSession(int sessionId, int memberId);
+
     }
 }

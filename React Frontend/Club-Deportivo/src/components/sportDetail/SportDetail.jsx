@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, Button, Table } from "react-bootstrap";
+import { Modal, Button, Table, Form } from "react-bootstrap";
 import "./SportDetail.css";
 import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
-import Alert from '../alert/Alert'
+import Alert from "../alert/Alert";
 
 const SportDetail = ({ sport, onClose }) => {
   const { user, token } = useContext(AuthenticationContext);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [sportSessions, setSportSessions] = useState([]);
-  const [alertMessage, setAlertMessage] = useState("")
+  const [alertMessage, setAlertMessage] = useState("");
 
   const days = [
     "Domingo",
@@ -52,31 +52,50 @@ const SportDetail = ({ sport, onClose }) => {
     fetchSessionsBySport();
   }, []);
 
+  const [selectedSessionId, setSelectedSessionId] = useState(null);
+
+  // Función para seleccionar una sesión
+  const handleSelectSession = (sessionId) => {
+    setSelectedSessionId(sessionId);
+  };
+
   const handleInscripcion = async () => {
     try {
+      // Verificar si una sesión está seleccionada
+      if (!selectedSessionId) {
+        setAlertMessage("Por favor selecciona una sesión antes de inscribirte.");
+        return;
+      }
+  
+      // Verifica la selección de sesión
+      console.log('Session ID:', selectedSessionId); // Muestra la ID de la sesión seleccionada
+      console.log('UserID:', user.id);
       const response = await fetch(
-        `https://localhost:7081/api/Sports/SignUpSport?memberId=${user.id}&sportId=${sport.id}`,
+        `https://localhost:7081/api/Sports/SignUpSportSession?memberId=${user.id}&sessionId=${selectedSessionId}`,
         {
           method: "POST",
           headers: {
             accept: "*/*",
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-
+  
+      // Verifica si la respuesta fue exitosa
       if (response.ok) {
         setShowConfirmation(true);
       } else {
         const errorData = await response.text();
+        console.log('Error details:', errorData);
         setAlertMessage(errorData);
       }
     } catch (error) {
       console.error("Error:", error);
-      setAlertMessage(error)
+      setAlertMessage(error.message);
     }
   };
+  
 
   const handleCloseConfirmation = () => {
     setShowConfirmation(false);
@@ -109,36 +128,69 @@ const SportDetail = ({ sport, onClose }) => {
                   <thead>
                     <tr>
                       <th>Días</th>
-                      <th>Horario</th>
+                      <th>Horarios</th>
+                      <th>Lugar</th>
+                      <th>Selección</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {sportSessions.map((session, index) =>
-                      convertToDays(session.daysOfWeek).map((day, dayIndex) => (
-                        <tr key={`${index}-${dayIndex}`}>
-                          <td>{day}</td>
-                          <td>{session.time}</td>{" "}
-                          {/* Horario compartido por todos los días */}
+                    {sportSessions.map((session, index) => {
+                      const [hours, minutes] = session.time
+                        .split(":")
+                        .map(Number); // Obtiene las horas y minutos del horario de inicio
+                      const durationMinutes = session.duration; // Duración en minutos
+
+                      // Calcula el horario de finalización
+                      const endTimeHours =
+                        Math.floor(
+                          (hours * 60 + minutes + durationMinutes) / 60
+                        ) % 24;
+                      const endTimeMinutes = (minutes + durationMinutes) % 60;
+
+                      // Formatea el horario de inicio y finalización para que solo muestre HH:MM
+                      const formattedStartTime = `${String(hours).padStart(
+                        2,
+                        "0"
+                      )}:${String(minutes).padStart(2, "0")}`;
+                      const formattedEndTime = `${String(endTimeHours).padStart(
+                        2,
+                        "0"
+                      )}:${String(endTimeMinutes).padStart(2, "0")}`;
+
+                      return (
+                        <tr key={index}>
+                          <td>
+                            {convertToDays(session.daysOfWeek).join(", ")}
+                          </td>
+                          <td>
+                            {formattedStartTime} - {formattedEndTime}
+                          </td>{" "}
+                          <td>
+                          {session.field.name}
+                          </td>
+                          <td>
+                            <Form.Check
+                              type="checkbox"
+                              checked={selectedSessionId === session.id}
+                              onChange={() => handleSelectSession(session.id)}
+                            />
+                          </td>
                         </tr>
-                      ))
-                    )}
+                      );
+                    })}
                   </tbody>
                 </Table>
 
-                <h4>Descripción</h4>
-                <ul className="sport-detail-list">
-                  {sportSessions.map((session, index) => (
-                    <li key={index}>
-                      <b>Profesor:</b> {session.coach.name} - <b>Cancha:</b>{" "}
-                      {session.field.name}
-                    </li>
-                  ))}
-                </ul>
               </>
             ) : (
               <p>Aún no hay horarios disponibles para este deporte</p>
             )}
-            {alertMessage && <Alert message={alertMessage} onClose={() => setAlertMessage("")}></Alert>}
+            {alertMessage && (
+              <Alert
+                message={alertMessage}
+                onClose={() => setAlertMessage("")}
+              ></Alert>
+            )}
           </div>
         </Modal.Body>
 
