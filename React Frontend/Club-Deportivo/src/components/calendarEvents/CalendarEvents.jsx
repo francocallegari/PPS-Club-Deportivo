@@ -70,12 +70,12 @@ const CalendarEvents = () => {
   const formattedEvents = (activities) => {
     return activities.filter(a => a.status == 1).map((activity) => {
       const [date, time] = activity.date.split("T")
-
+      const formattedTime = time.split(":").slice(0, 2).join(":");
       return {
         id: activity.id,
         title: activity.name,
         date: new Date(date),
-        time: time,
+        time: formattedTime,
         description: activity.description
       }
     })
@@ -116,6 +116,11 @@ const CalendarEvents = () => {
         {/* oculto inicialmente */}
       </div>
     );
+  };
+
+  const formatTime = (time) => {
+    const [hours, minutes] = time.split(':');
+    return `${hours}:${minutes}`;
   };
 
   return (
@@ -180,12 +185,12 @@ const CalendarEvents = () => {
                     &times;
                   </button>
                   <ActivityCard
-                    title={selectedEvent.title}
-                    date={formatDate(selectedEvent.date)}
-                    time={selectedEvent.time}
-                    description={selectedEvent.description}
-                    id={selectedEvent.id}
-                  />
+  title={selectedEvent.title}
+  date={formatDate(selectedEvent.date)}
+  time={formatTime(selectedEvent.time)}  // Apply the formatting
+  description={selectedEvent.description}
+  id={selectedEvent.id}
+/>
                 </div>
               ) : (
                 <div className="placeholder-text">
