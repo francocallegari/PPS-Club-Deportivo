@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { Modal, Button, Table } from "react-bootstrap";
 import "./SportDetail.css";
 import { AuthenticationContext } from "../../services/authentication/AuthenticationContext";
+import Alert from '../alert/Alert'
 
 const SportDetail = ({ sport, onClose }) => {
-  const { user } = useContext(AuthenticationContext);
+  const { user, token } = useContext(AuthenticationContext);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [sportSessions, setSportSessions] = useState([]);
+  const [alertMessage, setAlertMessage] = useState("")
 
   const days = [
     "Domingo",
@@ -53,27 +55,26 @@ const SportDetail = ({ sport, onClose }) => {
   const handleInscripcion = async () => {
     try {
       const response = await fetch(
-        `https://localhost:7081/api/TrainingSession/`,
+        `https://localhost:7081/api/Sports/SignUpSport?memberId=${user.id}&sportId=${sport.id}`,
         {
-          method: "GET",
+          method: "POST",
           headers: {
             accept: "*/*",
             "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: user.id,
-            sportId: sport.id,
-          }),
+            Authorization: `Bearer ${token}`
+          }
         }
       );
 
       if (response.ok) {
         setShowConfirmation(true);
       } else {
-        throw new Error("Error al realizar la inscripción");
+        const errorData = await response.text();
+        setAlertMessage(errorData);
       }
     } catch (error) {
       console.error("Error:", error);
+      setAlertMessage(error)
     }
   };
 
@@ -137,6 +138,7 @@ const SportDetail = ({ sport, onClose }) => {
             ) : (
               <p>Aún no hay horarios disponibles para este deporte</p>
             )}
+            {alertMessage && <Alert message={alertMessage} onClose={() => setAlertMessage("")}></Alert>}
           </div>
         </Modal.Body>
 
