@@ -26,7 +26,7 @@ const Admin = () => {
   const [newsEventDate, setNewsEventDate] = useState("");
   const [errorType, setErrorType] = useState("error");
   const [error, setError] = useState(null);
-  const {token} = useContext(AuthenticationContext)
+  const {token, user} = useContext(AuthenticationContext)
 
   const handleShow = (type) => {
     setEventType(type);
@@ -59,15 +59,14 @@ const Admin = () => {
   const addEvent = async () => {
     const eventData = {
       Name: eventTitle,
-      date: eventDate,
-      time: eventTime,
+      date: eventDate + "T" + eventTime,
       description: eventDescription,
       status: "Pendiente",
     };
 
     try {
       const response = await fetch(
-        `https://localhost:7081/api/Event?creatorName=Nombre del Creador`,
+        `https://localhost:7081/api/Event?creatorName=${user.email}`,
         {
           method: "POST",
           headers: {
