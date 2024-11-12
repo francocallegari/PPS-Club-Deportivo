@@ -9,5 +9,6 @@ namespace Application.Interfaces
     public interface IMembershipFeeService
     {
         void UpdateFeesPrice(float price);
+        void UpdateFeeStatus(int id);
     }
 }
