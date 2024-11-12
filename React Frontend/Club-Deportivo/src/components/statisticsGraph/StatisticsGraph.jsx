@@ -11,8 +11,8 @@ const StatisticsGraph = () => {
 
     const [deportes, setDeportes] = useState([]);
     const [usuarios, setUsuarios] = useState([]);
-    const [cuotas, setCuotas] = useState([]);
-    const {token} = useContext(AuthenticationContext)
+    const [cuotas, setCuotas] = useState({});
+    const { token } = useContext(AuthenticationContext)
 
     const labelsDeportes = deportes.map(item => item.sportName);
     const dataDeportes = deportes.map(item => item.memberCount);
@@ -29,14 +29,14 @@ const StatisticsGraph = () => {
         .filter(item => item.year === currentYear)
         .map(item => item.userCount);
 
-    const test = cuotas.map(item => item.upToDatePercentage);
-    const test2 = cuotas.map(item => item.overduePercentage);
+    const test = cuotas.upToDatePercentage;
+    const test2 = cuotas.overduePercentage;
 
     const barData = {
         labels: labelsDeportes,
         datasets: [
             {
-                label: 'Deportes',
+                label: 'Personas',
                 backgroundColor: 'rgba(255,99,132,0.2)',
                 borderColor: 'rgba(255,99,132,1)',
                 borderWidth: 1,
@@ -65,7 +65,7 @@ const StatisticsGraph = () => {
         labels: ['Cuota al día', 'Cuota atrasada'],
         datasets: [
             {
-                label: 'Usuarios con cuota al día',
+                label: 'Porcentaje',
                 backgroundColor: ['#36A2EB', '#FF6384'],
                 hoverBackgroundColor: ['#36A2EB', '#FF6384'],
                 data: [test, test2],
@@ -85,6 +85,7 @@ const StatisticsGraph = () => {
             });
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 setDeportes(data);
             } else {
                 throw new Error("Error al obtener los deportes");
@@ -106,6 +107,7 @@ const StatisticsGraph = () => {
             });
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 setUsuarios(data);
             } else {
                 throw new Error("Error al obtener los usuarios");
@@ -127,7 +129,8 @@ const StatisticsGraph = () => {
             });
             if (response.ok) {
                 const data = await response.json();
-                setCuotas(data);
+                console.log(data[0])
+                setCuotas(data[0]);
             } else {
                 throw new Error("Error al obtener los cuotas");
             }

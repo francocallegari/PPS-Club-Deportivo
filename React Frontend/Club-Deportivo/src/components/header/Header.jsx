@@ -113,7 +113,7 @@ const Header = () => {
 
         {user && user.role === "Admin" && (
           <>
-            
+
             <Nav.Item className="Nav-Seccion" onClick={handleSportsNavigation}>
               Deportes
             </Nav.Item>
@@ -137,7 +137,7 @@ const Header = () => {
 
         {user && user.role === "Director" && (
           <>
-            
+
             <Nav.Item className="Nav-Seccion" onClick={handleSportsNavigation}>
               Deportes
             </Nav.Item>
@@ -190,7 +190,7 @@ const Header = () => {
         )}
       </Nav>
 
-      
+
     </Navbar>
   );
 };
