@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20241112182940_MemberTrainingSesson")]
+    partial class MemberTrainingSesson
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -54,25 +57,23 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.MemberTrainingSession", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("MemberId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("TrainingSessionId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("INTEGER");
+                    b.HasKey("Id");
 
-                    b.Property<int?>("MembershipFeeId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("MemberId", "TrainingSessionId");
-
-                    b.HasIndex("MembershipFeeId");
+                    b.HasIndex("MemberId");
 
                     b.HasIndex("TrainingSessionId");
 
-                    b.ToTable("MemberTrainingSessions", (string)null);
+                    b.ToTable("MemberTrainingSessions");
                 });
 
             modelBuilder.Entity("Domain.Entities.MembershipFee", b =>
@@ -315,7 +316,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("SportsFieldId");
 
-                    b.ToTable("TrainingSessions", (string)null);
+                    b.ToTable("TrainingSessions");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -410,6 +411,21 @@ namespace Infrastructure.Migrations
                             MembersId = 6,
                             SportsAttendedId = 2
                         });
+                });
+
+            modelBuilder.Entity("MemberTrainingSession", b =>
+                {
+                    b.Property<int>("MembersId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SessionsAttendedId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("MembersId", "SessionsAttendedId");
+
+                    b.HasIndex("SessionsAttendedId");
+
+                    b.ToTable("MemberTrainingSession");
                 });
 
             modelBuilder.Entity("Domain.Entities.Admin", b =>
@@ -659,17 +675,13 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.MemberTrainingSession", b =>
                 {
                     b.HasOne("Domain.Entities.Member", "Member")
-                        .WithMany("SessionsAttended")
+                        .WithMany()
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.MembershipFee", null)
-                        .WithMany("SessionsAttended")
-                        .HasForeignKey("MembershipFeeId");
-
                     b.HasOne("Domain.Entities.TrainingSession", "TrainingSession")
-                        .WithMany("Members")
+                        .WithMany()
                         .HasForeignKey("TrainingSessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -751,6 +763,21 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MemberTrainingSession", b =>
+                {
+                    b.HasOne("Domain.Entities.Member", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.TrainingSession", null)
+                        .WithMany()
+                        .HasForeignKey("SessionsAttendedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Entities.Coach", b =>
                 {
                     b.HasOne("Domain.Entities.Sport", "SportAssigned")
@@ -772,21 +799,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Event", b =>
                 {
                     b.Navigation("Members");
-                });
-
-            modelBuilder.Entity("Domain.Entities.MembershipFee", b =>
-                {
-                    b.Navigation("SessionsAttended");
-                });
-
-            modelBuilder.Entity("Domain.Entities.TrainingSession", b =>
-                {
-                    b.Navigation("Members");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Member", b =>
-                {
-                    b.Navigation("SessionsAttended");
                 });
 #pragma warning restore 612, 618
         }

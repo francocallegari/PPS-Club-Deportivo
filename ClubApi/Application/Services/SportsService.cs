@@ -2,6 +2,9 @@
 using Application.Models;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+
 
 namespace Application.Services
 {
@@ -12,14 +15,16 @@ namespace Application.Services
         private readonly IRepositoryUser _userRepository;
         private readonly IRepositoryCoach _repositoryCoach;
         private readonly IRepositoryTrainingSession _trainingSessionRepository;
+        private readonly IRepositoryMemberTrainingSession _memberTrainingSessionRepository;
 
-        public SportsService(IRepositoryBase<Sport> baseRepository, IRepositorySport sportRepository, IRepositoryUser userRepository, IRepositoryCoach repositoryCoach, IRepositoryTrainingSession trainingSessionRepository)
+        public SportsService(IRepositoryBase<Sport> baseRepository, IRepositorySport sportRepository, IRepositoryUser userRepository, IRepositoryCoach repositoryCoach, IRepositoryTrainingSession trainingSessionRepository, IRepositoryMemberTrainingSession memberTrainingSessionRepository)
         {
             _baseRepository = baseRepository;
             _sportRepository = sportRepository;
             _userRepository = userRepository;
             _repositoryCoach = repositoryCoach;
             _trainingSessionRepository = trainingSessionRepository;
+            _memberTrainingSessionRepository = memberTrainingSessionRepository;
         }
 
         public ICollection<SportDto> GetAllSports()
@@ -119,19 +124,44 @@ namespace Application.Services
                 ?? throw new KeyNotFoundException("No se encontró al socio");
 
             // Check if the member is already enrolled in the session
-            if (member.SessionsAttended.Contains(session))
+            if (member.SessionsAttended.Any(mts => mts.TrainingSessionId == sessionId))
             {
                 throw new InvalidOperationException($"El socio ya está inscrito en la sesión con ID {sessionId}");
             }
 
-            // Add the session to the member's attended sessions and the member to the session's members
-            session.Members.Add(member);
-            member.SessionsAttended.Add(session);
+            // Create and add the new MemberTrainingSession association if it doesn't exist
+            var memberTrainingSession = new MemberTrainingSession
+            {
+                MemberId = memberId,
+                TrainingSessionId = sessionId,
+                Member = member,
+                TrainingSession = session
+            };
+
+            // Add the new MemberTrainingSession to both collections
+            session.Members.Add(memberTrainingSession);
+            member.SessionsAttended.Add(memberTrainingSession);
 
             // Update the member and the session using the repositories
             _userRepository.Update(member);
             _trainingSessionRepository.Update(session);
         }
+
+
+
+        public async Task<IEnumerable<TrainingSession>> GetSessionsByMemberId(int memberId)
+        {
+            // Llamamos al repositorio que ya incluye las relaciones necesarias
+            var memberTrainingSessions = await _memberTrainingSessionRepository
+                .GetByMemberIdWithDetails(memberId)
+                .ToListAsync();  // Ejecutamos la consulta de manera asincrónica y obtenemos la lista
+
+            // Extraemos solo las sesiones de entrenamiento
+            var sessions = memberTrainingSessions.Select(mts => mts.TrainingSession);
+
+            return sessions;
+        }
+
 
 
         public SportDto GetByCoachId(int coachId)

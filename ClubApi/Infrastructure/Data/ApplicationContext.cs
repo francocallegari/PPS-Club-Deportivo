@@ -18,6 +18,8 @@ namespace Infrastructure.Data
         public DbSet<SportsField> SportsFields { get; set; }
         public DbSet<MembershipFeePayment> MembershipFeePayments { get; set; }
 
+        public DbSet<MemberTrainingSession> MemberTrainingSession { get; set; }
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -42,8 +44,29 @@ namespace Infrastructure.Data
                 .UsingEntity(j => j.ToTable("MembersSportsAttended").HasData(CreateMembersSportsAttendedDataSeed()));
 
             base.OnModelCreating(modelBuilder);
-        }
 
+
+            // Configurar nombre de tabla para TrainingSession
+            modelBuilder.Entity<TrainingSession>()
+                .ToTable("TrainingSessions"); // Asegúrate que sea único
+
+            // Configurar nombre de tabla para MemberTrainingSession
+            modelBuilder.Entity<MemberTrainingSession>()
+                .ToTable("MemberTrainingSessions"); // Usa un nombre único también
+
+            modelBuilder.Entity<MemberTrainingSession>()
+                .HasKey(mts => new { mts.MemberId, mts.TrainingSessionId });
+
+            modelBuilder.Entity<MemberTrainingSession>()
+                .HasOne(mts => mts.Member)
+                .WithMany(m => m.SessionsAttended)
+                .HasForeignKey(mts => mts.MemberId);
+
+            modelBuilder.Entity<MemberTrainingSession>()
+                .HasOne(mts => mts.TrainingSession)
+                .WithMany(ts => ts.Members)
+                .HasForeignKey(mts => mts.TrainingSessionId);
+        }
         private Sport[] CreateSportDataSeed()
         {
             return new Sport[]

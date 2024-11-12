@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +67,13 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                options.JsonSerializerOptions.MaxDepth = 64; // También puedes ajustar la profundidad si es necesario
+            });
+
 
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
 builder.Configuration["ConnectionStrings:ClubDBConnectionString"], b => b.MigrationsAssembly("Infrastructure")));
@@ -86,11 +95,9 @@ builder.Services.AddScoped<IRepositoryBase<SportsField>, EfRepository<SportsFiel
 builder.Services.AddScoped<IRepositoryBase<Sport>, EfRepository<Sport>>();
 builder.Services.AddScoped<IRepositoryField, RepositoryField>();
 builder.Services.AddScoped<IRepositoryMembershipFee, RepositoryMembershipFee>();
-
+builder.Services.AddScoped<IRepositoryMemberTrainingSession, RepositoryMemberTrainingSession>();
 builder.Services.AddScoped<IRepositoryPayment, RepositoryPayment>();
 builder.Services.AddScoped<IRepositoryBase<MembershipFee>, EfRepository<MembershipFee>>();  
-
-
 builder.Services.AddScoped<IRepositoryStatistics, RepositoryStatistics>();
 
 
@@ -108,7 +115,7 @@ builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IFieldService, FieldService>();
 builder.Services.AddScoped<IMembershipFeeService, MembershipFeeService>();
-
+builder.Services.AddScoped<IMemberTrainingSessionService, MemberTrainingSessionService>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 builder.Services.AddHostedService<MembershipFeeHostedService>();

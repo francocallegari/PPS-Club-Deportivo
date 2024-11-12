@@ -16,36 +16,7 @@ const CalendarEvents = () => {
 
   const memberId = user?.id;
 
-  useEffect(() => {
-    const fetchPendingFees = async () => {
-      if (!memberId || !token) return;
-
-      try {
-        const response = await fetch(
-          `https://localhost:7081/api/MemberShipFee/MemberFees/${memberId}`,
-          {
-            method: "GET",
-            headers: {
-              accept: "*/*",
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          const pendientes = data.filter((fee) => fee.status === 1);
-          setPendingFees(pendientes);
-        } else {
-          console.error("Error al obtener las cuotas pendientes");
-        }
-      } catch (error) {
-        console.error("Error al obtener las cuotas:", error);
-      }
-    };
-
-    fetchPendingFees();
-  }, [memberId, token]);
+  
 
   const fetchEvents = async () => {
     try {

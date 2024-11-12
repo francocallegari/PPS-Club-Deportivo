@@ -4,6 +4,7 @@
     {
         public List<Sport> SportsAttended { get; set; }
 
-        public ICollection<TrainingSession> SessionsAttended { get; set; } = new List<TrainingSession>();
+
+        public ICollection<MemberTrainingSession> SessionsAttended { get; set; } = new List<MemberTrainingSession>();
     }
 }
