@@ -9,7 +9,7 @@ import "./Register.css";
 import { FaArrowAltCircleRight, FaArrowRight } from "react-icons/fa";
 import Alert from "../alert/Alert"
 
-function RegisterForm({ checkForm, alertMessage }) {
+function RegisterForm({ checkForm }) {
   const [birthDate, setBirthDate] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +23,6 @@ function RegisterForm({ checkForm, alertMessage }) {
   const [errors, setErrors] = useState({});
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [existingUser, setExistingUser] = useState(false)
-  const [apiMessage, setApiMessage] = useState(alertMessage)
 
   const navigate = useNavigate();
 
@@ -75,7 +74,8 @@ function RegisterForm({ checkForm, alertMessage }) {
       phoneNumber: phone,
       dateOfBirth: birthDate,
       dni,
-      address
+      address,
+      sportId: 0
     };
 
     validateUser(newUserData)
@@ -107,7 +107,6 @@ function RegisterForm({ checkForm, alertMessage }) {
   return (
     <div className="registerDiv">
       <Form className="register-form-container">
-        {apiMessage && <Alert message={apiMessage} onClose={() => setApiMessage("")}></Alert>}
     
         <h3 className="custom-title">Registrarse</h3>
 

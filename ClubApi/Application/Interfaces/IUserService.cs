@@ -12,7 +12,7 @@ namespace Application.Interfaces
         void UpdateUser(int id, UserUpdateRequest customer);
         void DeleteUser(int id);
         UserResponse CreateUser(UserRequest user);
-        User RegisterUser(UserRequest user);
+        UserResponse RegisterUser(UserRequest user);
         User? GetUserByEmail(string email);
     }
 }
