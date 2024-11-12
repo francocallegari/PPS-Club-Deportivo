@@ -121,7 +121,8 @@ const CalendarEvents = () => {
   return (
     <div>
       <h2 className="calendar-title">ACTIVIDADES</h2>
-      {/* Usar ternario para mostrar la alerta o el calendario */}
+      
+      {/* Mostrar alerta si el usuario tiene 2 o más cuotas pendientes */}
       {pendingFees.length >= 2 ? (
         <div>
           <Alert variant="warning" className="custom-alert">
@@ -138,11 +139,13 @@ const CalendarEvents = () => {
         </div>
       ) : (
         <div className="calendar-events-container">
+          
+          {/* Calendario de eventos */}
           <div className="calendar-container bg-white p-4 rounded-md">
             <FullCalendar
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
-              events={events.map((event) => ({
+              events={formattedEvents(activities).map((event) => ({
                 title: event.title,
                 date: event.date.toISOString().split("T")[0],
                 extendedProps: {
@@ -150,7 +153,7 @@ const CalendarEvents = () => {
                   title: event.title,
                   date: event.date.toISOString(),
                   time: event.time,
-                  description: event.description
+                  description: event.description,
                 },
               }))}
               eventClick={handleEventClick}
@@ -158,41 +161,43 @@ const CalendarEvents = () => {
               dayHeaderFormat={{ weekday: "long" }}
               locales={[esLocale]}
               locale="es"
-              eventContent={eventContent} // Contenido personalizado
+              eventContent={eventContent}
               eventLimit={true}
               fixedWeekCount={false}
             />
           </div>
-
-        <div className="details-column">
-          <h2 className="details-column-title">Detalles</h2>
-          <div className="selected-event-card">
-            {selectedEvent ? (
-              <div>
-                <button
-                  className="close-button"
-                  onClick={() => setSelectedEvent(null)}
-                >
-                  &times;
-                </button>
-                <ActivityCard
-                  title={selectedEvent.title}
-                  date={formatDate(selectedEvent.date)}
-                  time={selectedEvent.time}
-                  description={selectedEvent.description}
-                  id={selectedEvent.id}
-                />
-              </div>
-            ) : (
-              <div className="placeholder-text">
-                <p>Seleccione un evento para más detalles</p>
-              </div>
-            )}
+  
+          {/* Detalles del evento seleccionado */}
+          <div className="details-column">
+            <h2 className="details-column-title">Detalles</h2>
+            <div className="selected-event-card">
+              {selectedEvent ? (
+                <div>
+                  <button
+                    className="close-button"
+                    onClick={() => setSelectedEvent(null)}
+                  >
+                    &times;
+                  </button>
+                  <ActivityCard
+                    title={selectedEvent.title}
+                    date={formatDate(selectedEvent.date)}
+                    time={selectedEvent.time}
+                    description={selectedEvent.description}
+                    id={selectedEvent.id}
+                  />
+                </div>
+              ) : (
+                <div className="placeholder-text">
+                  <p>Seleccione un evento para más detalles</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
     </div>
-  );
+  );  
 };
 
 export default CalendarEvents;
