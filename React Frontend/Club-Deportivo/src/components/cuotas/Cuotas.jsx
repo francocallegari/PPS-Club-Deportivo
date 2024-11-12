@@ -81,6 +81,7 @@ const Cuotas = () => {
   const formattedFees = (fees, condition) => {
     return fees
       .filter((fee) => fee.status === condition)
+      .sort((a, b) => new Date(a.membershipFee.expirationDate) - new Date(b.membershipFee.expirationDate))
       .map((fee) => {
         const cuotaDate = new Date(fee.membershipFee.expirationDate);
         const monthName = cuotaDate.toLocaleString("es-ES", { month: "long" });
