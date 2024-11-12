@@ -166,15 +166,17 @@ const SportDetail = ({ sport, onClose }) => {
                             {formattedStartTime} - {formattedEndTime}
                           </td>{" "}
                           <td>
-                          {session.field.name}
+                            {session.field.name}
                           </td>
-                          <td>
-                            <Form.Check
-                              type="checkbox"
-                              checked={selectedSessionId === session.id}
-                              onChange={() => handleSelectSession(session.id)}
-                            />
-                          </td>
+                          {user && user.role === "Member" && (
+                            <td>
+                              <Form.Check
+                                type="checkbox"
+                                checked={selectedSessionId === session.id}
+                                onChange={() => handleSelectSession(session.id)}
+                              />
+                            </td>
+                          )}
                         </tr>
                       );
                     })}

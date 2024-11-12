@@ -156,23 +156,6 @@ const Admin = () => {
   return (
     
     <div>
-      <Col className="search">
-        <Form>
-          <Form.Group controlId="formBasicSearch">
-            <InputGroup>
-              <Form.Control
-                style={{ width: "20rem" }}
-                type="text"
-                placeholder="Buscar socio"
-              />
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </InputGroup>
-          </Form.Group>
-        </Form>
-      </Col>
-
-      <hr style={{ border: "1px solid #ccc", margin: "20px 0" }} />
-
       <div>
         {error && (
           <Alert
@@ -203,6 +186,7 @@ const Admin = () => {
                 <Form.Control
                   type="date"
                   value={eventDate}
+                  min={new Date().toISOString().split("T")[0]}
                   onChange={(e) => setEventDate(e.target.value)}
                 />
               </Form.Group>
@@ -278,7 +262,6 @@ const Admin = () => {
         </Row>
       </Container>
 
-      {/* Modal de confirmación */}
       <Modal show={showModal} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirmación</Modal.Title>
@@ -289,10 +272,10 @@ const Admin = () => {
           <strong>{eventType === "event" ? eventTitle : newsTitle}</strong>?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" className="colorButton" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleConfirmSignUp}>
+          <Button variant="primary" className="colorButton" onClick={handleConfirmSignUp}>
             Confirmar
           </Button>
         </Modal.Footer>
