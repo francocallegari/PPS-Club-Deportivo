@@ -156,6 +156,7 @@ const Header = () => {
         
 
         {!user && (
+           <>
           <div className="ecomeMember-button">
             <Nav.Item
               className="becomeMember-button"
@@ -164,6 +165,13 @@ const Header = () => {
               ASOCIATE
             </Nav.Item>
           </div>
+          <Nav.Item
+          className="Nav-Seccion"
+          onClick={!user ? handleLoginNavigation : handleLogoutButton}
+        >
+          {!user ? "Iniciar sesión" : "Cerrar Sesión"}
+        </Nav.Item>
+      </>
         )}
 
         {user && (
