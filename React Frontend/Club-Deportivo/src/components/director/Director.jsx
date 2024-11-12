@@ -18,7 +18,7 @@ const Director = () => {
   const [errorEvento, setEventoError] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const { token } = useContext(AuthenticationContext)
+  const { token, user } = useContext(AuthenticationContext)
 
   const fetchData = async () => {
     try {
@@ -26,7 +26,7 @@ const Director = () => {
         "https://localhost:7081/api/Event/Events"
       );
       console.log(response.data);
-      setEvents(response.data);
+      setEvents(response.data.filter(e => e.status == 0));
     } catch (error) {
       console.error("Error al obtener los eventos:", error);
     }
@@ -65,7 +65,7 @@ const Director = () => {
     if (selectedEvent) {
       try {
         await axios.put("https://localhost:7081/api/Event/ApproveEvent", null, {
-          params: { directorId: 1, eventId: selectedEvent.id },
+          params: { directorId: user.id, eventId: selectedEvent.id },
           headers: {
             Authorization: `Bearer ${token}`
           }
