@@ -87,8 +87,7 @@ const SportDetail = ({ sport, onClose }) => {
         setShowConfirmation(true);
       } else {
         const errorData = await response.text();
-        console.log('Error details:', errorData);
-        setAlertMessage(errorData);
+        setAlertMessage("Ya estas inscripto en este deporte");
       }
     } catch (error) {
       console.error("Error:", error);
