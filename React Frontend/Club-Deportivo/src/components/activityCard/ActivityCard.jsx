@@ -71,10 +71,10 @@ const ActivityCard = ({ title, date, time, description, id }) => {
           <strong>{title}</strong>?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" className="colorButton" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleConfirmSignUp}>
+          <Button variant="primary" className="colorButton" onClick={handleConfirmSignUp}>
             Confirmar Inscripción
           </Button>
         </Modal.Footer>

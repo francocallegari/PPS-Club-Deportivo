@@ -149,107 +149,94 @@ useEffect(() => {
           </div>
         </div>
       ) : (
-        <>
-          <Modal
-            show={!!sport}
-            onHide={onClose}
-            centered
-            className="sport-detail-modal"
-          >
-            <Modal.Header closeButton className="sport-title">
-              <Modal.Title>{sport?.name}</Modal.Title>
-            </Modal.Header>
+        <Modal
+          show={!!sport}
+          onHide={onClose}
+          centered
+          className="sport-detail-modal"
+        >
+          <Modal.Header closeButton className="sport-title">
+            <Modal.Title>{sport?.name}</Modal.Title>
+          </Modal.Header>
   
-            <Modal.Body>
-              <div className="sport-detail-content">
-                <img
-                  src={sport?.imageURL}
-                  alt={sport?.name}
-                  className="sport-detail-image"
-                />
+          <Modal.Body>
+            <div className="sport-detail-content">
+              <img
+                src={sport?.imageURL}
+                alt={sport?.name}
+                className="sport-detail-image"
+              />
   
-                {sportSessions.length !== 0 ? (
-                  <>
-                    <h4>Horarios de Entrenamiento</h4>
-                    <Table striped bordered hover className="sport-schedule">
-                      <thead>
-                        <tr>
-                          <th>Días</th>
-                          <th>Horario</th>
-                          <th>Lugar</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {sportSessions.map((session, index) =>
-                          convertToDays(session.daysOfWeek).map((day, dayIndex) => {
-                            const startTime = formatTime(session.time);
-                            const endTime = getEndTime(startTime, session.duration);
-                            return (
-                              <tr key={`${index}-${dayIndex}`}>
-                                <td>{day}</td>
-                                <td>
-                                  {formatTimeString(startTime)} - {formatTimeString(endTime)}
-                                </td>
-                                <td>{session.field.name}</td>
-                              </tr>
-                            );
-                          })
-                        )}
-                      </tbody>
-                    </Table>
+              {sportSessions.length !== 0 ? (
+                <>
+                  <h4>Horarios de Entrenamiento</h4>
+                  <Table striped bordered hover className="sport-schedule">
+                    <thead>
+                      <tr>
+                        <th>Días</th>
+                        <th>Horario</th>
+                        <th>Lugar</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sportSessions.map((session, index) =>
+                        convertToDays(session.daysOfWeek).map((day, dayIndex) => {
+                          const startTime = formatTime(session.time);
+                          const endTime = getEndTime(startTime, session.duration);
+                          return (
+                            <tr key={`${index}-${dayIndex}`}>
+                              <td>{day}</td>
+                              <td>
+                                {formatTimeString(startTime)} - {formatTimeString(endTime)}
+                              </td>
+                              <td>{session.field.name}</td>
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
+                  </Table>
   
-                    <h4>Descripción</h4>
-                    <ul className="sport-detail-list">
-                      {sportSessions.map((session, index) => (
-                        <li key={index}>
-                          <b>Profesor:</b> {session.coach.name}
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                ) : (
-                  <p>Aún no hay horarios disponibles para este deporte</p>
-                )}
-                {alertMessage && <Alert message={alertMessage} onClose={() => setAlertMessage("")}></Alert>}
-              </div>
-            </Modal.Body>
-  
-            <div className="btn-sport">
-              {user && user.role === "Member" && (
-                <Modal.Footer>
-                  <Button
-                    className="btn-Incribirme"
-                    onClick={handleInscripcion}
-                    disabled={sportSessions.length === 0}
-                  >
-                    Incribirme
-                  </Button>
-                </Modal.Footer>
+                  <h4>Descripción</h4>
+                  <ul className="sport-detail-list">
+                    {sportSessions.map((session, index) => (
+                      <li key={index}>
+                        <b>Profesor:</b> {session.coach.name}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <p>Aún no hay horarios disponibles para este deporte</p>
               )}
+              {alertMessage && <Alert message={alertMessage} onClose={() => setAlertMessage("")}></Alert>}
+            </div>
+          </Modal.Body>
   
+          <div className="btn-sport">
+            {user && user.role === "Member" && (
               <Modal.Footer>
-                <Button className="btn-cerrar" onClick={onClose}>
-                  Cerrar
+                <Button
+                  className="btn-Incribirme"
+                  onClick={handleInscripcion}
+                  disabled={sportSessions.length === 0}
+                >
+                  Inscribirme
                 </Button>
               </Modal.Footer>
-            </div>
-          </Modal>
+            )}
   
-          <Modal show={showConfirmation} onHide={handleCloseConfirmation} centered>
-            <Modal.Header closeButton>
-              <Modal.Title>¡Inscripción Exitosa!</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Te has inscrito exitosamente en {sport?.name}.</Modal.Body>
             <Modal.Footer>
-              <Button variant="success" onClick={handleCloseConfirmation}>
+              <Button className="btn-cerrar" onClick={onClose}>
                 Cerrar
               </Button>
             </Modal.Footer>
-          </Modal>
-        </>
+          </div>
+        </Modal>
       )}
     </div>
   );
+  
   
 };
 

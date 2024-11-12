@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { Card, Button } from "react-bootstrap";
 import { FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
 import "./Cuotas.css";
@@ -13,14 +13,39 @@ const Cuotas = () => {
 
   const memberId = user?.id;
 
-  useEffect(() => {
-    // Captura los parámetros de la URL
-    const params = new URLSearchParams(window.location.search);
-    const status = params.get('status');
+  const fetchCuotas = useCallback(async () => {
+    if (!memberId || !token) {
+      console.error("Falta el ID de miembro o el token");
+      return;
+    }
+    try {
+      const response = await fetch(
+        `https://localhost:7081/api/MemberShipFee/MemberFees/${memberId}`,
+        {
+          method: "GET",
+          headers: {
+            accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setCuotas(data);
+      } else {
+        throw new Error("Error al obtener las cuotas");
+      }
+    } catch (error) {
+      console.error("Error al obtener las cuotas:", error);
+    }
+  }, [memberId, token]);
 
-    // Verifica si el estado es aprobado
-    if (status === 'approved') {
-      console.log("aprobado");
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get("status");
+
+    if (status === "approved") {
       const feeId = localStorage.getItem("pendingFeeId");
       if (feeId) {
         const confirmPayment = async () => {
@@ -37,6 +62,7 @@ const Cuotas = () => {
             if (response.ok) {
               console.log("Pago confirmado para la cuota:", feeId);
               localStorage.removeItem("pendingFeeId");
+              fetchCuotas(); // Actualizar cuotas después de confirmar el pago
             } else {
               throw new Error("Error al confirmar el pago de la cuota");
             }
@@ -47,63 +73,33 @@ const Cuotas = () => {
 
         confirmPayment();
       }
-    } else if (status == "null") {
-      console.log("no se pudo completar el pago")
     }
 
-
-    const fetchCuotas = async () => {
-      if (!memberId || !token) {
-        console.error("Falta el ID de miembro o el token");
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          `https://localhost:7081/api/MemberShipFee/MemberFees/${memberId}`,
-          {
-            method: "GET",
-            headers: {
-              accept: "*/*",
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setCuotas(data);
-        } else {
-          throw new Error("Error al obtener las cuotas");
-        }
-      } catch (error) {
-        console.error("Error al obtener las cuotas:", error);
-      }
-    };
-
     fetchCuotas();
-  }, [memberId, token]);
+  }, [memberId, token, fetchCuotas]);
 
   const formattedFees = (fees, condition) => {
-    return fees.filter((fee) => fee.status === condition).map((fee) => {
-      const cuotaDate = new Date(fee.membershipFee.expirationDate)
-      const monthName = cuotaDate.toLocaleString('es-ES', { month: 'long' })
+    return fees
+      .filter((fee) => fee.status === condition)
+      .map((fee) => {
+        const cuotaDate = new Date(fee.membershipFee.expirationDate);
+        const monthName = cuotaDate.toLocaleString("es-ES", { month: "long" });
 
-      return {
-        id: fee.id,
-        monthName: monthName,
-        memberId: fee.memberId,
-        feeId: fee.feeId,
-        expirationDate: cuotaDate.toLocaleDateString('es-ES'),
-        status: fee.status,
-        paymentDate: fee.paymentDate,
-        feePrice: fee.feePrice
-      };
-    });
-  }
+        return {
+          id: fee.id,
+          monthName: monthName,
+          memberId: fee.memberId,
+          feeId: fee.feeId,
+          expirationDate: cuotaDate.toLocaleDateString("es-ES"),
+          status: fee.status,
+          paymentDate: fee.paymentDate,
+          feePrice: fee.feePrice,
+        };
+      });
+  };
 
-  const pagadas = cuotas.length > 0 ? formattedFees(cuotas, 0) : []
-  const pendientes = cuotas.length > 0 ? formattedFees(cuotas, 1) : []
+  const pagadas = cuotas.length > 0 ? formattedFees(cuotas, 0) : [];
+  const pendientes = cuotas.length > 0 ? formattedFees(cuotas, 1) : [];
 
   const handlePayClick = (cuota) => {
     setSelectedMonto(cuota.feePrice);
@@ -145,10 +141,9 @@ const Cuotas = () => {
         )}
       </div>
 
-      {/* Cuotas Pendientes */}
       <div className="column">
         <h4 className="subtitle">Cuotas Pendientes</h4>
-        {pendientes.length > 0 ?
+        {pendientes.length > 0 ? (
           pendientes.map((cuota) => (
             <Card key={cuota.id} className="mb-3 cuota-card pending">
               <div className="card-content">
@@ -173,9 +168,10 @@ const Cuotas = () => {
                 </div>
               </div>
             </Card>
-          )) : (
-            <p>No tiene cuotas pendientes</p>
-          )}
+          ))
+        ) : (
+          <p>No tiene cuotas pendientes</p>
+        )}
       </div>
 
       {showPaymentModal && (

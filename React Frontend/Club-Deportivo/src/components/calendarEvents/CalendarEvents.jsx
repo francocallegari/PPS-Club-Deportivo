@@ -68,7 +68,7 @@ const CalendarEvents = () => {
   }
   
   const formattedEvents = (activities) => {
-    return activities.map((activity) => {
+    return activities.filter(a => a.status == 1).map((activity) => {
       const [date, time] = activity.date.split("T")
 
       return {
