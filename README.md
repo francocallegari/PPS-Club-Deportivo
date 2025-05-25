@@ -1,6 +1,6 @@
 # PPS - Club Deportivo
 
-Sistema de gestión para club deportivo desarrollado como proyecto final de la materia **Prráctica Profesional Supervisada**. La plataforma permite administrar actividades, clases, socios e ingresos del club mediante interfaces web y móviles adaptadas a diferentes roles de usuario.
+Sistema de gestión para club deportivo desarrollado como proyecto final de la materia **Práctica Profesional Supervisada**. La plataforma permite administrar actividades, clases, socios e ingresos del club mediante interfaces web y móviles adaptadas a diferentes roles de usuario.
 
 ---
 
